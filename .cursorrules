@@ -1,0 +1,140 @@
+# Copenhagen 3D — Civic Budget Visualization
+
+## Project Overview
+
+Interactive 3D map application for Copenhagen civic participation / participatory budgeting.
+Citizens can browse, vote on, and propose community projects visualized on a 3D city map.
+Built for the BloxHub hackathon — adapted from a Gliwice (Poland) prototype.
+
+## Tech Stack
+
+- **Frontend**: Single-file SPA (`public/index.html`, ~1770 lines)
+  - MapLibre GL JS v4.7.1 (3D map rendering, building extrusion, vector tiles)
+  - Three.js v0.160.0 (3D model loading — GLTF/GLB/STL — on map + detail preview)
+  - deck.gl (CDN, ColumnLayer for data visualization — partially integrated)
+  - Pure CSS (no framework), design tokens in `:root`
+  - No build step, no bundler — all inline in index.html
+- **Backend**: Express.js v4 static file server (`server.js`, port 3001)
+- **Data**: Static GeoJSON files in `public/data/` (district boundaries, Frederiksberg OSM)
+- **Testing**: Playwright screenshot script (`screenshot.js`) — headless=false with Metal GPU
+- **Map tiles**: OpenFreeMap positron style
+
+## Architecture
+
+### Single HTML file structure (public/index.html):
+1. **Lines 1-584**: CSS — design tokens, sidebar, project cards, markers, popups, facility panel, map controls, loading screen
+2. **Lines 586-667**: HTML — loading overlay, header bar, map container, sidebar with project list + add form, project detail panel, facility panel, map controls, stats bar
+3. **Lines 668-1771**: JavaScript (all in one `<script>` block)
+   - State: `COPENHAGEN` center coords, `projects[]`, `markers{}`, `placingMode`, `pendingLocation`
+   - `MODEL_URLS` — CC0 3D model URLs from GitHub (tree, bridge, shelter, bench, amphitheater, statue, fox, truck, duck, lantern, garden, toycar)
+   - `DEMO_PROJECTS` (8 real Copenhagen projects with votes, coords, categories, districts)
+   - `CATEGORIES` — playground, green, sport, culture, infra, other
+   - `FACILITY_TYPES` — gym, workout, playground_city, skatepark, pitch, dog_park, harbour_bath
+   - `CITY_FACILITIES` — 66 real Copenhagen outdoor facilities with coordinates
+   - `DISTRICTS` — 10 Copenhagen districts with approximate polygon boundaries
+   - Map initialization with pastel cartoon city styling (custom building colors, 3D trees, park bushes)
+   - District boundary layer with click-to-highlight interaction
+   - Project markers (quest-style "!" icons), voting system, project detail view with 3D model preview
+   - Facility markers with filter toggles
+   - Map view controls (pitch, bearing, opacity, building scale)
+   - "Propose new project" flow — click-to-place with model upload
+
+### Key data flow:
+- Projects are stored in-memory array (`projects[]`) — no persistence
+- Votes stored per-project in `voters[]` array (client-side only)
+- 3D models loaded via Three.js GLTFLoader/STLLoader, rendered as MapLibre custom layers
+- District boundaries rendered as MapLibre GeoJSON source with fill/line/symbol layers
+
+## Design System
+
+- **Style**: Notion-inspired clean UI with pastel cartoon city map
+- **Fonts**: DM Sans (UI), Source Serif 4 (headings), JetBrains Mono (numbers/stats)
+- **Colors**: Defined in CSS `:root` variables — green (#00a67e), blue (#2f80ed), red (#e03e3e), orange (#d9730d), purple (#6940a5)
+- **Building colors**: Pastel palette based on height hash (warm white, cyan, pink, sage, sand, blue, lavender)
+- **Map**: Light warm gray background, soft blue water, pastel buildings with 3D extrusion
+
+## File Structure
+
+```
+copenhagen-3d/
+├── public/
+│   ├── index.html          # Complete SPA (HTML + CSS + JS)
+│   └── data/
+│       ├── bydele-kk.geojson       # Copenhagen district boundaries (official)
+│       └── frederiksberg-osm.geojson # Frederiksberg municipality from OSM
+├── server.js               # Express static server (port 3001)
+├── screenshot.js           # Playwright screenshot automation
+├── package.json            # Dependencies: express, playwright
+└── node_modules/
+```
+
+## Running the App
+
+```bash
+npm start           # Starts Express on http://localhost:3001
+node screenshot.js  # Capture screenshots (requires server running)
+```
+
+## Key Implementation Details
+
+### 3D Buildings
+- Vector tile source from OpenFreeMap positron
+- Buildings removed from flat layers, re-added as `fill-extrusion` with pastel colors
+- Height multiplied by 1.3x for dramatic effect
+- Roof cap layer (building-glow) at 1.31x height for visual depth
+- 3D trees on parks (fill-extrusion from landcover wood/forest)
+- 3D park bushes (fill-extrusion from landcover grass/meadow)
+
+### District System
+- 10 districts with approximate polygon boundaries (in JS, not GeoJSON)
+- Click district → highlight with fill opacity change + border + label
+- Click again to deactivate
+- Popup shows project count + facility count for district
+
+### Project System
+- 8 demo projects with real Copenhagen data (Superkilen, Nordhavn Cycle Bridge, Enghaveparken, etc.)
+- Categories: playground, green, sport, culture, infra, other
+- Each project has: id, name, desc, category, cost (DKK), votes, lng/lat, district, status, edition
+- Status values: Completed, Planned, In Progress, Concept
+- 3D models loaded from CC0 GitHub repos
+
+### Voting
+- Client-side only (no backend persistence)
+- Toggle vote on/off per project
+- Vote count updates in real-time in sidebar, detail view, popup, and stats bar
+
+### Project Placement
+- "Propose new project" enters PLACING mode
+- Click map to set location (crosshair cursor)
+- Form: name, description, category, cost, 3D model upload (.glb/.gltf/.stl)
+- New project added to in-memory array + map
+
+### Model Controls (in detail view)
+- Scale slider (0.1x - 5x)
+- Rotation slider (0° - 360°)
+- Move grid (NSEW + reset) — 5m steps
+- All changes applied in real-time to map model layer
+
+## Known Issues / TODO
+
+- deck.gl integration started but not fully utilized
+- No authentication or user system
+- Playwright screenshots require headed mode with Metal GPU (`--use-gl=angle --use-angle=metal`)
+- Multiple Three.js renderers share one GL context (standard MapLibre pattern, acceptable for this scale)
+
+## Copenhagen-Specific Data
+
+- Currency: DKK (Danish Krone)
+- Districts: Indre By, Norrebro, Vesterbro, Osterbro, Christianshavn, Amager Vest, Amager Ost, Valby, Bispebjerg, Nordhavn
+- Civic participation: Lokaludvalg (local councils), city budget proposals
+- Source reference: kk.dk/politik/lokaludvalg (Copenhagen Municipality)
+
+## Coding Conventions
+
+- Communicate with the user in Polish
+- Code, comments, and commit messages in English
+- No build step — edit index.html directly
+- Test changes by reloading browser at http://localhost:3001
+- For screenshots: use Playwright with headed mode + Metal GPU flags
+- Prefer minimal changes — this is a hackathon prototype
+- Keep everything in the single index.html unless splitting becomes necessary

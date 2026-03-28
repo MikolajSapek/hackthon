@@ -1,7 +1,7 @@
 {
-  "name": "gliwice-3d",
+  "name": "copenhagen-3d",
   "version": "1.0.0",
-  "description": "3D map of Gliwice, Poland using MapLibre GL JS with building extrusion",
+  "description": "Interactive 3D map of Copenhagen for civic participatory budgeting",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

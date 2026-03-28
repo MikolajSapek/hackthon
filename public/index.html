@@ -107,6 +107,76 @@
       scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.1) transparent;
     }
 
+    /* ═══ FILTER BAR ═══ */
+    #filter-bar {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 6px;
+      background: var(--bg-primary);
+    }
+    .filter-row { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+    .filter-select {
+      padding: 4px 8px; border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 11px; font-family: 'DM Sans', sans-serif; font-weight: 500;
+      cursor: pointer; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      min-width: 0; flex: 1;
+    }
+    .filter-select:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 2px rgba(47,128,237,0.12);
+    }
+    .filter-select.active {
+      border-color: var(--accent-blue);
+      background: var(--accent-blue-bg);
+    }
+    .filter-select option { background: #fff; color: var(--text-primary); }
+    .filter-clear {
+      padding: 4px 8px; border-radius: 4px;
+      border: 1px solid transparent; background: transparent;
+      color: var(--text-tertiary);
+      font-size: 10px; font-weight: 600; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.12s, background 0.12s;
+      letter-spacing: 0.3px; text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .filter-clear:hover { color: var(--accent-red); background: rgba(224,62,62,0.06); }
+    .filter-count {
+      font-size: 10px; color: var(--text-tertiary);
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+    }
+    .project-search-input {
+      width: 100%; padding: 8px 10px; border-radius: var(--radius-btn);
+      border: 1px solid var(--border); background: var(--bg-secondary);
+      font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--text-primary);
+      outline: none; margin-bottom: 4px;
+    }
+    .project-search-input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 2px rgba(47,128,237,0.12);
+    }
+    .project-search-input::placeholder { color: var(--text-tertiary); }
+    .filter-chips {
+      display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px;
+    }
+    .filter-chip {
+      padding: 4px 9px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--bg-secondary); font-size: 10px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.3px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; color: var(--text-secondary);
+      transition: background 0.12s, border-color 0.12s, opacity 0.12s;
+    }
+    .filter-chip:hover { border-color: var(--border-strong); color: var(--text-primary); }
+    .filter-chip.on { border-color: var(--accent-blue); background: var(--accent-blue-bg); color: var(--accent-blue); }
+    .filter-chip.off { opacity: 0.35; }
+    .filter-chip-all { border-style: dashed; }
+
+
     /* ═══ PROJECT CARDS ═══ */
     .project-card {
       background: var(--bg-secondary);
@@ -135,11 +205,15 @@
       font-size: 10px; padding: 2px 7px; border-radius: 4px;
       font-weight: 600; letter-spacing: 0.2px; text-transform: uppercase;
     }
-    .cat-playground { background: rgba(217,115,13,0.1); color: var(--accent-orange); }
-    .cat-green { background: rgba(0,166,126,0.1); color: var(--accent-green); }
-    .cat-sport { background: rgba(47,128,237,0.1); color: var(--accent-blue); }
+    .cat-recreation { background: rgba(217,115,13,0.1); color: #d9730d; }
+    .cat-transport { background: rgba(47,128,237,0.1); color: #2f80ed; }
+    .cat-public-buildings { background: rgba(224,62,62,0.1); color: #e03e3e; }
+    .cat-green-spaces { background: rgba(0,166,126,0.1); color: #0f7b6c; }
+    .cat-climate { background: rgba(0,180,160,0.1); color: #0e9988; }
     .cat-culture { background: rgba(105,64,165,0.1); color: var(--accent-purple); }
+    .cat-education { background: rgba(66,99,235,0.1); color: #4263eb; }
     .cat-infra { background: rgba(224,62,62,0.1); color: var(--accent-red); }
+    .cat-housing { background: rgba(196,135,59,0.1); color: #c4873b; }
     .cat-other { background: rgba(0,0,0,0.05); color: var(--text-secondary); }
     .pc-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px; }
     .pc-footer { display: flex; align-items: center; justify-content: space-between; }
@@ -303,16 +377,24 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
     }
-    .quest-wrap.cat-playground .quest-icon { background: #d9730d; }
-    .quest-wrap.cat-playground .quest-dot { border-top-color: #d9730d; }
-    .quest-wrap.cat-green .quest-icon { background: #0f7b6c; }
-    .quest-wrap.cat-green .quest-dot { border-top-color: #0f7b6c; }
-    .quest-wrap.cat-sport .quest-icon { background: #2f80ed; }
-    .quest-wrap.cat-sport .quest-dot { border-top-color: #2f80ed; }
+    .quest-wrap.cat-recreation .quest-icon { background: #d9730d; }
+    .quest-wrap.cat-recreation .quest-dot { border-top-color: #d9730d; }
+    .quest-wrap.cat-transport .quest-icon { background: #2f80ed; }
+    .quest-wrap.cat-transport .quest-dot { border-top-color: #2f80ed; }
+    .quest-wrap.cat-public-buildings .quest-icon { background: #e03e3e; }
+    .quest-wrap.cat-public-buildings .quest-dot { border-top-color: #e03e3e; }
+    .quest-wrap.cat-green-spaces .quest-icon { background: #0f7b6c; }
+    .quest-wrap.cat-green-spaces .quest-dot { border-top-color: #0f7b6c; }
+    .quest-wrap.cat-climate .quest-icon { background: #0e9988; }
+    .quest-wrap.cat-climate .quest-dot { border-top-color: #0e9988; }
     .quest-wrap.cat-culture .quest-icon { background: #6940a5; }
     .quest-wrap.cat-culture .quest-dot { border-top-color: #6940a5; }
+    .quest-wrap.cat-education .quest-icon { background: #4263eb; }
+    .quest-wrap.cat-education .quest-dot { border-top-color: #4263eb; }
     .quest-wrap.cat-infra .quest-icon { background: #e03e3e; }
     .quest-wrap.cat-infra .quest-dot { border-top-color: #e03e3e; }
+    .quest-wrap.cat-housing .quest-icon { background: #c4873b; }
+    .quest-wrap.cat-housing .quest-dot { border-top-color: #c4873b; }
     .quest-wrap.cat-other .quest-icon { background: #787774; }
     .quest-wrap.cat-other .quest-dot { border-top-color: #787774; }
 
@@ -334,6 +416,55 @@
     .popup-vote-count { font-size: 17px; font-weight: 700; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; }
 
     #map.placing .maplibregl-canvas { cursor: crosshair !important; }
+
+    /* MapLibre — navigation cluster: align with app chrome, stay clear of sidebar */
+    #map .maplibregl-ctrl-top-right {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      top: 58px;
+      right: 12px;
+      width: 34px;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.05)) drop-shadow(0 4px 14px rgba(0,0,0,0.07));
+    }
+    @media (min-width: 769px) {
+      body:has(#sidebar:not(.hidden)) #map .maplibregl-ctrl-top-right {
+        right: 392px;
+      }
+    }
+    #map .maplibregl-ctrl-top-right > .maplibregl-ctrl {
+      margin: 0 !important;
+      float: none !important;
+      clear: both !important;
+    }
+    #map .maplibregl-ctrl-top-right > .maplibregl-ctrl.maplibregl-ctrl-group {
+      background: var(--bg-secondary) !important;
+      border: 1px solid var(--border) !important;
+      box-shadow: none !important;
+      overflow: hidden;
+    }
+    #map .maplibregl-ctrl-top-right > .maplibregl-ctrl.maplibregl-ctrl-group:first-of-type:not(:last-of-type) {
+      border-radius: 10px 10px 0 0 !important;
+    }
+    #map .maplibregl-ctrl-top-right > .maplibregl-ctrl.maplibregl-ctrl-group:last-of-type:not(:first-of-type) {
+      border-radius: 0 0 10px 10px !important;
+      border-top: none !important;
+      margin-top: -1px;
+    }
+    #map .maplibregl-ctrl-top-right > .maplibregl-ctrl.maplibregl-ctrl-group:first-of-type:last-of-type {
+      border-radius: 10px !important;
+    }
+    #map .maplibregl-ctrl-top-right .maplibregl-ctrl-group button {
+      width: 34px;
+      height: 34px;
+    }
+    #map .maplibregl-ctrl-top-right .maplibregl-ctrl-group button + button {
+      border-top: 1px solid var(--border) !important;
+    }
+    #map .maplibregl-ctrl-top-right .maplibregl-ctrl-group button:not(:disabled):hover {
+      background-color: var(--bg-hover) !important;
+    }
 
     /* ═══ PROJECT DETAIL VIEW ═══ */
     #project-detail {
@@ -459,48 +590,7 @@
     .mctl-move-btn:hover { background: var(--accent-blue-bg); border-color: rgba(47,128,237,0.3); color: var(--accent-blue); }
     .mctl-move-btn:active { transform: scale(0.92); }
 
-    /* ═══ FACILITY FILTERS ═══ */
-    #facility-panel {
-      position: fixed; top: 68px; left: 16px; z-index: 100;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      padding: 12px 14px; min-width: 186px;
-      box-shadow: var(--shadow-float);
-    }
-    #facility-panel h2 {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.8px;
-      text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px;
-    }
-    .fac-filter {
-      display: flex; align-items: center; gap: 8px;
-      padding: 5px 4px; cursor: pointer;
-      border-radius: 4px;
-      transition: background 0.12s, opacity 0.12s;
-    }
-    .fac-filter:hover { background: var(--bg-hover); }
-    .fac-filter.off { opacity: 0.35; }
-    .fac-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-    .fac-label { font-size: 12px; color: var(--text-primary); font-weight: 500; }
-    .fac-count { font-size: 11px; color: var(--text-tertiary); margin-left: auto; font-family: 'JetBrains Mono', monospace; }
-    .fm-wrap {
-      display: flex; flex-direction: column; align-items: center;
-      cursor: pointer;
-      animation: quest-bob 2.5s ease-in-out infinite;
-    }
-    .fm-wrap:hover { transform: scale(1.2); }
-    .fm-wrap .fm-icon {
-      width: 22px; height: 22px; border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 900; font-family: 'DM Sans', sans-serif;
-      color: #fff; line-height: 1;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-    }
-    .fm-wrap .fm-dot {
-      width: 0; height: 0;
-      border-left: 4px solid transparent; border-right: 4px solid transparent;
-      border-top: 5px solid #000;
-    }
+    /* facility panel removed */
 
     /* ═══ MAP CONTROLS ═══ */
     #map-controls {
@@ -570,16 +660,20 @@
     .loader-sub { font-size: 11px; color: rgba(255,255,255,0.15); font-family: 'JetBrains Mono', monospace; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ═══ VIGNETTE OVERLAY (map only) ═══ */
-    #vignette {
-      position: fixed; inset: 0; z-index: 1; pointer-events: none;
-      background: radial-gradient(ellipse at center, transparent 50%, rgba(5,5,15,0.4) 100%);
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 768px) {
+      #sidebar { width: 100%; right: 0; top: auto; bottom: 0; height: 50vh; border-left: none; border-top: 1px solid var(--border); border-radius: 16px 16px 0 0; }
+      #sidebar.hidden { transform: translateY(100%); }
+      #sidebar-toggle { top: auto; bottom: 16px; right: 16px; }
+      #sidebar-toggle.shifted { right: 16px; bottom: calc(50vh + 8px); }
+      #project-detail { width: 100%; top: auto; bottom: 0; height: 70vh; border-left: none; border-top: 1px solid var(--border); border-radius: 16px 16px 0 0; }
+      #map-controls { bottom: 68px; left: 8px; min-width: 180px; padding: 10px; }
+      #stats { left: 50%; transform: translateX(-50%); bottom: 8px; gap: 14px; padding: 8px 14px; }
+      #header { padding: 6px 14px; gap: 8px; }
+      .header-title { display: none; }
     }
-
-    /* ═══ SCAN LINES (map only, very subtle) ═══ */
-    #scanlines {
-      position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: 0.03;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.1) 2px, rgba(255,255,255,0.1) 4px);
+    @media (max-width: 480px) {
+      #map-controls { display: none; }
     }
   </style>
 </head>
@@ -590,8 +684,6 @@
   <div class="loader-text">Copenhagen 3D</div>
   <div class="loader-sub">loading city model...</div>
 </div>
-
-<!-- vignette/scanlines removed for Notion clean look -->
 
 <header id="header">
   <span class="logo">Copenhagen 3D</span>
@@ -609,6 +701,28 @@
     <h2>Community Projects</h2>
     <p id="project-count">0 projects | 0 votes</p>
   </div>
+  <div id="filter-bar">
+    <input type="search" id="project-search" class="project-search-input" placeholder="Search projects..." autocomplete="off" />
+    <div class="filter-chips" id="filter-chips-cat" aria-label="Category filters"></div>
+    <div class="filter-row">
+      <select class="filter-select" id="filter-budget"><option value="">All budgets</option></select>
+      <select class="filter-select" id="filter-district"><option value="">All districts</option></select>
+    </div>
+    <div class="filter-row">
+      <select class="filter-select" id="filter-status">
+        <option value="">All statuses</option>
+        <option value="voting">Open for voting</option>
+        <option value="planned">Planned</option>
+        <option value="in-progress">In progress</option>
+        <option value="completed">Completed</option>
+        <option value="Concept">Concept</option>
+      </select>
+      <select class="filter-select" id="filter-scale"><option value="">All scales</option></select>
+      <select class="filter-select" id="filter-investment"><option value="">All levels</option></select>
+      <button type="button" class="filter-clear" id="filter-clear">Clear</button>
+    </div>
+    <div class="filter-count" id="filter-count"></div>
+  </div>
   <div id="project-list"></div>
   <div id="add-form">
     <h3>NEW PROJECT</h3>
@@ -616,12 +730,15 @@
     <div class="form-group"><label>Description</label><textarea id="f-desc" placeholder="What do you want to build? For whom?"></textarea></div>
     <div class="form-group"><label>Category</label>
       <select id="f-category">
-        <option value="playground">Playground</option>
-        <option value="green">Green / Park</option>
-        <option value="sport">Sports / Recreation</option>
-        <option value="culture">Culture / Education</option>
-        <option value="infra">Infrastructure</option>
-        <option value="other">Other</option>
+        <option value="recreation">Recreation</option>
+        <option value="transport">Transport</option>
+        <option value="green-spaces">Green Spaces</option>
+        <option value="climate">Climate</option>
+        <option value="culture">Culture</option>
+        <option value="education">Education</option>
+        <option value="infrastructure">Infrastructure</option>
+        <option value="public-buildings">Public Buildings</option>
+        <option value="housing">Housing</option>
       </select>
     </div>
     <div class="form-group"><label>Estimated cost (DKK)</label><input type="number" id="f-cost" placeholder="150000" /></div>
@@ -646,10 +763,6 @@
   <div class="detail-body" id="detail-body"></div>
 </div>
 
-<div id="facility-panel">
-  <h2>City Facilities</h2>
-  <div id="facility-filters"></div>
-</div>
 
 <aside id="map-controls">
   <h2>View Controls</h2>
@@ -665,6 +778,7 @@
   <div class="stat"><div class="stat-value" id="stat-budget">0</div><div class="stat-label">DKK Budget</div></div>
 </div>
 
+
 <script>
 // ── State ──
 const COPENHAGEN = { lng: 12.5683, lat: 55.6761 };
@@ -673,6 +787,45 @@ let markers = {};
 let placingMode = false;
 let pendingLocation = null;
 let pendingModelFile = null;
+
+/** Map legacy demo categories to CATEGORIES keys */
+function normalizeCategory(cat) {
+  const legacy = {
+    green: 'green-spaces',
+    sport: 'recreation',
+    playground: 'recreation',
+    infra: 'infrastructure',
+    culture: 'culture',
+    other: 'other',
+  };
+  return legacy[cat] || cat;
+}
+
+// ── Persistence ──
+const STORAGE_KEY = 'cph3d_projects_v2';
+function saveProjects() {
+  try {
+    const data = projects.map(p => ({
+      id: p.id, budgetId: p.budgetId, name: p.name, desc: p.desc,
+      category: p.category, cost: p.cost,
+      votes: p.votes, lng: p.lng, lat: p.lat, hasModel: p.hasModel,
+      modelUrl: (p.modelUrl && !p.modelUrl.startsWith('blob:')) ? p.modelUrl : null,
+      modelType: p.modelType, district: p.district, status: p.status,
+      scale: p.scale, investmentLevel: p.investmentLevel, tags: p.tags,
+      voters: p.voters, modelScale: p.modelScale,
+      modelOffsetLng: p.modelOffsetLng, modelOffsetLat: p.modelOffsetLat,
+      modelRotation: p.modelRotation,
+    }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch(e) { console.warn('Failed to save projects:', e); }
+}
+function loadProjects() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw).map(p => ({ ...p, category: normalizeCategory(p.category) }));
+  } catch(e) { return null; }
+}
 
 // ── 3D model URLs (CC0 / free) ──
 const MODEL_URLS = {
@@ -703,114 +856,469 @@ const MODEL_URLS = {
 };
 
 const DEMO_PROJECTS = [
-  { id: 'd1', name: 'Superkilen Urban Park', desc: '750m linear park across Nørrebro designed with input from 60 nationalities. Three zones: Red Square, Black Market, Green Park. Objects sourced from 50 countries. BIG + TOPOTEK1 + Superflex.', category: 'green', cost: 0, votes: 8420, lng: 12.5424, lat: 55.6994, hasModel: true, modelUrl: MODEL_URLS.statue, district: 'Nørrebro', status: 'Completed', edition: 'Lokaludvalg', voters: [] },
-  { id: 'd2', name: 'Nordhavn-Refshaleøen Cycle Bridge', desc: "Denmark's longest cycle bridge — 460m connecting Nordhavn to Refshaleøen. Capacity: 2,250 cyclists/hour. Fixed clearance 6.63m + 60m swing section.", category: 'infra', cost: 660000000, votes: 6513, lng: 12.5963, lat: 55.7066, hasModel: true, modelUrl: MODEL_URLS.bridge, district: 'Nordhavn', status: 'Planned', edition: 'Budget 2026', voters: [] },
-  { id: 'd3', name: 'Enghaveparken Climate Park', desc: 'Historic park renovation with underground retention basin holding 22,600m³ of rainwater. Arne Jacobsen pavilion restored. New roller skating rink. Largest climate adaptation project in Copenhagen.', category: 'green', cost: 120000000, votes: 5200, lng: 12.5450, lat: 55.6673, hasModel: true, modelUrl: MODEL_URLS.tree, district: 'Vesterbro', status: 'Completed', edition: 'Climate Plan', voters: [] },
-  { id: 'd4', name: 'Konditaget Lüders Rooftop Park', desc: '2,400m² public recreation space on rooftop parking in Nordhavn. CrossFit, TRX, 60m running track, trampolines, climbing spiral. JAJA Architects.', category: 'sport', cost: 0, votes: 4800, lng: 12.5979, lat: 55.7077, hasModel: true, modelUrl: MODEL_URLS.shelter, district: 'Nordhavn', status: 'Completed', edition: 'PPP', voters: [] },
-  { id: 'd5', name: 'Tåsinge Plads Climate Square', desc: "Copenhagen's first fully climate-adapted public space. 1,000m² asphalt replaced with urban wild nature. Underground rain reservoirs shaped like giant drops. 10,000+ residents engaged.", category: 'green', cost: 16000000, votes: 3900, lng: 12.5768, lat: 55.7073, hasModel: true, modelUrl: MODEL_URLS.garden, district: 'Østerbro', status: 'Completed', edition: 'Klimakvarter', voters: [] },
-  { id: 'd6', name: 'Mimersgade Safe School Cycling Route', desc: 'New protected cycling lanes for children in Mimersgade area. Part of record DKK 602.5M cycling budget 2026. Green wave traffic signals + improved lighting.', category: 'infra', cost: 174000000, votes: 3200, lng: 12.5500, lat: 55.6960, hasModel: false, district: 'Nørrebro', status: 'Planned', edition: 'Budget 2026', voters: [] },
-  { id: 'd7', name: 'Vesterbro Community Grants', desc: 'Annual community grant program by Vesterbro Lokaludvalg. 290,000+ DKK for local projects: sports for kids, biodiversity, composting, harbour parade. 16 projects funded from 22 applications.', category: 'culture', cost: 287196, votes: 2100, lng: 12.5479, lat: 55.6688, hasModel: true, modelUrl: MODEL_URLS.amphitheater, district: 'Vesterbro', status: 'In Progress', edition: 'Lokaludvalg 2023', voters: [] },
-  { id: 'd8', name: 'Ladegaardsåen River Daylighting', desc: 'Ambitious project to uncover underground river Ladegaardsåen (buried 1896). New green corridor along Åboulevard. Biodiversity, climate adaptation, urban renewal.', category: 'green', cost: 0, votes: 1800, lng: 12.5500, lat: 55.6900, hasModel: false, district: 'Nørrebro', status: 'Concept', edition: 'Lokaludvalg', voters: [] },
+  // Deltagerbudgettering
+  { id: 'proj-001', budgetId: 'deltagerbudgettering', name: 'Skatepark at Blågårds Plads', desc: 'New concrete skatepark with LED lighting in the heart of Nørrebro.', category: 'recreation', cost: 1200000, votes: 1842, lng: 12.5499, lat: 55.6897, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['youth','sport','public space'], hasModel: false, voters: [] },
+  { id: 'proj-002', budgetId: 'deltagerbudgettering', name: 'Sensory Playground at Mimersparken', desc: 'Inclusive sensory garden and playground for children with disabilities at Mimersparken.', category: 'recreation', cost: 980000, votes: 2341, lng: 12.5478, lat: 55.6921, district: 'Nørrebro', status: 'planned', scale: 'local', investmentLevel: 'municipal', tags: ['children','inclusion','accessibility'], hasModel: false, voters: [] },
+  { id: 'proj-003', budgetId: 'deltagerbudgettering', name: 'Smart Street Lighting — Griffenfeldsgade', desc: 'Replacement of 120 sodium lamps with smart LED fixtures. 62% energy reduction.', category: 'infrastructure', cost: 750000, votes: 1123, lng: 12.5512, lat: 55.6883, district: 'Nørrebro', status: 'in-progress', scale: 'local', investmentLevel: 'municipal', tags: ['lighting','energy','safety','smart city'], hasModel: true, modelUrl: MODEL_URLS.lantern, voters: [] },
+  { id: 'proj-004', budgetId: 'deltagerbudgettering', name: 'Cycle Parking & Repair Stations — Kødbyen', desc: '12 secure cycle stands with pumps and repair tools at key entrances to Kødbyen.', category: 'transport', cost: 410000, votes: 987, lng: 12.5502, lat: 55.6691, district: 'Vesterbro', status: 'completed', scale: 'local', investmentLevel: 'municipal', tags: ['cycling','infrastructure','mobility'], hasModel: true, modelUrl: MODEL_URLS.truck, voters: [] },
+  { id: 'proj-005', budgetId: 'deltagerbudgettering', name: 'Community Kitchen — Istedgade', desc: 'Shared pay-what-you-can canteen and cooking workshop space on Istedgade.', category: 'culture', cost: 620000, votes: 3102, lng: 12.5524, lat: 55.6703, district: 'Vesterbro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['food','community','seniors','cooperative'], hasModel: false, voters: [] },
+  // Lokalplan (Høring)
+  { id: 'proj-006', budgetId: 'lokalplan-hoering', name: 'Lokalplan 567 — New Residential Quarter, Sydhavn', desc: 'Land-use plan for 1,800 new homes and a waterfront park on former industrial land.', category: 'housing', cost: 0, votes: 5621, lng: 12.5368, lat: 55.6595, district: 'Sydhavn', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['development','park','waterfront'], hasModel: false, voters: [] },
+  { id: 'proj-007', budgetId: 'lokalplan-hoering', name: 'Objection Hearing — Tower at Kalvebod Brygge 45', desc: 'Formal høring on a planned 22-storey office tower affecting harbour views.', category: 'public-buildings', cost: 0, votes: 4203, lng: 12.5684, lat: 55.6704, district: 'Indre By', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['high-rise','objection','waterfront'], hasModel: false, voters: [] },
+  { id: 'proj-008', budgetId: 'lokalplan-hoering', name: 'Amager Sports Complex — Ørestad', desc: 'New 22,000 m² sports complex with Olympic pool, sports halls and climbing centre.', category: 'public-buildings', cost: 480000000, votes: 3814, lng: 12.5742, lat: 55.6325, district: 'Amager', status: 'in-progress', scale: 'city-wide', investmentLevel: 'city', tags: ['sport','swimming pool','PPP'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
+  { id: 'proj-009', budgetId: 'lokalplan-hoering', name: 'Carlsberg City District Phase 3', desc: 'Final phase — 1,200 apartments, three public squares and a covered market hall.', category: 'housing', cost: 0, votes: 2901, lng: 12.5245, lat: 55.6659, district: 'Valby', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['mixed-use','redevelopment','market hall'], hasModel: false, voters: [] },
+  // Klimat-tilpasning
+  { id: 'proj-010', budgetId: 'klimat-tilpasning', name: 'Climate Street — Nørre Allé Redesign', desc: 'Model climate street: narrowed carriageway, infiltration ditches, widened cycle lanes, permeable surfaces.', category: 'climate', cost: 42000000, votes: 2987, lng: 12.5618, lat: 55.6949, district: 'Nørrebro', status: 'in-progress', scale: 'district', investmentLevel: 'city', tags: ['flooding','stormwater','cycling'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
+  { id: 'proj-011', budgetId: 'klimat-tilpasning', name: 'Green Roof Grant Programme — Østerbro', desc: 'Subsidies covering up to 40% of green roof installation costs. Target: 200 roofs by 2027.', category: 'climate', cost: 18000000, votes: 1654, lng: 12.5729, lat: 55.7057, district: 'Østerbro', status: 'planned', scale: 'district', investmentLevel: 'city', tags: ['green roof','grants','flooding'], hasModel: false, voters: [] },
+  { id: 'proj-012', budgetId: 'klimat-tilpasning', name: 'Retention Park — Valby Idrætspark', desc: 'Underground retention system holding up to 80,000 m³ of stormwater. Biofilter pond + nature trail.', category: 'green-spaces', cost: 95000000, votes: 3241, lng: 12.5032, lat: 55.6636, district: 'Valby', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['retention','park','flooding','biofiltration'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
+  { id: 'proj-013', budgetId: 'klimat-tilpasning', name: 'Permeable Paving — Sankt Hans Torv', desc: 'Permeable surface absorbing 120 l/s during peak rainfall. Two bioswale channels + 14 new trees.', category: 'infrastructure', cost: 14500000, votes: 1432, lng: 12.5569, lat: 55.6889, district: 'Nørrebro', status: 'completed', scale: 'local', investmentLevel: 'city', tags: ['permeable paving','bioswale','stormwater'], hasModel: false, voters: [] },
+  // Byfornyelse
+  { id: 'proj-014', budgetId: 'byfornyelse', name: 'Courtyard Renewal — Saxogade 12–18', desc: 'Redesign of shared courtyard: permeable paving, garden beds, pergola, playground, LED lighting.', category: 'green-spaces', cost: 1850000, votes: 287, lng: 12.5455, lat: 55.6681, district: 'Vesterbro', status: 'completed', scale: 'local', investmentLevel: 'municipal', tags: ['courtyard','gardens','community'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
+  { id: 'proj-015', budgetId: 'byfornyelse', name: 'Façade Restoration — Istedgade 92–102', desc: 'Thermal upgrade and heritage façade restoration of six 1890–1910 tenements.', category: 'housing', cost: 6200000, votes: 341, lng: 12.5487, lat: 55.6698, district: 'Vesterbro', status: 'in-progress', scale: 'local', investmentLevel: 'municipal', tags: ['restoration','thermal upgrade','heritage'], hasModel: false, voters: [] },
+  { id: 'proj-016', budgetId: 'byfornyelse', name: 'Nørrebro Culture Centre — Former Textile Factory', desc: 'Adaptive reuse of a 1924 factory: 12 artist studios, music room, event hall, café, tool library.', category: 'culture', cost: 22000000, votes: 4112, lng: 12.5531, lat: 55.6985, district: 'Nørrebro', status: 'planned', scale: 'district', investmentLevel: 'municipal', tags: ['culture','artists','adaptive reuse','cooperative'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
+  { id: 'proj-017', budgetId: 'byfornyelse', name: 'Accessible Public Space — Blågårds Plads', desc: 'Universal design upgrade: tactile paving, ramps, accessible fountain, safety lighting.', category: 'infrastructure', cost: 3100000, votes: 2543, lng: 12.5499, lat: 55.6897, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['accessibility','seniors','universal design'], hasModel: false, voters: [] },
+  // Borgersamling
+  { id: 'proj-018', budgetId: 'borgersamling', name: 'Waterfront Vision 2040 — Nordre Toldbod', desc: "Citizens' assembly: 60% public park, 20% cultural space, 20% social housing. Rejected 45% commercial use.", category: 'recreation', cost: 0, votes: 6823, lng: 12.5952, lat: 55.6884, district: 'Indre By', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['waterfront','deliberation','strategy'], hasModel: true, modelUrl: MODEL_URLS.statue, voters: [] },
+  { id: 'proj-019', budgetId: 'borgersamling', name: 'Climate Panel — Decarbonising District Heating', desc: '80-citizen panel on accelerating decarbonisation of HOFOR district heating network.', category: 'climate', cost: 0, votes: 4230, lng: 12.5683, lat: 55.6761, district: 'City-wide', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['climate','energy','district heating','renewables'], hasModel: false, voters: [] },
+  { id: 'proj-020', budgetId: 'borgersamling', name: 'Future of Copenhagen Schools 2035', desc: '100-citizen panel on school strategy: keep neighbourhood schools + specialist programmes.', category: 'education', cost: 0, votes: 3109, lng: 12.5683, lat: 55.6761, district: 'City-wide', status: 'in-progress', scale: 'city-wide', investmentLevel: 'city', tags: ['education','schools','strategy','demographics'], hasModel: false, voters: [] },
+  { id: 'proj-021', budgetId: 'borgersamling', name: 'Summer Cinema — Fælledparken', desc: '20 free outdoor screenings, 4K projector, 10×6m screen, wireless headphones for hearing-impaired.', category: 'culture', cost: 340000, votes: 2789, lng: 12.5597, lat: 55.7038, district: 'Østerbro', status: 'voting', scale: 'district', investmentLevel: 'municipal', tags: ['cinema','park','summer','accessibility'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
+  // Copenhagen landmarks (hackathon demo)
+  { id: 'cph-001', budgetId: 'byfornyelse', name: 'Cykelslangen (Cycle Snake)', desc: '235m elevated bicycle ramp in vivid orange connecting Dybbølsbro to Fisketorvet. Iconic cycling infrastructure by Dissing+Weitling.', category: 'transport', cost: 32000000, votes: 9120, lng: 12.5612, lat: 55.6622, district: 'Vesterbro', status: 'completed', scale: 'local', investmentLevel: 'city', tags: ['cycling','icon'], hasModel: true, modelUrl: MODEL_URLS.bridge, voters: [] },
+  { id: 'cph-002', budgetId: 'klimat-tilpasning', name: 'Amager Bakke / CopenHill', desc: 'Ski slope, hiking trail and climbing wall on a clean waste-to-energy plant — BIG. 85m “urban mountain” with city views.', category: 'recreation', cost: 0, votes: 8850, lng: 12.5812, lat: 55.6354, district: 'Amager', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['ski','climate','waste-to-energy'], hasModel: false, voters: [] },
+  { id: 'cph-003', budgetId: 'byfornyelse', name: 'BLOX / Danish Architecture Center', desc: 'OMA-designed harbourfront complex: DAC exhibitions, café, playground and urban living labs by the water.', category: 'public-buildings', cost: 0, votes: 6540, lng: 12.5972, lat: 55.6721, district: 'Indre By', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['architecture','harbour','culture'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
+  { id: 'cph-004', budgetId: 'deltagerbudgettering', name: 'Israels Plads Renovation', desc: 'Underground bike parking for 2,000 cycles, open market square and activity zones next to Nørreport.', category: 'infrastructure', cost: 62000000, votes: 5120, lng: 12.5685, lat: 55.6838, district: 'Indre By', status: 'completed', scale: 'district', investmentLevel: 'city', tags: ['cycling','market','square'], hasModel: true, modelUrl: MODEL_URLS.lantern, voters: [] },
+  { id: 'cph-005', budgetId: 'klimat-tilpasning', name: 'Nørrebroparken Expansion', desc: 'Major upgrade of Nørrebro’s central park: new paths, biodiversity, stormwater beds and community sports nodes.', category: 'green-spaces', cost: 45000000, votes: 4980, lng: 12.5462, lat: 55.6948, district: 'Nørrebro', status: 'in-progress', scale: 'district', investmentLevel: 'city', tags: ['park','biodiversity'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
+  { id: 'cph-006', budgetId: 'byfornyelse', name: 'Havneparken — Islands Brygge', desc: 'Waterfront park with harbour baths, lawns and piers — anchor of Amager’s harbour-facing public life.', category: 'green-spaces', cost: 0, votes: 7230, lng: 12.5782, lat: 55.6688, district: 'Amager', status: 'completed', scale: 'district', investmentLevel: 'city', tags: ['harbour','swimming','park'], hasModel: true, modelUrl: MODEL_URLS.duck, voters: [] },
+  { id: 'cph-007', budgetId: 'klimat-tilpasning', name: 'Skt. Kjelds Kvarter Climate Adaptation', desc: 'Cloudburst boulevards, green roofs and retention in Østerbro’s climate-resilient neighbourhood (Klimakvarter).', category: 'climate', cost: 280000000, votes: 4450, lng: 12.5245, lat: 55.7072, district: 'Østerbro', status: 'in-progress', scale: 'district', investmentLevel: 'city', tags: ['cloudburst','stormwater'], hasModel: false, voters: [] },
+  { id: 'cph-008', budgetId: 'lokalplan-hoering', name: 'Christiansholm (Paper Island)', desc: 'Redevelopment of the former paper warehouse island into food halls, culture and harbour pools in Christianshavn.', category: 'culture', cost: 0, votes: 5890, lng: 12.5938, lat: 55.6782, district: 'Christianshavn', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['harbour','food hall'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
 ];
 
 const CATEGORIES = {
-  playground: { label: 'PLAYGROUND', markerClass: 'marker-playground', catClass: 'cat-playground' },
-  green: { label: 'GREEN', markerClass: 'marker-green', catClass: 'cat-green' },
-  sport: { label: 'SPORT', markerClass: 'marker-sport', catClass: 'cat-sport' },
-  culture: { label: 'CULTURE', markerClass: 'marker-culture', catClass: 'cat-culture' },
-  infra: { label: 'INFRA', markerClass: 'marker-infra', catClass: 'cat-infra' },
-  other: { label: 'OTHER', markerClass: 'marker-other', catClass: 'cat-other' },
-};
-const CAT_ICON = { playground: '\u{1F3A0}', green: '\u{1F333}', sport: '\u26BD', culture: '\u{1F3A8}', infra: '\u{1F6E4}', other: '\u{1F4CD}' };
-
-// ── City facilities data (Copenhagen) ──
-const FACILITY_TYPES = {
-  gym: { label: 'Outdoor Gym', color: '#ff5555', icon: '\u{1F4AA}', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=200&fit=crop' },
-  workout: { label: 'Street Workout', color: '#ff8844', icon: '\u{1F3CB}', img: 'https://images.unsplash.com/photo-1598971639058-a901921d1b95?w=400&h=200&fit=crop' },
-  playground_city: { label: 'Playground', color: '#ffaa33', icon: '\u{1F3A0}', img: 'https://images.unsplash.com/photo-1575783970733-1aaedde1db74?w=400&h=200&fit=crop' },
-  skatepark: { label: 'Skatepark', color: '#ff44ff', icon: '\u{1F6F9}', img: 'https://images.unsplash.com/photo-1564429238961-bf8f8be2b65c?w=400&h=200&fit=crop' },
-  pitch: { label: 'Sports Field', color: '#44ff88', icon: '\u26BD', img: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=400&h=200&fit=crop' },
-  dog_park: { label: 'Dog Park', color: '#88ccff', icon: '\u{1F415}', img: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=200&fit=crop' },
-  harbour_bath: { label: 'Harbour Bath', color: '#00ccdd', icon: '\u{1F3CA}', img: 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?w=400&h=200&fit=crop' },
+  recreation: { label: 'RECREATION', catClass: 'cat-recreation' },
+  transport: { label: 'TRANSPORT', catClass: 'cat-transport' },
+  'public-buildings': { label: 'PUBLIC BUILDINGS', catClass: 'cat-public-buildings' },
+  'green-spaces': { label: 'GREEN SPACES', catClass: 'cat-green-spaces' },
+  climate: { label: 'CLIMATE', catClass: 'cat-climate' },
+  culture: { label: 'CULTURE', catClass: 'cat-culture' },
+  education: { label: 'EDUCATION', catClass: 'cat-education' },
+  infrastructure: { label: 'INFRASTRUCTURE', catClass: 'cat-infra' },
+  housing: { label: 'HOUSING', catClass: 'cat-housing' },
+  other: { label: 'OTHER', catClass: 'cat-other' },
 };
 
-const CITY_FACILITIES = [
-  // Outdoor Gyms (15)
-  {t:'gym',n:'Konditaget Lüders',d:'Nordhavn',lat:55.7077,lng:12.5979},
-  {t:'gym',n:'Superkilen Exercise Park',d:'Nørrebro',lat:55.6994,lng:12.5424},
-  {t:'gym',n:'Fælledparken Gym N',d:'Østerbro',lat:55.7041,lng:12.5734},
-  {t:'gym',n:'Fælledparken Gym Center',d:'Østerbro',lat:55.6924,lng:12.5696},
-  {t:'gym',n:'Amager Strand N',d:'Amager',lat:55.6474,lng:12.6475},
-  {t:'gym',n:'Grøndal Multicenter',d:'Bispebjerg',lat:55.7004,lng:12.5159},
-  {t:'gym',n:'YO Studios outdoor',d:'Vesterbro',lat:55.6677,lng:12.5309},
-  {t:'gym',n:'Ørestad Fitness',d:'Ørestad',lat:55.6325,lng:12.6034},
-  {t:'gym',n:'Kalvebod Bølge Calisthenics',d:'Sydhavn',lat:55.6490,lng:12.5610},
-  {t:'gym',n:'Bragesgade Park',d:'Nørrebro',lat:55.7000,lng:12.5460},
-  {t:'gym',n:'Guldbergs Plads',d:'Nørrebro',lat:55.6974,lng:12.5542},
-  {t:'gym',n:'Bispebjerg W',d:'Bispebjerg',lat:55.6872,lng:12.5055},
-  {t:'gym',n:'Nordhavn 2',d:'Nordhavn',lat:55.6977,lng:12.5993},
-  {t:'gym',n:'Valby Fitness',d:'Valby',lat:55.6373,lng:12.5233},
-  {t:'gym',n:'Amager Strand Mid',d:'Amager',lat:55.6842,lng:12.6193},
-  // Skateparks (8)
-  {t:'skatepark',n:'Fælledparkens Skatepark',d:'Østerbro',lat:55.6995,lng:12.5630},
-  {t:'skatepark',n:'Nørrebro Skatepark',d:'Nørrebro',lat:55.6977,lng:12.5411},
-  {t:'skatepark',n:'Enghave Plads Skatepark',d:'Vesterbro',lat:55.6673,lng:12.5450},
-  {t:'skatepark',n:'Under Broen',d:'Nørrebro',lat:55.7064,lng:12.5422},
-  {t:'skatepark',n:'Charlotte Ammundsens Plads',d:'Indre By',lat:55.6837,lng:12.5641},
-  {t:'skatepark',n:'Alis Wonderland',d:'Christianshavn',lat:55.6738,lng:12.5981},
-  {t:'skatepark',n:'Amager Coast Skatepark',d:'Amager',lat:55.6547,lng:12.6488},
-  {t:'skatepark',n:'Bavnehøj Parkour',d:'Vesterbro',lat:55.6600,lng:12.5420},
-  // Playgrounds (15)
-  {t:'playground_city',n:'Tårnlegepladsen',d:'Østerbro',lat:55.6973,lng:12.5698},
-  {t:'playground_city',n:'Trafiklegepladsen',d:'Østerbro',lat:55.7045,lng:12.5706},
-  {t:'playground_city',n:'Legepladsen Kongens Have',d:'Indre By',lat:55.6857,lng:12.5807},
-  {t:'playground_city',n:'Nørrebroparken Legeplads',d:'Nørrebro',lat:55.6945,lng:12.5422},
-  {t:'playground_city',n:'Dragelegepladsen',d:'Christianshavn',lat:55.6737,lng:12.5972},
-  {t:'playground_city',n:'Dinosaurlegepladsen',d:'Valby',lat:55.6424,lng:12.5199},
-  {t:'playground_city',n:'Naturlegepladsen Valby',d:'Valby',lat:55.6445,lng:12.5204},
-  {t:'playground_city',n:'Bjørnegrotten',d:'Vesterbro',lat:55.6733,lng:12.5228},
-  {t:'playground_city',n:'Legepladsen Enghave',d:'Vesterbro',lat:55.6677,lng:12.5416},
-  {t:'playground_city',n:'Krakas Plads',d:'Nørrebro',lat:55.7062,lng:12.5520},
-  {t:'playground_city',n:'Rasmus Klump Land',d:'Indre By',lat:55.6746,lng:12.5694},
-  {t:'playground_city',n:'Elefantlegepladsen',d:'Bispebjerg',lat:55.7201,lng:12.5331},
-  {t:'playground_city',n:'Rutsjebaneøen Ørestad',d:'Ørestad',lat:55.6345,lng:12.5750},
-  {t:'playground_city',n:'Byggelegepladsen Krattet',d:'Amager',lat:55.6316,lng:12.5831},
-  {t:'playground_city',n:'Kildevældslegepladsen',d:'Østerbro',lat:55.7142,lng:12.5653},
-  // Dog Parks (12)
-  {t:'dog_park',n:'Fælledparken Nord',d:'Østerbro',lat:55.7053,lng:12.5738},
-  {t:'dog_park',n:'Nørrebroparkens Hundegård',d:'Nørrebro',lat:55.6907,lng:12.5436},
-  {t:'dog_park',n:'Søndermarken Hundeskov',d:'Frederiksberg',lat:55.6688,lng:12.5268},
-  {t:'dog_park',n:'Nørre Voldgade',d:'Indre By',lat:55.6811,lng:12.5687},
-  {t:'dog_park',n:'Amager Strand Fritløb',d:'Amager',lat:55.6671,lng:12.6307},
-  {t:'dog_park',n:'Saxoparken',d:'Vesterbro',lat:55.6700,lng:12.5514},
-  {t:'dog_park',n:'Ørestad Bypark',d:'Ørestad',lat:55.6341,lng:12.5747},
-  {t:'dog_park',n:'Sluseholmen',d:'Sydhavn',lat:55.6467,lng:12.5483},
-  {t:'dog_park',n:'Bellahøj',d:'Bispebjerg',lat:55.7040,lng:12.5135},
-  {t:'dog_park',n:'Grønningen',d:'Amager',lat:55.6589,lng:12.5848},
-  {t:'dog_park',n:'Kildevældsparken',d:'Østerbro',lat:55.7138,lng:12.5656},
-  {t:'dog_park',n:'Sønder Boulevard',d:'Vesterbro',lat:55.6679,lng:12.5555},
-  // Sports Fields (10)
-  {t:'pitch',n:'Fælledparken Football',d:'Østerbro',lat:55.6997,lng:12.5597},
-  {t:'pitch',n:'Nørrebroparken Football',d:'Nørrebro',lat:55.6897,lng:12.5462},
-  {t:'pitch',n:'Grøndal Multicenter',d:'Bispebjerg',lat:55.7004,lng:12.5159},
-  {t:'pitch',n:'Svanemølle Beach Volleyball',d:'Østerbro',lat:55.7207,lng:12.5696},
-  {t:'pitch',n:'Christianshavn Basketball',d:'Christianshavn',lat:55.6734,lng:12.5969},
-  {t:'pitch',n:'Valby Basketball',d:'Valby',lat:55.6547,lng:12.5179},
-  {t:'pitch',n:'Vesterbro Basketball',d:'Vesterbro',lat:55.6710,lng:12.5513},
-  {t:'pitch',n:'Fælledparken Tennis',d:'Østerbro',lat:55.6991,lng:12.5610},
-  {t:'pitch',n:'Nordhavn Football',d:'Nordhavn',lat:55.7105,lng:12.5870},
-  {t:'pitch',n:'Nørrebro Beach Volleyball',d:'Nørrebro',lat:55.6957,lng:12.5411},
-  // Harbour Baths (6)
-  {t:'harbour_bath',n:'Islands Brygge Havnebad',d:'Amager',lat:55.6686,lng:12.5776},
-  {t:'harbour_bath',n:'Copencabana / Fisketorvet',d:'Vesterbro',lat:55.6627,lng:12.5640},
-  {t:'harbour_bath',n:'Sluseholmen Havnebad',d:'Sydhavn',lat:55.6466,lng:12.5539},
-  {t:'harbour_bath',n:'Svanemølle Havnebad',d:'Østerbro',lat:55.7201,lng:12.5838},
-  {t:'harbour_bath',n:'Sandkaj Badezone',d:'Nordhavn',lat:55.7066,lng:12.5963},
-  {t:'harbour_bath',n:'La Banchina',d:'Nordhavn',lat:55.6894,lng:12.6106},
+function categoryMeta(cat) {
+  const k = normalizeCategory(cat);
+  return CATEGORIES[k] || CATEGORIES.other;
+}
+
+let filterCategorySet = new Set();
+let filterSearchQuery = '';
+let sidebarDistrictFilter = '';
+let filterStatusValue = '';
+let filterBudgetValue = '';
+let filterScaleValue = '';
+let filterInvestmentValue = '';
+/** Map-click district highlight (dim mask); combined with sidebar filters in projectPassesFilters */
+let activeDistrict = null;
+
+function projectPassesFilters(p) {
+  if (activeDistrict && !projectMatchesDistrict(p.district, activeDistrict)) return false;
+  if (sidebarDistrictFilter && !projectMatchesDistrict(p.district, sidebarDistrictFilter)) return false;
+  if (filterStatusValue && (p.status || '') !== filterStatusValue) return false;
+  if (filterCategorySet.size > 0 && !filterCategorySet.has(normalizeCategory(p.category))) return false;
+  if (filterBudgetValue && (p.budgetId || '') !== filterBudgetValue) return false;
+  if (filterScaleValue && (p.scale || '') !== filterScaleValue) return false;
+  if (filterInvestmentValue && (p.investmentLevel || '') !== filterInvestmentValue) return false;
+  const q = filterSearchQuery.trim().toLowerCase();
+  if (q && !p.name.toLowerCase().includes(q) && !(p.desc || '').toLowerCase().includes(q)) return false;
+  return true;
+}
+function getFilteredProjects() {
+  return projects.filter(projectPassesFilters);
+}
+
+const BUDGETS = [
+  { id: 'deltagerbudgettering', name: 'Deltagerbudgettering', voteType: 'binding', desc: 'District participatory budget — residents directly choose projects.' },
+  { id: 'lokalplan-hoering', name: 'Lokalplan (Høring)', voteType: 'legal', desc: 'Formal land-use planning with legally binding objections.' },
+  { id: 'klimat-tilpasning', name: 'Klimat-tilpasning', voteType: 'semi-formal', desc: 'Climate adaptation — stormwater, urban greening, resilience.' },
+  { id: 'byfornyelse', name: 'Byfornyelse', voteType: 'binding', desc: 'Urban renewal — buildings and shared outdoor spaces.' },
+  { id: 'borgersamling', name: 'Borgersamling', voteType: 'consultative', desc: "Citizens' assemblies — residents debate strategic directions." },
 ];
 
-let facilityMarkers = [];
-let facilityFilters = { gym: true, workout: true, playground_city: true, skatepark: true, pitch: true, dog_park: true, harbour_bath: true };
+const STATUS_LABELS = {
+  planned: 'Planned',
+  voting: 'Open for Voting',
+  'in-progress': 'In Progress',
+  completed: 'Completed',
+};
+
+const SCALE_LABELS = {
+  local: 'Local',
+  district: 'District',
+  'city-wide': 'City-wide',
+};
+
+const INVESTMENT_LABELS = {
+  municipal: 'Municipal',
+  city: 'City',
+};
+// ── City facilities data (Copenhagen) ──
+
+function filtersSidebarActive() {
+  return filterCategorySet.size > 0 || !!String(filterSearchQuery).trim() || !!sidebarDistrictFilter || !!filterStatusValue || !!filterBudgetValue || !!filterScaleValue || !!filterInvestmentValue;
+}
+
+function applySidebarFilters() {
+  sidebarDistrictFilter = document.getElementById('filter-district')?.value || '';
+  filterStatusValue = document.getElementById('filter-status')?.value || '';
+  filterBudgetValue = document.getElementById('filter-budget')?.value || '';
+  filterScaleValue = document.getElementById('filter-scale')?.value || '';
+  filterInvestmentValue = document.getElementById('filter-investment')?.value || '';
+  renderProjectList();
+  updateStats();
+  updateMarkerDistrictFilter();
+  updateFilterCount();
+}
+
+function clearSidebarFilters() {
+  filterCategorySet = new Set();
+  filterSearchQuery = '';
+  sidebarDistrictFilter = '';
+  filterStatusValue = '';
+  filterBudgetValue = '';
+  filterScaleValue = '';
+  filterInvestmentValue = '';
+  const s = document.getElementById('project-search');
+  const d = document.getElementById('filter-district');
+  const st = document.getElementById('filter-status');
+  const b = document.getElementById('filter-budget');
+  const sc = document.getElementById('filter-scale');
+  const inv = document.getElementById('filter-investment');
+  if (s) s.value = '';
+  if (d) d.value = '';
+  if (st) st.value = '';
+  if (b) b.value = '';
+  if (sc) sc.value = '';
+  if (inv) inv.value = '';
+  renderCategoryChips();
+  renderProjectList();
+  updateStats();
+  updateMarkerDistrictFilter();
+  updateFilterCount();
+}
+
+function updateFilterCount() {
+  const el = document.getElementById('filter-count');
+  if (!el) return;
+  const n = getFilteredProjects().length;
+  const total = projects.length;
+  el.textContent = filtersSidebarActive() ? `Showing ${n} of ${total} projects` : '';
+}
+
+function escapeFilterOpt(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+}
+
+function renderCategoryChips() {
+  const wrap = document.getElementById('filter-chips-cat');
+  if (!wrap) return;
+  const keys = Object.keys(CATEGORIES).filter(k => k !== 'other');
+  let html = `<button type="button" class="filter-chip filter-chip-all ${filterCategorySet.size === 0 ? 'on' : ''}" data-cat-all="1">All categories</button>`;
+  keys.forEach(k => {
+    const active = filterCategorySet.size === 0 || filterCategorySet.has(k);
+    html += `<button type="button" class="filter-chip ${active ? 'on' : 'off'}" data-cat="${k}">${CATEGORIES[k].label}</button>`;
+  });
+  wrap.innerHTML = html;
+  wrap.querySelector('[data-cat-all]')?.addEventListener('click', () => {
+    filterCategorySet = new Set();
+    renderCategoryChips();
+    applySidebarFilters();
+  });
+  wrap.querySelectorAll('[data-cat]:not([data-cat-all])').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const k = btn.dataset.cat;
+      if (filterCategorySet.size === 0) {
+        filterCategorySet = new Set([k]);
+      } else if (filterCategorySet.size === 1 && filterCategorySet.has(k)) {
+        filterCategorySet = new Set();
+      } else {
+        if (filterCategorySet.has(k)) filterCategorySet.delete(k);
+        else filterCategorySet.add(k);
+      }
+      renderCategoryChips();
+      applySidebarFilters();
+    });
+  });
+}
+
+function initSidebarFilters(districtData) {
+  const sel = document.getElementById('filter-district');
+  if (sel) {
+    const names = [...new Set((districtData.features || []).map(f => f.properties.name))].sort();
+    sel.innerHTML = '<option value="">All districts</option>' +
+      names.map(n => `<option value="${escapeFilterOpt(n)}">${escapeFilterOpt(n)}</option>`).join('');
+    sel.addEventListener('change', applySidebarFilters);
+  }
+
+  const budgetSel = document.getElementById('filter-budget');
+  if (budgetSel) {
+    budgetSel.innerHTML = '<option value="">All budgets</option>' +
+      BUDGETS.map(b => `<option value="${b.id}">${escapeFilterOpt(b.name)}</option>`).join('');
+    budgetSel.addEventListener('change', applySidebarFilters);
+  }
+
+  const scaleSel = document.getElementById('filter-scale');
+  if (scaleSel) {
+    scaleSel.innerHTML = '<option value="">All scales</option>' +
+      Object.entries(SCALE_LABELS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+    scaleSel.addEventListener('change', applySidebarFilters);
+  }
+
+  const invSel = document.getElementById('filter-investment');
+  if (invSel) {
+    invSel.innerHTML = '<option value="">All levels</option>' +
+      Object.entries(INVESTMENT_LABELS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+    invSel.addEventListener('change', applySidebarFilters);
+  }
+
+  document.getElementById('filter-status')?.addEventListener('change', applySidebarFilters);
+  document.getElementById('project-search')?.addEventListener('input', (e) => {
+    filterSearchQuery = e.target.value;
+    applySidebarFilters();
+  });
+  document.getElementById('filter-clear')?.addEventListener('click', clearSidebarFilters);
+  renderCategoryChips();
+  updateFilterCount();
+}
+
+// ── District boundaries (official GeoJSON) — shared with sidebar / markers filter ──
+const DISTRICT_COLORS = {
+  'Indre By': '#e07050',
+  'Nørrebro': '#e0a030',
+  'Vesterbro-Kongens Enghave': '#d060a0',
+  'Østerbro': '#50a0d0',
+  'Amager Vest': '#80a0e0',
+  'Amager Øst': '#a0d070',
+  'Valby': '#d0a060',
+  'Bispebjerg': '#b080c0',
+  'Brønshøj-Husum': '#70b0a0',
+  'Vanløse': '#c08070',
+};
+const DISTRICT_SHORT = {
+  'Vesterbro-Kongens Enghave': 'Vesterbro',
+  'Brønshøj-Husum': 'Brønshøj',
+};
+const SUBAREA_TO_DISTRICT = {
+  'Nordhavn': 'Østerbro',
+  'Christianshavn': 'Indre By',
+  'Sydhavn': 'Vesterbro',
+  'Ørestad': 'Amager Vest',
+  'Frederiksberg': 'Frederiksberg',
+  'Amager': 'Amager Vest',
+};
+
+const EMPTY_FEATURE_COLLECTION = { type: 'FeatureCollection', features: [] };
+/** World shell + district outer rings as holes (GeoJSON Polygon) for dim-out mask */
+const WORLD_MASK_OUTER = [[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]];
+
+function cloneRing(ring) {
+  return ring.map(c => [c[0], c[1]]);
+}
+
+function reverseRing(ring) {
+  const c = cloneRing(ring);
+  if (c.length < 2) return c;
+  const closed = c[0][0] === c[c.length - 1][0] && c[0][1] === c[c.length - 1][1];
+  const open = closed ? c.slice(0, -1) : c.slice();
+  open.reverse();
+  if (closed && open.length) open.push([open[0][0], open[0][1]]);
+  return open;
+}
+
+function collectDistrictOuterRings(geometry) {
+  const rings = [];
+  if (!geometry || !geometry.coordinates) return rings;
+  if (geometry.type === 'Polygon') {
+    if (geometry.coordinates[0]) rings.push(cloneRing(geometry.coordinates[0]));
+  } else if (geometry.type === 'MultiPolygon') {
+    for (const poly of geometry.coordinates) {
+      if (poly && poly[0]) rings.push(cloneRing(poly[0]));
+    }
+  }
+  return rings;
+}
+
+function buildInvertedMask(feature) {
+  const rawHoles = collectDistrictOuterRings(feature.geometry);
+  const holes = rawHoles.map(r => reverseRing(r));
+  return {
+    type: 'FeatureCollection',
+    features: [{
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Polygon',
+        coordinates: [WORLD_MASK_OUTER, ...holes],
+      },
+    }],
+  };
+}
+
+function projectMatchesDistrict(projectDistrict, districtName) {
+  if (!districtName) return true;
+  return projectDistrict === districtName || SUBAREA_TO_DISTRICT[projectDistrict] === districtName;
+}
+
+let _districtData = EMPTY_FEATURE_COLLECTION;
+
+async function loadDistricts() {
+  try {
+    const res = await fetch('/data/bydele-kk.geojson');
+    const data = await res.json();
+    data.features.forEach(f => {
+      const navn = f.properties.navn;
+      f.properties.name = DISTRICT_SHORT[navn] || navn;
+      f.properties.color = DISTRICT_COLORS[navn] || '#888888';
+    });
+    _districtData = data;
+    return data;
+  } catch(e) {
+    console.warn('Failed to load district GeoJSON, using empty set:', e);
+    return { type: 'FeatureCollection', features: [] };
+  }
+}
+
+function getDistrictFeatureByName(name) {
+  return _districtData.features.find(f => f.properties.name === name) || null;
+}
+
+function pointInRing(lng, lat, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const xi = ring[i][0], yi = ring[i][1];
+    const xj = ring[j][0], yj = ring[j][1];
+    if ((yi > lat) !== (yj > lat) && lng < (xj - xi) * (lat - yi) / (yj - yi) + xi) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+function pointInPolygon(lng, lat, coords) {
+  if (!pointInRing(lng, lat, coords[0])) return false;
+  for (let h = 1; h < coords.length; h++) {
+    if (pointInRing(lng, lat, coords[h])) return false;
+  }
+  return true;
+}
+
+function findDistrictAtPoint(lng, lat) {
+  for (const f of _districtData.features) {
+    const geom = f.geometry;
+    if (geom.type === 'Polygon') {
+      if (pointInPolygon(lng, lat, geom.coordinates)) return f;
+    } else if (geom.type === 'MultiPolygon') {
+      for (const poly of geom.coordinates) {
+        if (pointInPolygon(lng, lat, poly)) return f;
+      }
+    }
+  }
+  return null;
+}
+
+function deactivateDistrict() {
+  activeDistrict = null;
+  if (map.getSource('district-mask')) map.getSource('district-mask').setData(EMPTY_FEATURE_COLLECTION);
+  if (map.getLayer('district-fill')) map.setPaintProperty('district-fill', 'fill-opacity', 0.01);
+  if (map.getLayer('district-border')) {
+    map.setPaintProperty('district-border', 'line-width', 0);
+    map.setPaintProperty('district-border', 'line-opacity', 0);
+  }
+  if (map.getLayer('district-labels')) {
+    map.setLayoutProperty('district-labels', 'text-size', 0);
+    map.setPaintProperty('district-labels', 'text-opacity', 0);
+  }
+  renderProjectList();
+  updateMarkerDistrictFilter();
+  updateStats();
+  try { updateFilterCount(); } catch(e) {}
+  if (window._activePopup) window._activePopup.remove();
+}
+
+function activateDistrict(name, color, lngLat) {
+  activeDistrict = name;
+
+  const fullFeature = getDistrictFeatureByName(name);
+  if (fullFeature) {
+    try {
+      map.getSource('district-mask').setData(buildInvertedMask(fullFeature));
+    } catch (err) {
+      console.warn('[District] Mask build failed:', err);
+      map.getSource('district-mask').setData(EMPTY_FEATURE_COLLECTION);
+    }
+  }
+
+  map.setPaintProperty('district-fill', 'fill-opacity', [
+    'case', ['==', ['get', 'name'], name], 0.18, 0.01
+  ]);
+  map.setPaintProperty('district-border', 'line-width', [
+    'case', ['==', ['get', 'name'], name], 4, 0
+  ]);
+  map.setPaintProperty('district-border', 'line-opacity', [
+    'case', ['==', ['get', 'name'], name], 0.95, 0
+  ]);
+  map.setLayoutProperty('district-labels', 'text-size', [
+    'case', ['==', ['get', 'name'], name], 16, 0
+  ]);
+  map.setPaintProperty('district-labels', 'text-opacity', 1);
+
+  renderProjectList();
+  updateMarkerDistrictFilter();
+  updateStats();
+  try { updateFilterCount(); } catch(e) {}
+
+  if (window._activePopup) window._activePopup.remove();
+  if (lngLat) {
+    const matchDistrict = (d) => d === name || SUBAREA_TO_DISTRICT[d] === name;
+    const projectCount = projects.filter(p => matchDistrict(p.district)).length;
+    window._activePopup = new maplibregl.Popup({ offset: 0, closeButton: true, maxWidth: '240px' })
+      .setLngLat(lngLat)
+      .setHTML(`
+        <div style="font-weight:700;font-size:15px;margin-bottom:4px;color:${color}">${name}</div>
+        <div style="font-size:12px;color:var(--text-secondary);line-height:1.6">
+          ${projectCount} project${projectCount !== 1 ? 's' : ''}
+        </div>
+        <div style="font-size:11px;color:#9b9a97;margin-top:6px">Click again or outside to show all</div>
+      `)
+      .addTo(map);
+  }
+}
+
+function updateMarkerDistrictFilter() {
+  const filteredIds = new Set(getFilteredProjects().map(p => p.id));
+  Object.keys(markers).forEach(id => {
+    const p = projects.find(x => x.id === id);
+    const m = markers[id];
+    if (!p || !m) return;
+    const show = filteredIds.has(id);
+    m.getElement().style.display = show ? '' : 'none';
+    const lid = 'model-' + id;
+    if (map.getLayer && map.getLayer(lid)) {
+      try {
+        map.setLayoutProperty(lid, 'visibility', show ? 'visible' : 'none');
+      } catch (e) { /* custom layer */ }
+    }
+  });
+}
+
+
+const STATUS_DISPLAY = {
+  voting: 'Open for voting',
+  planned: 'Planned',
+  'in-progress': 'In progress',
+  completed: 'Completed',
+  Concept: 'Concept',
+};
 
 // ── Map — load OpenFreeMap dark style then cyberpunk-ify ──
 const map = new maplibregl.Map({
@@ -823,8 +1331,9 @@ const map = new maplibregl.Map({
   antialias: true,
   maxPitch: 85,
 });
+window.map = map;
 
-map.on('load', () => {
+map.on('load', async () => {
   setTimeout(() => { document.getElementById('loading').classList.add('hidden'); }, 600);
 
   // ── Warm Notion-style map: soft dark with warm tones ──
@@ -1001,31 +1510,8 @@ map.on('load', () => {
     }, '3d-buildings');
   }
 
-  // ── District boundaries (approximate polygons) ──
-  const DISTRICTS = [
-    { name: 'Indre By', color: '#e07050', coords: [[12.565,55.685],[12.590,55.685],[12.595,55.675],[12.585,55.668],[12.570,55.668],[12.558,55.672],[12.560,55.680]] },
-    { name: 'Nørrebro', color: '#e0a030', coords: [[12.530,55.705],[12.560,55.705],[12.565,55.695],[12.565,55.685],[12.558,55.685],[12.530,55.685],[12.525,55.695]] },
-    { name: 'Vesterbro', color: '#d060a0', coords: [[12.530,55.675],[12.558,55.672],[12.570,55.668],[12.565,55.658],[12.545,55.655],[12.525,55.658],[12.525,55.668]] },
-    { name: 'Østerbro', color: '#50a0d0', coords: [[12.560,55.725],[12.595,55.725],[12.600,55.710],[12.595,55.695],[12.565,55.695],[12.560,55.705]] },
-    { name: 'Christianshavn', color: '#60b080', coords: [[12.585,55.680],[12.610,55.680],[12.610,55.668],[12.600,55.660],[12.585,55.660],[12.580,55.668]] },
-    { name: 'Amager Vest', color: '#80a0e0', coords: [[12.555,55.665],[12.585,55.660],[12.590,55.645],[12.580,55.630],[12.555,55.630],[12.545,55.645]] },
-    { name: 'Amager Øst', color: '#a0d070', coords: [[12.590,55.665],[12.650,55.665],[12.660,55.640],[12.640,55.625],[12.590,55.630],[12.585,55.645]] },
-    { name: 'Valby', color: '#d0a060', coords: [[12.490,55.670],[12.530,55.670],[12.530,55.650],[12.525,55.635],[12.495,55.635],[12.485,55.650]] },
-    { name: 'Bispebjerg', color: '#b080c0', coords: [[12.510,55.725],[12.555,55.725],[12.560,55.710],[12.555,55.695],[12.530,55.695],[12.510,55.700]] },
-    { name: 'Nordhavn', color: '#50c0b0', coords: [[12.585,55.720],[12.615,55.720],[12.615,55.700],[12.600,55.695],[12.585,55.700]] },
-  ];
-
-  // Add district source
-  const districtFeatures = DISTRICTS.map((d, i) => ({
-    type: 'Feature',
-    properties: { name: d.name, color: d.color, idx: i },
-    geometry: { type: 'Polygon', coordinates: [d.coords.concat([d.coords[0]])] }
-  }));
-
-  map.addSource('districts', {
-    type: 'geojson',
-    data: { type: 'FeatureCollection', features: districtFeatures }
-  });
+  const districtData = await loadDistricts();
+  map.addSource('districts', { type: 'geojson', data: districtData });
 
   // District fill — nearly invisible but clickable
   map.addLayer({
@@ -1062,60 +1548,43 @@ map.on('load', () => {
     }
   });
 
-  // Click handler for districts
-  let activeDistrict = null;
+  map.addSource('district-mask', { type: 'geojson', data: EMPTY_FEATURE_COLLECTION });
+  map.addLayer({
+    id: 'district-mask-fill',
+    type: 'fill',
+    source: 'district-mask',
+    paint: {
+      'fill-color': '#2a2926',
+      'fill-opacity': 0.5,
+    }
+  }, 'district-border');
 
-  map.on('click', 'district-fill', (e) => {
-    const name = e.features[0].properties.name;
-    const color = e.features[0].properties.color;
+  // District click: point-in-polygon on general click (bypasses queryRenderedFeatures)
+  window._districtClickHandler = function districtClickHandler(e) {
+    if (placingMode) return;
+    if (!_districtData.features.length) return;
 
-    if (activeDistrict === name) {
-      // Deactivate — hide overlay
-      activeDistrict = null;
-      map.setPaintProperty('district-fill', 'fill-opacity', 0.01);
-      map.setPaintProperty('district-border', 'line-width', 0);
-      map.setPaintProperty('district-border', 'line-opacity', 0);
-      map.setLayoutProperty('district-labels', 'text-size', 0);
-      map.setPaintProperty('district-labels', 'text-opacity', 0);
+    const { lng, lat } = e.lngLat;
+    const hitFeature = findDistrictAtPoint(lng, lat);
+
+    if (!hitFeature && !activeDistrict) return;
+
+    if (!hitFeature && activeDistrict) {
+      deactivateDistrict();
       return;
     }
 
-    activeDistrict = name;
+    const clickedName = hitFeature.properties.name;
+    const clickedColor = hitFeature.properties.color;
 
-    // Show all districts dimmed, highlight clicked one
-    map.setPaintProperty('district-fill', 'fill-opacity', [
-      'case', ['==', ['get', 'name'], name], 0.25, 0.08
-    ]);
-    map.setPaintProperty('district-border', 'line-width', [
-      'case', ['==', ['get', 'name'], name], 3, 1
-    ]);
-    map.setPaintProperty('district-border', 'line-opacity', [
-      'case', ['==', ['get', 'name'], name], 0.8, 0.3
-    ]);
-    map.setLayoutProperty('district-labels', 'text-size', [
-      'case', ['==', ['get', 'name'], name], 16, 12
-    ]);
-    map.setPaintProperty('district-labels', 'text-opacity', 1);
+    if (activeDistrict === clickedName) {
+      deactivateDistrict();
+      return;
+    }
 
-    // Show popup with district info
-    if (window._activePopup) window._activePopup.remove();
-    const facilityCount = CITY_FACILITIES.filter(f => f.d === name).length;
-    const projectCount = projects.filter(p => p.district === name).length;
-    window._activePopup = new maplibregl.Popup({ offset: 0, closeButton: true, maxWidth: '220px' })
-      .setLngLat(e.lngLat)
-      .setHTML(`
-        <div style="font-weight:700;font-size:15px;margin-bottom:4px;color:${color}">${name}</div>
-        <div style="font-size:12px;color:var(--text-secondary);line-height:1.6">
-          ${projectCount} project${projectCount !== 1 ? 's' : ''}<br>
-          ${facilityCount} facilit${facilityCount !== 1 ? 'ies' : 'y'}
-        </div>
-      `)
-      .addTo(map);
-  });
-
-  // Cursor on district hover
-  map.on('mouseenter', 'district-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
-  map.on('mouseleave', 'district-fill', () => { if (!placingMode) map.getCanvas().style.cursor = ''; });
+    activateDistrict(clickedName, clickedColor, e.lngLat);
+  };
+  map.on('click', window._districtClickHandler);
 
   // Warm directional light — soft shadows
   map.setLight({ anchor: 'viewport', color: '#fff5e6', intensity: 0.45, position: [1.15, 210, 35] });
@@ -1131,15 +1600,18 @@ map.on('load', () => {
     }
   });
 
-  // Load projects
-  projects = [...DEMO_PROJECTS];
+  // Load projects (from localStorage or demo data)
+  const saved = loadProjects();
+  projects = saved || [...DEMO_PROJECTS];
+  if (!saved) saveProjects();
   projects.forEach(p => addMarker(p));
   renderProjectList();
   updateStats();
 
-  // ── Load city facilities ──
-  renderFacilityFilters();
-  renderFacilityMarkers();
+
+  // ── Sidebar filters ──
+  initSidebarFilters(districtData);
+  updateMarkerDistrictFilter();
 });
 
 setTimeout(() => { document.getElementById('loading').classList.add('hidden'); }, 8000);
@@ -1193,11 +1665,12 @@ map.on('click', (e) => {
 // Fallback: HTML markers with viewport alignment (default)
 function addMarker(project) {
   const el = document.createElement('div');
-  const catMap = { playground: 'cat-playground', green: 'cat-green', sport: 'cat-sport', culture: 'cat-culture', infra: 'cat-infra', other: 'cat-other' };
-  el.innerHTML = `<div class="quest-wrap ${catMap[project.category] || 'cat-other'}"><div class="quest-icon">!</div><div class="quest-dot"></div><div class="quest-pole"></div></div>`;
+  const catClass = categoryMeta(project.category).catClass;
+  el.innerHTML = `<div class="quest-wrap ${catClass}"><div class="quest-icon">!</div><div class="quest-dot"></div><div class="quest-pole"></div></div>`;
   const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([project.lng, project.lat]).addTo(map);
   el.addEventListener('click', (e) => { e.stopPropagation(); openProjectDetail(project.id); });
   markers[project.id] = marker;
+  if (!projectPassesFilters(project)) el.style.display = 'none';
   if (project.modelUrl) load3DModel(project);
 }
 
@@ -1224,7 +1697,7 @@ function voteForProject(id) {
   if (!p) return;
   if (p.voters.includes('me')) { p.voters = p.voters.filter(v => v !== 'me'); p.votes--; }
   else { p.voters.push('me'); p.votes++; }
-  renderProjectList(); updateStats();
+  saveProjects(); renderProjectList(); updateStats(); updateMarkerDistrictFilter(); updateFilterCount();
   if (window._activePopup) { window._activePopup.remove(); showPopup(p); }
 }
 window.voteForProject = voteForProject;
@@ -1232,19 +1705,33 @@ window.voteForProject = voteForProject;
 // ── Project list ──
 function renderProjectList() {
   const list = document.getElementById('project-list');
-  const sorted = [...projects].sort((a, b) => b.votes - a.votes);
+  const filtered = getFilteredProjects();
+  const sorted = [...filtered].sort((a, b) => b.votes - a.votes);
+  const budgetName = (id) => BUDGETS.find(b => b.id === id)?.name || '';
+
+  if (!sorted.length) {
+    list.innerHTML = '<div class="pc-desc" style="padding:16px 12px;text-align:center">No projects match your filters.</div>';
+    return;
+  }
   list.innerHTML = sorted.map((p, i) => {
-    const cat = CATEGORIES[p.category];
+    const cat = categoryMeta(p.category);
     const voted = p.voters.includes('me');
+    const st = p.status || '';
+    const statusLabel = STATUS_DISPLAY[st] || st;
+    const statusCls = st === 'completed' ? 'badge-status-green' : st === 'in-progress' ? 'badge-status-yellow' : st === 'voting' ? 'badge-edition' : 'badge-status-gray';
     return `
       <div class="project-card" data-id="${p.id}" onclick="openProjectDetail('${p.id}')">
         <span class="pc-rank">#${i+1}</span>
         <div class="pc-top">
           <span class="pc-name">${p.name}</span>
           <span class="pc-category ${cat.catClass}">${cat.label}</span>
-          ${p.edition ? `<span class="pc-category badge-edition">${p.edition}</span>` : ''}
+          ${statusLabel ? `<span class="detail-badge ${statusCls}" style="font-size:9px;padding:1px 6px">${statusLabel}</span>` : ''}
         </div>
         <div class="pc-desc">${p.desc}</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px">
+          ${p.budgetId ? `<span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(0,0,0,0.04);color:var(--text-tertiary);font-weight:500">${budgetName(p.budgetId)}</span>` : ''}
+          ${p.scale ? `<span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(0,0,0,0.04);color:var(--text-tertiary);font-weight:500">${SCALE_LABELS[p.scale] || p.scale}</span>` : ''}
+        </div>
         <div class="pc-footer">
           <div style="display:flex;align-items:center;gap:8px">
             <button class="vote-btn ${voted?'voted':''}" onclick="event.stopPropagation();voteForProject('${p.id}')">${voted?'\u2705':'\u{1F44D}'} ${voted?'Voted':'Vote'}</button>
@@ -1271,12 +1758,22 @@ function flyToProject(id) {
 window.flyToProject = flyToProject;
 
 function updateStats() {
-  const tv = projects.reduce((s, p) => s + p.votes, 0);
-  const tb = projects.reduce((s, p) => s + (p.cost || 0), 0);
-  document.getElementById('stat-projects').textContent = projects.length;
+  const filtered = getFilteredProjects();
+  const tv = filtered.reduce((s, p) => s + p.votes, 0);
+  const tb = filtered.reduce((s, p) => s + (p.cost || 0), 0);
+  document.getElementById('stat-projects').textContent = filtered.length;
   document.getElementById('stat-votes').textContent = tv;
   document.getElementById('stat-budget').textContent = tb ? (tb / 1000000).toFixed(0) + 'M' : '—';
-  document.getElementById('project-count').textContent = `${projects.length} projects \u00B7 ${tv} votes`;
+  const pc = document.getElementById('project-count');
+  const side = filtersSidebarActive();
+  if (activeDistrict) {
+    pc.textContent = `${filtered.length} shown · ${tv} votes · map: ${activeDistrict}${side ? ' · filters on' : ''}`;
+  } else if (side) {
+    pc.textContent = `${filtered.length} of ${projects.length} projects · ${tv} votes`;
+  } else {
+    const tvAll = projects.reduce((s, p) => s + p.votes, 0);
+    pc.textContent = `${projects.length} projects · ${tvAll} votes`;
+  }
 }
 
 // ── Add project flow ──
@@ -1321,8 +1818,8 @@ document.getElementById('btn-submit').addEventListener('click', () => {
   const cost = parseInt(document.getElementById('f-cost').value) || 0;
   if (!name || !pendingLocation) return;
   const modelType = pendingModelFile ? (pendingModelFile.name.toLowerCase().endsWith('.stl') ? 'stl' : 'gltf') : null;
-  const project = { id: 'p' + Date.now(), name, desc: desc || 'No description', category, cost, votes: 1, voters: ['me'], lng: pendingLocation.lng, lat: pendingLocation.lat, hasModel: !!pendingModelFile, modelUrl: pendingModelFile ? URL.createObjectURL(pendingModelFile) : null, modelType };
-  projects.push(project); addMarker(project); renderProjectList(); updateStats(); exitPlacingMode();
+  const project = { id: 'p' + Date.now(), budgetId: 'deltagerbudgettering', name, desc: desc || 'No description', category, cost, votes: 1, voters: ['me'], lng: pendingLocation.lng, lat: pendingLocation.lat, hasModel: !!pendingModelFile, modelUrl: pendingModelFile ? URL.createObjectURL(pendingModelFile) : null, modelType, district: '', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: [] };
+  projects.push(project); addMarker(project); saveProjects(); renderProjectList(); updateStats(); updateMarkerDistrictFilter(); updateFilterCount(); exitPlacingMode();
   setTimeout(() => flyToProject(project.id), 300);
 });
 
@@ -1424,6 +1921,9 @@ function load3DModel(project) {
     try {
       map.addLayer(customLayer);
       console.log('[3D] Layer added:', customLayer.id);
+      if (!projectPassesFilters(project)) {
+        try { map.setLayoutProperty(customLayer.id, 'visibility', 'none'); } catch (e2) {}
+      }
     } catch(e) {
       console.error('[3D] Failed to add layer:', e.message);
     }
@@ -1433,14 +1933,13 @@ function load3DModel(project) {
     const stlLoader = new (window.STLLoader || THREE.STLLoader)();
     stlLoader.load(project.modelUrl, (geometry) => {
       geometry.computeVertexNormals();
-      // STL is Z-up (CAD convention), Three.js is Y-up — rotate -90° around X
       geometry.rotateX(-Math.PI / 2);
       const material = new THREE.MeshPhongMaterial({ color: 0x4488ff, shininess: 80, specular: 0x222244 });
       addModelToMap(new THREE.Mesh(geometry, material));
-    });
+    }, undefined, (err) => { console.warn('[3D] STL load failed for', project.id, err); });
   } else {
     const gltfLoader = new (window.GLTFLoader || THREE.GLTFLoader)();
-    gltfLoader.load(project.modelUrl, (gltf) => { addModelToMap(gltf.scene); });
+    gltfLoader.load(project.modelUrl, (gltf) => { addModelToMap(gltf.scene); }, undefined, (err) => { console.warn('[3D] GLTF load failed for', project.id, err); });
   }
 }
 
@@ -1461,21 +1960,27 @@ function openProjectDetail(id) {
   detail.classList.add('visible');
 
   // Status badge color
-  const statusClass = p.status === 'In Progress' ? 'badge-status-green' : p.status === 'Planned' ? 'badge-status-yellow' : 'badge-status-gray';
-
-  // Category label
-  const catLabel = CATEGORIES[p.category]?.label || 'OTHER';
+  const statusClass = p.status === 'completed' ? 'badge-status-green' : p.status === 'in-progress' ? 'badge-status-yellow' : p.status === 'voting' ? 'badge-edition' : p.status === 'Concept' ? 'badge-status-gray' : 'badge-status-gray';
+  const statusLabel = STATUS_DISPLAY[p.status] || p.status || '';
+  const catM = categoryMeta(p.category);
+  const catLabel = catM.label;
+  const budgetLabel = BUDGETS.find(b => b.id === p.budgetId)?.name || '';
+  const scaleLabel = SCALE_LABELS[p.scale] || '';
+  const invLabel = INVESTMENT_LABELS[p.investmentLevel] || '';
 
   const voted = p.voters.includes('me');
 
   body.innerHTML = `
     <div class="detail-badge-row">
-      <span class="detail-badge ${CATEGORIES[p.category]?.catClass || 'cat-other'}">${catLabel}</span>
-      ${p.edition ? `<span class="detail-badge badge-edition">${p.edition}</span>` : ''}
-      ${p.status ? `<span class="detail-badge ${statusClass}">${p.status}</span>` : ''}
+      <span class="detail-badge ${catM.catClass}">${catLabel}</span>
+      ${statusLabel ? `<span class="detail-badge ${statusClass}">${statusLabel}</span>` : ''}
+      ${scaleLabel ? `<span class="detail-badge badge-status-gray">${scaleLabel}</span>` : ''}
+      ${invLabel ? `<span class="detail-badge badge-status-gray">${invLabel}</span>` : ''}
     </div>
+    ${budgetLabel ? `<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px;font-weight:500">${budgetLabel}</div>` : ''}
     <div class="detail-title">${p.name}</div>
     <div class="detail-desc">${p.desc}</div>
+    ${p.tags && p.tags.length ? `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px">${p.tags.map(t => `<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(0,0,0,0.04);color:var(--text-tertiary);font-weight:500">${t}</span>`).join('')}</div>` : ''}
     <div class="detail-stats">
       <div class="detail-stat">
         <div class="detail-stat-label">Votes</div>
@@ -1626,15 +2131,13 @@ function initModelPreview(container, url, modelType) {
     const stlLoader = new (window.STLLoader || THREE.STLLoader)();
     stlLoader.load(url, (geometry) => {
       geometry.computeVertexNormals();
-      // STL Z-up → Three.js Y-up
       geometry.rotateX(-Math.PI / 2);
       const material = new THREE.MeshStandardMaterial({ color: 0x4488ff, metalness: 0.3, roughness: 0.5 });
-      const mesh = new THREE.Mesh(geometry, material);
-      onModelLoaded(mesh);
-    });
+      onModelLoaded(new THREE.Mesh(geometry, material));
+    }, undefined, (err) => { console.warn('[3D Preview] STL load failed:', err); container.innerHTML = '<div class="detail-no-model">Failed to load model</div>'; });
   } else {
     const gltfLoader = new (window.GLTFLoader || THREE.GLTFLoader)();
-    gltfLoader.load(url, (gltf) => { onModelLoaded(gltf.scene); });
+    gltfLoader.load(url, (gltf) => { onModelLoaded(gltf.scene); }, undefined, (err) => { console.warn('[3D Preview] GLTF load failed:', err); container.innerHTML = '<div class="detail-no-model">Failed to load model</div>'; });
   }
 }
 
@@ -1668,6 +2171,7 @@ function setupModelControls(projectId) {
     scaleSlider.oninput = () => {
       p.modelScale = parseFloat(scaleSlider.value);
       scaleVal.textContent = p.modelScale.toFixed(1) + 'x';
+      saveProjects();
     };
   }
   if (rotSlider) {
@@ -1675,6 +2179,7 @@ function setupModelControls(projectId) {
       const deg = parseInt(rotSlider.value);
       p.modelRotation = deg * Math.PI / 180;
       rotVal.textContent = deg + '\u00B0';
+      saveProjects();
     };
   }
 }
@@ -1685,6 +2190,7 @@ function moveModel(id, dx, dy) {
   const step = 0.00005; // ~5 meters
   p.modelOffsetLng += dx * step;
   p.modelOffsetLat += dy * step;
+  saveProjects();
 }
 window.moveModel = moveModel;
 
@@ -1695,66 +2201,12 @@ function resetModelPos(id) {
   p.modelOffsetLat = 0;
   p.modelScale = 1.0;
   p.modelRotation = 0;
-  openProjectDetail(id); // refresh UI
+  saveProjects();
+  openProjectDetail(id);
 }
 window.resetModelPos = resetModelPos;
 document.getElementById('detail-back').addEventListener('click', closeProjectDetail);
 
-// ── City facility markers ──
-function renderFacilityFilters() {
-  const container = document.getElementById('facility-filters');
-  const counts = {};
-  CITY_FACILITIES.forEach(f => { counts[f.t] = (counts[f.t] || 0) + 1; });
-
-  container.innerHTML = Object.entries(FACILITY_TYPES).map(([key, ft]) => `
-    <div class="fac-filter ${facilityFilters[key] ? '' : 'off'}" data-type="${key}" onclick="toggleFacilityType('${key}')">
-      <div class="fac-dot" style="background:${ft.color}"></div>
-      <span class="fac-label">${ft.icon} ${ft.label}</span>
-      <span class="fac-count">${counts[key] || 0}</span>
-    </div>
-  `).join('');
-}
-
-function renderFacilityMarkers() {
-  // Remove existing
-  facilityMarkers.forEach(m => m.remove());
-  facilityMarkers = [];
-
-  CITY_FACILITIES.forEach((f, i) => {
-    if (!facilityFilters[f.t]) return;
-    const ft = FACILITY_TYPES[f.t];
-    const el = document.createElement('div');
-    el.className = 'fac-marker';
-    el.innerHTML = `<div class="fm-wrap"><div class="fm-icon" style="background:${ft.color}">!</div><div class="fm-dot" style="border-top-color:${ft.color}"></div></div>`;
-    el.title = f.n;
-
-    const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
-      .setLngLat([f.lng, f.lat])
-      .addTo(map);
-
-    el.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (window._activePopup) window._activePopup.remove();
-      window._activePopup = new maplibregl.Popup({ offset: 12, closeButton: true, maxWidth: '280px' })
-        .setLngLat([f.lng, f.lat])
-        .setHTML(`
-          <img src="${ft.img}" alt="${ft.label}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px;" loading="lazy" onerror="this.style.display='none'" />
-          <div class="popup-title">${ft.icon} ${f.n}</div>
-          <div class="popup-desc">${ft.label} &middot; ${f.d}</div>
-        `)
-        .addTo(map);
-    });
-
-    facilityMarkers.push(marker);
-  });
-}
-
-function toggleFacilityType(type) {
-  facilityFilters[type] = !facilityFilters[type];
-  renderFacilityFilters();
-  renderFacilityMarkers();
-}
-window.toggleFacilityType = toggleFacilityType;
 
 // ── Sidebar toggle ──
 const sidebar = document.getElementById('sidebar');
