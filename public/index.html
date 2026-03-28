@@ -44,42 +44,50 @@
 
     #map { position: fixed; inset: 0; }
 
-    /* ═══ HEADER — Notion top bar ═══ */
+    /* ═══ HEADER — centered filter bar ═══ */
     #header {
-      position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 100;
-      display: flex; align-items: center; gap: 12px;
-      padding: 8px 20px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      box-shadow: var(--shadow-float);
+      position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 100;
+      display: flex; align-items: center; gap: 10px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
     }
-    .logo {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px; font-weight: 700; letter-spacing: -0.2px;
-      color: var(--text-primary);
-    }
-    .header-divider { width: 1px; height: 16px; background: var(--border); }
-    .header-title { font-size: 13px; color: var(--text-secondary); font-weight: 400; }
-    #mode-indicator {
-      font-size: 11px; padding: 3px 10px; border-radius: 4px;
-      font-weight: 600; letter-spacing: 0.2px;
-    }
-    #mode-indicator.browse {
-      background: var(--accent-blue-bg);
-      color: var(--accent-blue);
-      border: 1px solid rgba(47,128,237,0.18);
-    }
-    #mode-indicator.place {
-      background: rgba(217,115,13,0.1);
-      color: var(--accent-orange);
-      border: 1px solid rgba(217,115,13,0.25);
-      animation: place-pulse 2s infinite;
-    }
+    .logo { display: none; }
+    .header-divider { display: none; }
+    .header-title { display: none; }
+    #mode-indicator { display: none; }
+    #mode-indicator.browse { display: none; }
+    #mode-indicator.place { display: none; }
     @keyframes place-pulse {
       0%,100% { opacity: 1; }
       50% { opacity: 0.7; }
     }
+
+    /* ═══ TOP FILTER DROPDOWNS ═══ */
+    .top-filter-btn {
+      padding: 10px 22px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow-float);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236b6b6b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+      white-space: nowrap;
+    }
+    .top-filter-btn:hover { border-color: var(--border-strong); background-color: #fff; }
+    .top-filter-btn:focus { border-color: var(--accent-blue); box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06), 0 0 0 2px rgba(47,128,237,0.12); outline: none; }
+    .top-filter-btn.active { border-color: var(--accent-blue); background: var(--accent-blue-bg); }
+    .top-filter-btn option { background: #fff; color: var(--text-primary); font-size: 13px; }
 
     /* ═══ SIDEBAR — Notion panel ═══ */
     #sidebar {
@@ -91,29 +99,16 @@
     }
     #sidebar.hidden { transform: translateX(100%); }
 
-    #sidebar-header { padding: 64px 20px 14px; border-bottom: 1px solid var(--border); }
-    #sidebar-header h2 {
-      font-family: 'Source Serif 4', serif;
-      font-size: 22px; font-weight: 700;
-      color: var(--text-primary); letter-spacing: -0.3px;
-    }
-    #sidebar-header p {
-      font-size: 12px; color: var(--text-tertiary); margin-top: 3px;
-      font-family: 'JetBrains Mono', monospace;
-    }
+    #sidebar-header { display: none; }
 
     #project-list {
-      flex: 1; overflow-y: auto; padding: 8px 12px;
+      flex: 1; overflow-y: auto; padding: 12px 12px 8px;
       scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.1) transparent;
+      margin-top: 8px;
     }
 
-    /* ═══ FILTER BAR ═══ */
-    #filter-bar {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
-      display: flex; flex-direction: column; gap: 6px;
-      background: var(--bg-primary);
-    }
+    /* ═══ FILTER BAR (hidden from sidebar, moved to top) ═══ */
+    #filter-bar { display: none; }
     .filter-row { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
     .filter-select {
       padding: 4px 8px; border-radius: 4px;
@@ -247,47 +242,88 @@
       border-radius: 4px; font-weight: 600; letter-spacing: 0.2px;
     }
 
-    /* ═══ ADD PROJECT BUTTON ═══ */
+    /* ═══ ADD PROJECT BUTTON — fixed bottom center ═══ */
     #add-project-btn {
-      margin: 10px 12px 12px;
-      padding: 11px 16px;
-      border-radius: var(--radius-btn);
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      padding: 12px 28px;
+      border-radius: 10px;
       text-align: center;
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      background: transparent;
-      border: 1px dashed var(--border-strong);
-      color: var(--text-secondary);
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-float);
+      transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
       font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
     }
     #add-project-btn:hover {
-      background: var(--bg-hover);
-      border-color: var(--accent-green);
+      background: var(--accent-green-bg);
+      border-color: rgba(0,166,126,0.35);
       color: var(--accent-green);
+      box-shadow: 0 2px 8px rgba(0,166,126,0.15), var(--shadow-float);
     }
     #add-project-btn.active {
       border-style: solid;
       border-color: var(--accent-orange);
       color: var(--accent-orange);
-      background: rgba(217,115,13,0.05);
+      background: rgba(217,115,13,0.08);
     }
 
-    /* ═══ FORM ═══ */
-    #add-form { display: none; padding: 16px; border-top: 1px solid var(--border); background: var(--bg-secondary); }
-    #add-form.visible { display: block; }
-    #add-form h3 {
-      font-size: 11px; font-weight: 700; margin-bottom: 14px;
-      text-transform: uppercase; letter-spacing: 0.8px;
-      color: var(--text-tertiary);
+    /* ═══ FORM — takes over full sidebar ═══ */
+    #add-form {
+      display: none;
+      flex-direction: column;
+      position: absolute; inset: 0;
+      padding: 0;
+      background: var(--bg-secondary);
+      z-index: 10;
+      overflow-y: auto;
+      scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.1) transparent;
     }
-    .form-group { margin-bottom: 10px; }
+    #add-form.visible { display: flex; }
+    .form-header {
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .form-header h3 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--text-primary); letter-spacing: -0.2px;
+      margin: 0;
+      text-transform: none;
+    }
+    .form-header-close {
+      width: 32px; height: 32px; border-radius: 6px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-secondary); font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.12s, color 0.12s;
+    }
+    .form-header-close:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .form-body { padding: 20px; flex: 1; }
+    .form-hint {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px; margin-bottom: 16px;
+      background: rgba(217,115,13,0.06);
+      border: 1px solid rgba(217,115,13,0.15);
+      border-radius: var(--radius-card);
+      font-size: 12px; color: var(--accent-orange); font-weight: 500;
+    }
+    .form-hint-icon { font-size: 16px; flex-shrink: 0; }
+    .form-group { margin-bottom: 14px; }
     .form-group label {
       display: block; font-size: 11px; font-weight: 600;
-      color: var(--text-secondary); margin-bottom: 4px;
+      color: var(--text-secondary); margin-bottom: 5px;
       text-transform: uppercase; letter-spacing: 0.6px;
     }
     .form-group input, .form-group textarea, .form-group select {
-      width: 100%; padding: 8px 10px;
+      width: 100%; padding: 10px 12px;
       background: var(--bg-primary);
       border: 1px solid var(--border);
       border-radius: var(--radius-btn);
@@ -300,14 +336,19 @@
       box-shadow: 0 0 0 2px rgba(47,128,237,0.12);
     }
     .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-tertiary); }
-    .form-group textarea { resize: vertical; min-height: 52px; }
+    .form-group textarea { resize: vertical; min-height: 72px; }
     .form-group select { cursor: pointer; }
     .form-group select option { background: #fff; color: var(--text-primary); }
-    .form-actions { display: flex; gap: 8px; margin-top: 14px; }
+    .form-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-primary);
+    }
+    .form-actions { display: flex; gap: 8px; }
     .btn-submit {
-      flex: 1; padding: 9px; border-radius: var(--radius-btn);
+      flex: 1; padding: 11px; border-radius: var(--radius-btn);
       border: 1px solid rgba(0,166,126,0.3);
-      font-size: 13px; font-weight: 600; cursor: pointer;
+      font-size: 14px; font-weight: 600; cursor: pointer;
       background: var(--accent-green-bg);
       color: var(--accent-green);
       transition: background 0.15s, border-color 0.15s;
@@ -316,11 +357,11 @@
     .btn-submit:hover { background: rgba(0,166,126,0.14); border-color: rgba(0,166,126,0.5); }
     .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
     .btn-cancel {
-      flex: 0 0 auto; padding: 9px 16px;
+      flex: 0 0 auto; padding: 11px 20px;
       border-radius: var(--radius-btn);
       border: 1px solid var(--border);
       background: transparent; color: var(--text-secondary);
-      font-size: 13px; cursor: pointer;
+      font-size: 14px; cursor: pointer;
       font-family: 'DM Sans', sans-serif;
       transition: background 0.15s;
     }
@@ -328,7 +369,7 @@
     .model-upload-area {
       border: 1px dashed var(--border-strong);
       border-radius: var(--radius-btn);
-      padding: 14px; text-align: center; cursor: pointer;
+      padding: 18px; text-align: center; cursor: pointer;
       transition: background 0.15s, border-color 0.15s;
       background: var(--bg-primary);
     }
@@ -339,7 +380,7 @@
 
     /* ═══ SIDEBAR TOGGLE ═══ */
     #sidebar-toggle {
-      position: fixed; top: 68px; right: 12px; z-index: 95;
+      position: fixed; top: 16px; right: 12px; z-index: 95;
       width: 36px; height: 36px; border-radius: var(--radius-btn);
       border: 1px solid var(--border);
       background: var(--bg-secondary);
@@ -377,26 +418,18 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
     }
-    .quest-wrap.cat-recreation .quest-icon { background: #d9730d; }
-    .quest-wrap.cat-recreation .quest-dot { border-top-color: #d9730d; }
-    .quest-wrap.cat-transport .quest-icon { background: #2f80ed; }
-    .quest-wrap.cat-transport .quest-dot { border-top-color: #2f80ed; }
-    .quest-wrap.cat-public-buildings .quest-icon { background: #e03e3e; }
-    .quest-wrap.cat-public-buildings .quest-dot { border-top-color: #e03e3e; }
-    .quest-wrap.cat-green-spaces .quest-icon { background: #0f7b6c; }
-    .quest-wrap.cat-green-spaces .quest-dot { border-top-color: #0f7b6c; }
-    .quest-wrap.cat-climate .quest-icon { background: #0e9988; }
-    .quest-wrap.cat-climate .quest-dot { border-top-color: #0e9988; }
-    .quest-wrap.cat-culture .quest-icon { background: #6940a5; }
-    .quest-wrap.cat-culture .quest-dot { border-top-color: #6940a5; }
-    .quest-wrap.cat-education .quest-icon { background: #4263eb; }
-    .quest-wrap.cat-education .quest-dot { border-top-color: #4263eb; }
-    .quest-wrap.cat-infra .quest-icon { background: #e03e3e; }
-    .quest-wrap.cat-infra .quest-dot { border-top-color: #e03e3e; }
-    .quest-wrap.cat-housing .quest-icon { background: #c4873b; }
-    .quest-wrap.cat-housing .quest-dot { border-top-color: #c4873b; }
-    .quest-wrap.cat-other .quest-icon { background: #787774; }
-    .quest-wrap.cat-other .quest-dot { border-top-color: #787774; }
+    .quest-wrap.status-voting .quest-icon { background: #f59f00; }
+    .quest-wrap.status-voting .quest-dot { border-top-color: #f59f00; }
+    .quest-wrap.status-voting .quest-pole { background: linear-gradient(180deg, #f59f00 0%, transparent 100%); }
+    .quest-wrap.status-planned .quest-icon { background: #d9730d; }
+    .quest-wrap.status-planned .quest-dot { border-top-color: #d9730d; }
+    .quest-wrap.status-planned .quest-pole { background: linear-gradient(180deg, #d9730d 0%, transparent 100%); }
+    .quest-wrap.status-in-progress .quest-icon { background: #2f80ed; }
+    .quest-wrap.status-in-progress .quest-dot { border-top-color: #2f80ed; }
+    .quest-wrap.status-in-progress .quest-pole { background: linear-gradient(180deg, #2f80ed 0%, transparent 100%); }
+    .quest-wrap.status-completed .quest-icon { background: #00a67e; }
+    .quest-wrap.status-completed .quest-dot { border-top-color: #00a67e; }
+    .quest-wrap.status-completed .quest-pole { background: linear-gradient(180deg, #00a67e 0%, transparent 100%); }
 
     /* ═══ POPUP — Notion-light style ═══ */
     .maplibregl-popup-content {
@@ -592,15 +625,34 @@
 
     /* facility panel removed */
 
-    /* ═══ MAP CONTROLS ═══ */
+    /* ═══ MAP CONTROLS TOGGLE BUTTON ═══ */
+    #mc-toggle {
+      position: fixed; bottom: 20px; left: 16px; z-index: 101;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      box-shadow: var(--shadow-float);
+      color: var(--text-secondary);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    #mc-toggle:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--border-strong); }
+    #mc-toggle.open { border-color: var(--accent-blue); color: var(--accent-blue); background: var(--accent-blue-bg); }
+
+    /* ═══ MAP CONTROLS PANEL ═══ */
     #map-controls {
-      position: fixed; bottom: 76px; left: 16px; z-index: 100;
+      position: fixed; bottom: 68px; left: 16px; z-index: 100;
       background: var(--bg-secondary);
       border: 1px solid var(--border);
       border-radius: var(--radius-card);
-      padding: 14px; min-width: 210px;
+      padding: 14px; min-width: 220px;
       box-shadow: var(--shadow-float);
+      display: none;
     }
+    #map-controls.open { display: block; }
     #map-controls h2 {
       font-size: 10px; font-weight: 700; letter-spacing: 0.8px;
       text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 10px;
@@ -618,17 +670,20 @@
       background: var(--accent-blue); border-radius: 50%; cursor: pointer;
       box-shadow: 0 1px 4px rgba(47,128,237,0.3);
     }
-
-    /* ═══ STATS BAR ═══ */
-    #stats {
-      position: fixed; bottom: 16px; left: 16px; z-index: 100;
-      display: flex; gap: 20px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      padding: 10px 18px;
-      box-shadow: var(--shadow-float);
+    .mc-divider { height: 1px; background: var(--border); margin: 8px 0; }
+    .mc-checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .mc-checkbox-row:last-child { margin-bottom: 0; }
+    .mc-checkbox-row input[type="checkbox"] {
+      width: 15px; height: 15px; accent-color: var(--accent-blue); cursor: pointer;
+      border-radius: 3px;
     }
+    .mc-checkbox-row label {
+      font-size: 12px; color: var(--text-secondary); font-weight: 500; cursor: pointer;
+      user-select: none;
+    }
+
+    /* ═══ STATS BAR (hidden) ═══ */
+    #stats { display: none; }
     .stat { text-align: center; }
     .stat-value {
       font-size: 17px; font-weight: 700;
@@ -668,12 +723,14 @@
       #sidebar-toggle.shifted { right: 16px; bottom: calc(50vh + 8px); }
       #project-detail { width: 100%; top: auto; bottom: 0; height: 70vh; border-left: none; border-top: 1px solid var(--border); border-radius: 16px 16px 0 0; }
       #map-controls { bottom: 68px; left: 8px; min-width: 180px; padding: 10px; }
-      #stats { left: 50%; transform: translateX(-50%); bottom: 8px; gap: 14px; padding: 8px 14px; }
-      #header { padding: 6px 14px; gap: 8px; }
-      .header-title { display: none; }
+      #add-project-btn { bottom: 12px; padding: 10px 20px; font-size: 13px; }
+      #header { gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 95vw; }
+      .top-filter-btn { padding: 7px 14px; font-size: 12px; padding-right: 28px; }
     }
     @media (max-width: 480px) {
-      #map-controls { display: none; }
+      #map-controls { display: none !important; }
+      #mc-toggle { display: none; }
+      .top-filter-btn { padding: 6px 10px; font-size: 11px; padding-right: 24px; }
     }
   </style>
 </head>
@@ -690,6 +747,29 @@
   <div class="header-divider"></div>
   <span class="header-title">Civic Budget</span>
   <div id="mode-indicator" class="browse">BROWSE</div>
+
+  <select class="top-filter-btn" id="top-filter-category">
+    <option value="">Category</option>
+  </select>
+  <select class="top-filter-btn" id="top-filter-status">
+    <option value="">Status</option>
+    <option value="voting">Open for voting</option>
+    <option value="in-progress">In progress</option>
+    <option value="completed">Completed</option>
+    <option value="Concept">Concept</option>
+  </select>
+  <select class="top-filter-btn" id="top-filter-scope">
+    <option value="">Scope</option>
+  </select>
+  <select class="top-filter-btn" id="top-filter-sort">
+    <option value="votes-desc">Sort by</option>
+    <option value="votes-desc">Most votes</option>
+    <option value="votes-asc">Least votes</option>
+    <option value="cost-desc">Most expensive</option>
+    <option value="cost-asc">Cheapest</option>
+    <option value="name-asc">A → Z</option>
+    <option value="name-desc">Z → A</option>
+  </select>
 </header>
 
 <div id="map"></div>
@@ -712,7 +792,6 @@
       <select class="filter-select" id="filter-status">
         <option value="">All statuses</option>
         <option value="voting">Open for voting</option>
-        <option value="planned">Planned</option>
         <option value="in-progress">In progress</option>
         <option value="completed">Completed</option>
         <option value="Concept">Concept</option>
@@ -725,37 +804,49 @@
   </div>
   <div id="project-list"></div>
   <div id="add-form">
-    <h3>NEW PROJECT</h3>
-    <div class="form-group"><label>Project name</label><input type="text" id="f-name" placeholder="e.g. New playground on Sikornik" /></div>
-    <div class="form-group"><label>Description</label><textarea id="f-desc" placeholder="What do you want to build? For whom?"></textarea></div>
-    <div class="form-group"><label>Category</label>
-      <select id="f-category">
-        <option value="recreation">Recreation</option>
-        <option value="transport">Transport</option>
-        <option value="green-spaces">Green Spaces</option>
-        <option value="climate">Climate</option>
-        <option value="culture">Culture</option>
-        <option value="education">Education</option>
-        <option value="infrastructure">Infrastructure</option>
-        <option value="public-buildings">Public Buildings</option>
-        <option value="housing">Housing</option>
-      </select>
+    <div class="form-header">
+      <h3>New Project</h3>
+      <button class="form-header-close" id="btn-cancel" title="Cancel">&times;</button>
     </div>
-    <div class="form-group"><label>Estimated cost (DKK)</label><input type="number" id="f-cost" placeholder="150000" /></div>
-    <div class="form-group"><label>3D Model (optional)</label>
-      <div class="model-upload-area" id="model-upload">
-        <p id="model-upload-text">Drag .glb / .gltf / .stl or click</p>
-        <input type="file" id="f-model" style="display:none" />
+    <div class="form-body">
+      <div class="form-hint">
+        <span class="form-hint-icon">&#128205;</span>
+        <span id="f-location-text">Click on the map to place your project</span>
+      </div>
+      <div class="form-group"><label>Project name</label><input type="text" id="f-name" placeholder="e.g. New cycle bridge in Nordhavn" /></div>
+      <div class="form-group"><label>Description</label><textarea id="f-desc" placeholder="What do you want to build? For whom?"></textarea></div>
+      <div class="form-group"><label>Category</label>
+        <select id="f-category">
+          <option value="recreation">Recreation</option>
+          <option value="transport">Transport</option>
+          <option value="green-spaces">Green Spaces</option>
+          <option value="climate">Climate</option>
+          <option value="culture">Culture</option>
+          <option value="education">Education</option>
+          <option value="infrastructure">Infrastructure</option>
+          <option value="public-buildings">Public Buildings</option>
+          <option value="housing">Housing</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Estimated cost (DKK)</label><input type="number" id="f-cost" placeholder="150000" /></div>
+      <div class="form-group"><label>3D Model (optional)</label>
+        <div class="model-upload-area" id="model-upload">
+          <p id="model-upload-text">Drag .glb / .gltf / .stl or click</p>
+          <input type="file" id="f-model" style="display:none" />
+        </div>
       </div>
     </div>
-    <div class="form-group"><label>Location</label><p id="f-location-text" style="font-size:12px;color:var(--text-tertiary)">Click on map to select location</p></div>
-    <div class="form-actions">
-      <button class="btn-cancel" id="btn-cancel">Cancel</button>
-      <button class="btn-submit" id="btn-submit" disabled>Add project</button>
+    <div class="form-footer">
+      <div class="form-actions">
+        <button class="btn-cancel" id="btn-cancel-bottom">Cancel</button>
+        <button class="btn-submit" id="btn-submit" disabled>Add project</button>
+      </div>
     </div>
   </div>
-  <div id="add-project-btn">+ Propose new project</div>
+
 </aside>
+
+<div id="add-project-btn">+ Propose new project</div>
 
 <div id="project-detail">
   <div class="detail-back" id="detail-back">&larr; Back to list</div>
@@ -764,12 +855,16 @@
 </div>
 
 
+<button id="mc-toggle" title="View Controls">&#9881;</button>
 <aside id="map-controls">
   <h2>View Controls</h2>
   <div class="mc-row"><span class="mc-label">Pitch</span><input type="range" id="mc-pitch" min="0" max="85" value="60" /><span class="mc-val" id="mc-pitch-val">60°</span></div>
-  <div class="mc-row"><span class="mc-label">Bearing</span><input type="range" id="mc-bearing" min="-180" max="180" value="-30" /><span class="mc-val" id="mc-bearing-val">-30°</span></div>
+  <div class="mc-row"><span class="mc-label">Bearing</span><input type="range" id="mc-bearing" min="-180" max="180" value="30" /><span class="mc-val" id="mc-bearing-val">+30°</span></div>
   <div class="mc-row"><span class="mc-label">Opacity</span><input type="range" id="mc-opacity" min="0.1" max="1" step="0.05" value="0.8" /><span class="mc-val" id="mc-opacity-val">80%</span></div>
   <div class="mc-row"><span class="mc-label">Scale</span><input type="range" id="mc-height" min="0.5" max="4" step="0.1" value="1.2" /><span class="mc-val" id="mc-height-val">1.2x</span></div>
+  <div class="mc-divider"></div>
+  <div class="mc-checkbox-row"><input type="checkbox" id="mc-labels" checked /><label for="mc-labels">Map labels</label></div>
+  <div class="mc-checkbox-row"><input type="checkbox" id="mc-above" checked /><label for="mc-above">Above buildings</label></div>
 </aside>
 
 <div id="stats">
@@ -857,39 +952,39 @@ const MODEL_URLS = {
 
 const DEMO_PROJECTS = [
   // Deltagerbudgettering
-  { id: 'proj-001', budgetId: 'deltagerbudgettering', name: 'Skatepark at Blågårds Plads', desc: 'New concrete skatepark with LED lighting in the heart of Nørrebro.', category: 'recreation', cost: 1200000, votes: 1842, lng: 12.5499, lat: 55.6897, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['youth','sport','public space'], hasModel: false, voters: [] },
-  { id: 'proj-002', budgetId: 'deltagerbudgettering', name: 'Sensory Playground at Mimersparken', desc: 'Inclusive sensory garden and playground for children with disabilities at Mimersparken.', category: 'recreation', cost: 980000, votes: 2341, lng: 12.5478, lat: 55.6921, district: 'Nørrebro', status: 'planned', scale: 'local', investmentLevel: 'municipal', tags: ['children','inclusion','accessibility'], hasModel: false, voters: [] },
+  { id: 'proj-001', budgetId: 'deltagerbudgettering', name: 'Skatepark at Blågårds Plads', desc: 'New concrete skatepark with LED lighting in the heart of Nørrebro.', category: 'recreation', cost: 1200000, votes: 1842, lng: 12.5499, lat: 55.6897, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['youth','sport','public space'], hasModel: true, modelUrl: MODEL_URLS.bench, voters: [] },
+  { id: 'proj-002', budgetId: 'deltagerbudgettering', name: 'Sensory Playground at Mimersparken', desc: 'Inclusive sensory garden and playground for children with disabilities at Mimersparken.', category: 'recreation', cost: 980000, votes: 2341, lng: 12.5478, lat: 55.6921, district: 'Nørrebro', status: 'planned', scale: 'local', investmentLevel: 'municipal', tags: ['children','inclusion','accessibility'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
   { id: 'proj-003', budgetId: 'deltagerbudgettering', name: 'Smart Street Lighting — Griffenfeldsgade', desc: 'Replacement of 120 sodium lamps with smart LED fixtures. 62% energy reduction.', category: 'infrastructure', cost: 750000, votes: 1123, lng: 12.5512, lat: 55.6883, district: 'Nørrebro', status: 'in-progress', scale: 'local', investmentLevel: 'municipal', tags: ['lighting','energy','safety','smart city'], hasModel: true, modelUrl: MODEL_URLS.lantern, voters: [] },
   { id: 'proj-004', budgetId: 'deltagerbudgettering', name: 'Cycle Parking & Repair Stations — Kødbyen', desc: '12 secure cycle stands with pumps and repair tools at key entrances to Kødbyen.', category: 'transport', cost: 410000, votes: 987, lng: 12.5502, lat: 55.6691, district: 'Vesterbro', status: 'completed', scale: 'local', investmentLevel: 'municipal', tags: ['cycling','infrastructure','mobility'], hasModel: true, modelUrl: MODEL_URLS.truck, voters: [] },
-  { id: 'proj-005', budgetId: 'deltagerbudgettering', name: 'Community Kitchen — Istedgade', desc: 'Shared pay-what-you-can canteen and cooking workshop space on Istedgade.', category: 'culture', cost: 620000, votes: 3102, lng: 12.5524, lat: 55.6703, district: 'Vesterbro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['food','community','seniors','cooperative'], hasModel: false, voters: [] },
+  { id: 'proj-005', budgetId: 'deltagerbudgettering', name: 'Community Kitchen — Istedgade', desc: 'Shared pay-what-you-can canteen and cooking workshop space on Istedgade.', category: 'culture', cost: 620000, votes: 3102, lng: 12.5524, lat: 55.6703, district: 'Vesterbro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['food','community','seniors','cooperative'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
   // Lokalplan (Høring)
-  { id: 'proj-006', budgetId: 'lokalplan-hoering', name: 'Lokalplan 567 — New Residential Quarter, Sydhavn', desc: 'Land-use plan for 1,800 new homes and a waterfront park on former industrial land.', category: 'housing', cost: 0, votes: 5621, lng: 12.5368, lat: 55.6595, district: 'Sydhavn', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['development','park','waterfront'], hasModel: false, voters: [] },
-  { id: 'proj-007', budgetId: 'lokalplan-hoering', name: 'Objection Hearing — Tower at Kalvebod Brygge 45', desc: 'Formal høring on a planned 22-storey office tower affecting harbour views.', category: 'public-buildings', cost: 0, votes: 4203, lng: 12.5684, lat: 55.6704, district: 'Indre By', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['high-rise','objection','waterfront'], hasModel: false, voters: [] },
+  { id: 'proj-006', budgetId: 'lokalplan-hoering', name: 'Lokalplan 567 — New Residential Quarter, Sydhavn', desc: 'Land-use plan for 1,800 new homes and a waterfront park on former industrial land.', category: 'housing', cost: 0, votes: 5621, lng: 12.5368, lat: 55.6595, district: 'Sydhavn', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['development','park','waterfront'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
+  { id: 'proj-007', budgetId: 'lokalplan-hoering', name: 'Objection Hearing — Tower at Kalvebod Brygge 45', desc: 'Formal høring on a planned 22-storey office tower affecting harbour views.', category: 'public-buildings', cost: 0, votes: 4203, lng: 12.5684, lat: 55.6704, district: 'Indre By', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['high-rise','objection','waterfront'], hasModel: true, modelUrl: MODEL_URLS.duck, voters: [] },
   { id: 'proj-008', budgetId: 'lokalplan-hoering', name: 'Amager Sports Complex — Ørestad', desc: 'New 22,000 m² sports complex with Olympic pool, sports halls and climbing centre.', category: 'public-buildings', cost: 480000000, votes: 3814, lng: 12.5742, lat: 55.6325, district: 'Amager', status: 'in-progress', scale: 'city-wide', investmentLevel: 'city', tags: ['sport','swimming pool','PPP'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
-  { id: 'proj-009', budgetId: 'lokalplan-hoering', name: 'Carlsberg City District Phase 3', desc: 'Final phase — 1,200 apartments, three public squares and a covered market hall.', category: 'housing', cost: 0, votes: 2901, lng: 12.5245, lat: 55.6659, district: 'Valby', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['mixed-use','redevelopment','market hall'], hasModel: false, voters: [] },
+  { id: 'proj-009', budgetId: 'lokalplan-hoering', name: 'Carlsberg City District Phase 3', desc: 'Final phase — 1,200 apartments, three public squares and a covered market hall.', category: 'housing', cost: 0, votes: 2901, lng: 12.5245, lat: 55.6659, district: 'Valby', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['mixed-use','redevelopment','market hall'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
   // Klimat-tilpasning
   { id: 'proj-010', budgetId: 'klimat-tilpasning', name: 'Climate Street — Nørre Allé Redesign', desc: 'Model climate street: narrowed carriageway, infiltration ditches, widened cycle lanes, permeable surfaces.', category: 'climate', cost: 42000000, votes: 2987, lng: 12.5618, lat: 55.6949, district: 'Nørrebro', status: 'in-progress', scale: 'district', investmentLevel: 'city', tags: ['flooding','stormwater','cycling'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
-  { id: 'proj-011', budgetId: 'klimat-tilpasning', name: 'Green Roof Grant Programme — Østerbro', desc: 'Subsidies covering up to 40% of green roof installation costs. Target: 200 roofs by 2027.', category: 'climate', cost: 18000000, votes: 1654, lng: 12.5729, lat: 55.7057, district: 'Østerbro', status: 'planned', scale: 'district', investmentLevel: 'city', tags: ['green roof','grants','flooding'], hasModel: false, voters: [] },
+  { id: 'proj-011', budgetId: 'klimat-tilpasning', name: 'Green Roof Grant Programme — Østerbro', desc: 'Subsidies covering up to 40% of green roof installation costs. Target: 200 roofs by 2027.', category: 'climate', cost: 18000000, votes: 1654, lng: 12.5729, lat: 55.7057, district: 'Østerbro', status: 'planned', scale: 'district', investmentLevel: 'city', tags: ['green roof','grants','flooding'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
   { id: 'proj-012', budgetId: 'klimat-tilpasning', name: 'Retention Park — Valby Idrætspark', desc: 'Underground retention system holding up to 80,000 m³ of stormwater. Biofilter pond + nature trail.', category: 'green-spaces', cost: 95000000, votes: 3241, lng: 12.5032, lat: 55.6636, district: 'Valby', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['retention','park','flooding','biofiltration'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
-  { id: 'proj-013', budgetId: 'klimat-tilpasning', name: 'Permeable Paving — Sankt Hans Torv', desc: 'Permeable surface absorbing 120 l/s during peak rainfall. Two bioswale channels + 14 new trees.', category: 'infrastructure', cost: 14500000, votes: 1432, lng: 12.5569, lat: 55.6889, district: 'Nørrebro', status: 'completed', scale: 'local', investmentLevel: 'city', tags: ['permeable paving','bioswale','stormwater'], hasModel: false, voters: [] },
+  { id: 'proj-013', budgetId: 'klimat-tilpasning', name: 'Permeable Paving — Sankt Hans Torv', desc: 'Permeable surface absorbing 120 l/s during peak rainfall. Two bioswale channels + 14 new trees.', category: 'infrastructure', cost: 14500000, votes: 1432, lng: 12.5569, lat: 55.6889, district: 'Nørrebro', status: 'completed', scale: 'local', investmentLevel: 'city', tags: ['permeable paving','bioswale','stormwater'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
   // Byfornyelse
   { id: 'proj-014', budgetId: 'byfornyelse', name: 'Courtyard Renewal — Saxogade 12–18', desc: 'Redesign of shared courtyard: permeable paving, garden beds, pergola, playground, LED lighting.', category: 'green-spaces', cost: 1850000, votes: 287, lng: 12.5455, lat: 55.6681, district: 'Vesterbro', status: 'completed', scale: 'local', investmentLevel: 'municipal', tags: ['courtyard','gardens','community'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
-  { id: 'proj-015', budgetId: 'byfornyelse', name: 'Façade Restoration — Istedgade 92–102', desc: 'Thermal upgrade and heritage façade restoration of six 1890–1910 tenements.', category: 'housing', cost: 6200000, votes: 341, lng: 12.5487, lat: 55.6698, district: 'Vesterbro', status: 'in-progress', scale: 'local', investmentLevel: 'municipal', tags: ['restoration','thermal upgrade','heritage'], hasModel: false, voters: [] },
+  { id: 'proj-015', budgetId: 'byfornyelse', name: 'Façade Restoration — Istedgade 92–102', desc: 'Thermal upgrade and heritage façade restoration of six 1890–1910 tenements.', category: 'housing', cost: 6200000, votes: 341, lng: 12.5487, lat: 55.6698, district: 'Vesterbro', status: 'in-progress', scale: 'local', investmentLevel: 'municipal', tags: ['restoration','thermal upgrade','heritage'], hasModel: true, modelUrl: MODEL_URLS.lantern, voters: [] },
   { id: 'proj-016', budgetId: 'byfornyelse', name: 'Nørrebro Culture Centre — Former Textile Factory', desc: 'Adaptive reuse of a 1924 factory: 12 artist studios, music room, event hall, café, tool library.', category: 'culture', cost: 22000000, votes: 4112, lng: 12.5531, lat: 55.6985, district: 'Nørrebro', status: 'planned', scale: 'district', investmentLevel: 'municipal', tags: ['culture','artists','adaptive reuse','cooperative'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
-  { id: 'proj-017', budgetId: 'byfornyelse', name: 'Accessible Public Space — Blågårds Plads', desc: 'Universal design upgrade: tactile paving, ramps, accessible fountain, safety lighting.', category: 'infrastructure', cost: 3100000, votes: 2543, lng: 12.5499, lat: 55.6897, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['accessibility','seniors','universal design'], hasModel: false, voters: [] },
+  { id: 'proj-017', budgetId: 'byfornyelse', name: 'Accessible Public Space — Blågårds Plads', desc: 'Universal design upgrade: tactile paving, ramps, accessible fountain, safety lighting.', category: 'infrastructure', cost: 3100000, votes: 2543, lng: 12.5499, lat: 55.6897, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['accessibility','seniors','universal design'], hasModel: true, modelUrl: MODEL_URLS.bench, voters: [] },
   // Borgersamling
   { id: 'proj-018', budgetId: 'borgersamling', name: 'Waterfront Vision 2040 — Nordre Toldbod', desc: "Citizens' assembly: 60% public park, 20% cultural space, 20% social housing. Rejected 45% commercial use.", category: 'recreation', cost: 0, votes: 6823, lng: 12.5952, lat: 55.6884, district: 'Indre By', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['waterfront','deliberation','strategy'], hasModel: true, modelUrl: MODEL_URLS.statue, voters: [] },
-  { id: 'proj-019', budgetId: 'borgersamling', name: 'Climate Panel — Decarbonising District Heating', desc: '80-citizen panel on accelerating decarbonisation of HOFOR district heating network.', category: 'climate', cost: 0, votes: 4230, lng: 12.5683, lat: 55.6761, district: 'City-wide', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['climate','energy','district heating','renewables'], hasModel: false, voters: [] },
-  { id: 'proj-020', budgetId: 'borgersamling', name: 'Future of Copenhagen Schools 2035', desc: '100-citizen panel on school strategy: keep neighbourhood schools + specialist programmes.', category: 'education', cost: 0, votes: 3109, lng: 12.5683, lat: 55.6761, district: 'City-wide', status: 'in-progress', scale: 'city-wide', investmentLevel: 'city', tags: ['education','schools','strategy','demographics'], hasModel: false, voters: [] },
+  { id: 'proj-019', budgetId: 'borgersamling', name: 'Climate Panel — Decarbonising District Heating', desc: '80-citizen panel on accelerating decarbonisation of HOFOR district heating network.', category: 'climate', cost: 0, votes: 4230, lng: 12.5683, lat: 55.6761, district: 'City-wide', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['climate','energy','district heating','renewables'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
+  { id: 'proj-020', budgetId: 'borgersamling', name: 'Future of Copenhagen Schools 2035', desc: '100-citizen panel on school strategy: keep neighbourhood schools + specialist programmes.', category: 'education', cost: 0, votes: 3109, lng: 12.5683, lat: 55.6761, district: 'City-wide', status: 'in-progress', scale: 'city-wide', investmentLevel: 'city', tags: ['education','schools','strategy','demographics'], hasModel: true, modelUrl: MODEL_URLS.toycar, voters: [] },
   { id: 'proj-021', budgetId: 'borgersamling', name: 'Summer Cinema — Fælledparken', desc: '20 free outdoor screenings, 4K projector, 10×6m screen, wireless headphones for hearing-impaired.', category: 'culture', cost: 340000, votes: 2789, lng: 12.5597, lat: 55.7038, district: 'Østerbro', status: 'voting', scale: 'district', investmentLevel: 'municipal', tags: ['cinema','park','summer','accessibility'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
   // Copenhagen landmarks (hackathon demo)
   { id: 'cph-001', budgetId: 'byfornyelse', name: 'Cykelslangen (Cycle Snake)', desc: '235m elevated bicycle ramp in vivid orange connecting Dybbølsbro to Fisketorvet. Iconic cycling infrastructure by Dissing+Weitling.', category: 'transport', cost: 32000000, votes: 9120, lng: 12.5612, lat: 55.6622, district: 'Vesterbro', status: 'completed', scale: 'local', investmentLevel: 'city', tags: ['cycling','icon'], hasModel: true, modelUrl: MODEL_URLS.bridge, voters: [] },
-  { id: 'cph-002', budgetId: 'klimat-tilpasning', name: 'Amager Bakke / CopenHill', desc: 'Ski slope, hiking trail and climbing wall on a clean waste-to-energy plant — BIG. 85m “urban mountain” with city views.', category: 'recreation', cost: 0, votes: 8850, lng: 12.5812, lat: 55.6354, district: 'Amager', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['ski','climate','waste-to-energy'], hasModel: false, voters: [] },
+  { id: 'cph-002', budgetId: 'klimat-tilpasning', name: 'Amager Bakke / CopenHill', desc: 'Ski slope, hiking trail and climbing wall on a clean waste-to-energy plant — BIG. 85m “urban mountain” with city views.', category: 'recreation', cost: 0, votes: 8850, lng: 12.5812, lat: 55.6354, district: 'Amager', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['ski','climate','waste-to-energy'], hasModel: true, modelUrl: MODEL_URLS.statue, voters: [] },
   { id: 'cph-003', budgetId: 'byfornyelse', name: 'BLOX / Danish Architecture Center', desc: 'OMA-designed harbourfront complex: DAC exhibitions, café, playground and urban living labs by the water.', category: 'public-buildings', cost: 0, votes: 6540, lng: 12.5972, lat: 55.6721, district: 'Indre By', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['architecture','harbour','culture'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
   { id: 'cph-004', budgetId: 'deltagerbudgettering', name: 'Israels Plads Renovation', desc: 'Underground bike parking for 2,000 cycles, open market square and activity zones next to Nørreport.', category: 'infrastructure', cost: 62000000, votes: 5120, lng: 12.5685, lat: 55.6838, district: 'Indre By', status: 'completed', scale: 'district', investmentLevel: 'city', tags: ['cycling','market','square'], hasModel: true, modelUrl: MODEL_URLS.lantern, voters: [] },
   { id: 'cph-005', budgetId: 'klimat-tilpasning', name: 'Nørrebroparken Expansion', desc: 'Major upgrade of Nørrebro’s central park: new paths, biodiversity, stormwater beds and community sports nodes.', category: 'green-spaces', cost: 45000000, votes: 4980, lng: 12.5462, lat: 55.6948, district: 'Nørrebro', status: 'in-progress', scale: 'district', investmentLevel: 'city', tags: ['park','biodiversity'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
   { id: 'cph-006', budgetId: 'byfornyelse', name: 'Havneparken — Islands Brygge', desc: 'Waterfront park with harbour baths, lawns and piers — anchor of Amager’s harbour-facing public life.', category: 'green-spaces', cost: 0, votes: 7230, lng: 12.5782, lat: 55.6688, district: 'Amager', status: 'completed', scale: 'district', investmentLevel: 'city', tags: ['harbour','swimming','park'], hasModel: true, modelUrl: MODEL_URLS.duck, voters: [] },
-  { id: 'cph-007', budgetId: 'klimat-tilpasning', name: 'Skt. Kjelds Kvarter Climate Adaptation', desc: 'Cloudburst boulevards, green roofs and retention in Østerbro’s climate-resilient neighbourhood (Klimakvarter).', category: 'climate', cost: 280000000, votes: 4450, lng: 12.5245, lat: 55.7072, district: 'Østerbro', status: 'in-progress', scale: 'district', investmentLevel: 'city', tags: ['cloudburst','stormwater'], hasModel: false, voters: [] },
+  { id: 'cph-007', budgetId: 'klimat-tilpasning', name: 'Skt. Kjelds Kvarter Climate Adaptation', desc: 'Cloudburst boulevards, green roofs and retention in Østerbro’s climate-resilient neighbourhood (Klimakvarter).', category: 'climate', cost: 280000000, votes: 4450, lng: 12.5245, lat: 55.7072, district: 'Østerbro', status: 'in-progress', scale: 'district', investmentLevel: 'city', tags: ['cloudburst','stormwater'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
   { id: 'cph-008', budgetId: 'lokalplan-hoering', name: 'Christiansholm (Paper Island)', desc: 'Redevelopment of the former paper warehouse island into food halls, culture and harbour pools in Christianshavn.', category: 'culture', cost: 0, votes: 5890, lng: 12.5938, lat: 55.6782, district: 'Christianshavn', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['harbour','food hall'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
 ];
 
@@ -974,6 +1069,9 @@ function applySidebarFilters() {
   filterBudgetValue = document.getElementById('filter-budget')?.value || '';
   filterScaleValue = document.getElementById('filter-scale')?.value || '';
   filterInvestmentValue = document.getElementById('filter-investment')?.value || '';
+  if (sidebarDistrictFilter && activeDistrict) {
+    deactivateDistrict();
+  }
   renderProjectList();
   updateStats();
   updateMarkerDistrictFilter();
@@ -1247,6 +1345,9 @@ function deactivateDistrict() {
 
 function activateDistrict(name, color, lngLat) {
   activeDistrict = name;
+  const distSel = document.getElementById('filter-district');
+  if (distSel) distSel.value = '';
+  sidebarDistrictFilter = '';
 
   const fullFeature = getDistrictFeatureByName(name);
   if (fullFeature) {
@@ -1611,6 +1712,7 @@ map.on('load', async () => {
 
   // ── Sidebar filters ──
   initSidebarFilters(districtData);
+  initTopFilters();
   updateMarkerDistrictFilter();
 });
 
@@ -1622,6 +1724,14 @@ map.on('styleimagemissing', (e) => {
   const canvas = document.createElement('canvas');
   canvas.width = 1; canvas.height = 1;
   map.addImage(e.id, { width: 1, height: 1, data: new Uint8Array(4) });
+});
+
+// ── Map controls toggle ──
+const mcToggleBtn = document.getElementById('mc-toggle');
+const mcPanel = document.getElementById('map-controls');
+mcToggleBtn.addEventListener('click', () => {
+  const isOpen = mcPanel.classList.toggle('open');
+  mcToggleBtn.classList.toggle('open', isOpen);
 });
 
 // ── Map controls ──
@@ -1648,12 +1758,73 @@ mcHeight.oninput = () => {
 map.on('pitchend', () => { mcPitch.value = Math.round(map.getPitch()); mcPitchVal.textContent = mcPitch.value + '\u00B0'; });
 map.on('rotateend', () => { mcBearing.value = Math.round(map.getBearing()); mcBearingVal.textContent = mcBearing.value + '\u00B0'; });
 
+// ── Map label / above-building checkboxes ──
+const mcLabels = document.getElementById('mc-labels');
+const mcAbove = document.getElementById('mc-above');
+let _symbolLayerIds = [];
+map.on('load', () => {
+  _symbolLayerIds = map.getStyle().layers.filter(l => l.type === 'symbol').map(l => l.id);
+});
+if (mcLabels) mcLabels.addEventListener('change', () => {
+  const vis = mcLabels.checked ? 'visible' : 'none';
+  _symbolLayerIds.forEach(id => { try { map.setLayoutProperty(id, 'visibility', vis); } catch(e){} });
+});
+if (mcAbove) mcAbove.addEventListener('change', () => {
+  // placeholder: controls marker z-index above/below buildings
+});
+
+// ── Top-bar filter dropdowns ──
+let topSortMode = 'votes-desc';
+
+function initTopFilters() {
+  const catSel = document.getElementById('top-filter-category');
+  if (catSel) {
+    catSel.innerHTML = '<option value="">Category</option>' +
+      Object.entries(CATEGORIES).filter(([k]) => k !== 'other').map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('');
+    catSel.addEventListener('change', applyTopFilters);
+  }
+  const scopeSel = document.getElementById('top-filter-scope');
+  if (scopeSel) {
+    scopeSel.innerHTML = '<option value="">Scope</option>' +
+      Object.entries(SCALE_LABELS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+    scopeSel.addEventListener('change', applyTopFilters);
+  }
+  document.getElementById('top-filter-status')?.addEventListener('change', applyTopFilters);
+  const sortSel = document.getElementById('top-filter-sort');
+  if (sortSel) sortSel.addEventListener('change', () => { topSortMode = sortSel.value; applyTopFilters(); });
+}
+
+function applyTopFilters() {
+  const catVal = document.getElementById('top-filter-category')?.value || '';
+  const statusVal = document.getElementById('top-filter-status')?.value || '';
+  const scopeVal = document.getElementById('top-filter-scope')?.value || '';
+
+  filterCategorySet = catVal ? new Set([catVal]) : new Set();
+  filterStatusValue = statusVal;
+  filterScaleValue = scopeVal;
+
+  document.querySelectorAll('.top-filter-btn').forEach(s => {
+    s.classList.toggle('active', s.value !== '' && s.selectedIndex > 0);
+  });
+
+  renderProjectList();
+  updateStats();
+  updateMarkerDistrictFilter();
+  updateFilterCount();
+}
+
+// Patch initSidebarFilters to also init top filters
+const _origInitSidebarFilters = typeof initSidebarFilters === 'function' ? initSidebarFilters : null;
+
 // ── Click to place ──
 map.on('click', (e) => {
   if (!placingMode) return;
   pendingLocation = { lng: e.lngLat.lng, lat: e.lngLat.lat };
-  document.getElementById('f-location-text').textContent = `${e.lngLat.lat.toFixed(5)}, ${e.lngLat.lng.toFixed(5)}`;
-  document.getElementById('f-location-text').style.color = '#00a67e';
+  const locEl = document.getElementById('f-location-text');
+  locEl.textContent = `Location set: ${e.lngLat.lat.toFixed(5)}, ${e.lngLat.lng.toFixed(5)}`;
+  locEl.style.color = '#00a67e';
+  locEl.closest('.form-hint').style.borderColor = 'rgba(0,166,126,0.25)';
+  locEl.closest('.form-hint').style.background = 'rgba(0,166,126,0.06)';
   validateForm();
   if (window._tempMarker) window._tempMarker.remove();
   const el = document.createElement('div');
@@ -1665,8 +1836,8 @@ map.on('click', (e) => {
 // Fallback: HTML markers with viewport alignment (default)
 function addMarker(project) {
   const el = document.createElement('div');
-  const catClass = categoryMeta(project.category).catClass;
-  el.innerHTML = `<div class="quest-wrap ${catClass}"><div class="quest-icon">!</div><div class="quest-dot"></div><div class="quest-pole"></div></div>`;
+  const statusClass = 'status-' + (project.status || 'planned');
+  el.innerHTML = `<div class="quest-wrap ${statusClass}"><div class="quest-icon">!</div><div class="quest-dot"></div><div class="quest-pole"></div></div>`;
   const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([project.lng, project.lat]).addTo(map);
   el.addEventListener('click', (e) => { e.stopPropagation(); openProjectDetail(project.id); });
   markers[project.id] = marker;
@@ -1706,7 +1877,16 @@ window.voteForProject = voteForProject;
 function renderProjectList() {
   const list = document.getElementById('project-list');
   const filtered = getFilteredProjects();
-  const sorted = [...filtered].sort((a, b) => b.votes - a.votes);
+  const sorted = [...filtered].sort((a, b) => {
+    switch (topSortMode) {
+      case 'votes-asc': return a.votes - b.votes;
+      case 'cost-desc': return (b.cost || 0) - (a.cost || 0);
+      case 'cost-asc': return (a.cost || 0) - (b.cost || 0);
+      case 'name-asc': return a.name.localeCompare(b.name);
+      case 'name-desc': return b.name.localeCompare(a.name);
+      default: return b.votes - a.votes;
+    }
+  });
   const budgetName = (id) => BUDGETS.find(b => b.id === id)?.name || '';
 
   if (!sorted.length) {
@@ -1784,12 +1964,19 @@ const modeInd = document.getElementById('mode-indicator');
 addBtn.addEventListener('click', () => {
   if (placingMode) { exitPlacingMode(); return; }
   placingMode = true;
-  addBtn.classList.add('active'); addBtn.textContent = 'Click on map...';
+  addBtn.classList.add('active'); addBtn.textContent = 'Cancel placement';
   addForm.classList.add('visible');
   document.getElementById('map').classList.add('placing');
   modeInd.textContent = 'PLACING'; modeInd.className = 'place';
+  if (!sidebarVisible) {
+    sidebarVisible = true;
+    sidebar.classList.remove('hidden');
+    sidebarToggle.classList.add('shifted');
+    sidebarToggle.innerHTML = '&#9776;';
+  }
 });
 document.getElementById('btn-cancel').addEventListener('click', exitPlacingMode);
+document.getElementById('btn-cancel-bottom').addEventListener('click', exitPlacingMode);
 
 function exitPlacingMode() {
   placingMode = false; pendingLocation = null; pendingModelFile = null;
@@ -1798,8 +1985,8 @@ function exitPlacingMode() {
   document.getElementById('map').classList.remove('placing');
   modeInd.textContent = 'BROWSE'; modeInd.className = 'browse';
   ['f-name','f-desc','f-cost'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('f-location-text').textContent = 'Click on map to select location';
-  document.getElementById('f-location-text').style.color = 'var(--text-tertiary)';
+  document.getElementById('f-location-text').textContent = 'Click on the map to place your project';
+  document.getElementById('f-location-text').style.color = '';
   document.getElementById('model-upload-text').textContent = 'Drag .glb / .gltf / .stl or click';
   document.getElementById('model-upload').classList.remove('has-file');
   document.getElementById('btn-submit').disabled = true;
