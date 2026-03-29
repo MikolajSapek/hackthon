@@ -29,9 +29,12 @@
       --border-strong: rgba(0,0,0,0.14);
       --shadow-float: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
       --accent-green: #00a67e;
-      --accent-green-bg: rgba(0,166,126,0.08);
+      --accent-green-bg: #e6f7f2;
+      --sidebar-accent: 0, 166, 126;
+      --sidebar-bg: #ffffff;
+      --sidebar-border: rgba(0,0,0,0.09);
       --accent-blue: #2f80ed;
-      --accent-blue-bg: rgba(47,128,237,0.08);
+      --accent-blue-bg: #e8f0fd;
       --accent-red: #e03e3e;
       --accent-orange: #d9730d;
       --accent-purple: #6940a5;
@@ -89,11 +92,11 @@
     .top-filter-btn.active { border-color: var(--accent-blue); background: var(--accent-blue-bg); }
     .top-filter-btn option { background: #fff; color: var(--text-primary); font-size: 13px; }
 
-    /* ═══ SIDEBAR — Notion panel ═══ */
+    /* ═══ SIDEBAR — green panel ═══ */
     #sidebar {
       position: fixed; top: 0; right: 0; bottom: 0; width: 380px; z-index: 90;
-      background: var(--bg-primary);
-      border-left: 1px solid var(--border);
+      background: var(--sidebar-bg);
+      border-left: 1px solid var(--sidebar-border);
       display: flex; flex-direction: column;
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -103,7 +106,7 @@
 
     #project-list {
       flex: 1; overflow-y: auto; padding: 12px 12px 8px;
-      scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.1) transparent;
+      scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.15) transparent;
       margin-top: 8px;
     }
 
@@ -179,14 +182,40 @@
       border-radius: var(--radius-card);
       padding: 14px 16px; margin-bottom: 6px;
       cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
       position: relative; overflow: hidden;
     }
     .project-card:hover { background: var(--bg-hover); border-color: var(--border-strong); }
     .project-card.active {
-      border-color: var(--accent-blue);
-      background: rgba(47,128,237,0.04);
+      box-shadow: 0 0 0 2px rgba(47,128,237,0.45);
+      border-color: rgba(47,128,237,0.5);
     }
+    /* Sidebar card tint — same family as map quest markers */
+    .project-card.status-completed {
+      border-left: 3px solid var(--accent-green);
+      background: linear-gradient(90deg, rgba(0,166,126,0.09) 0%, var(--bg-secondary) 14px);
+    }
+    .project-card.status-in-progress {
+      border-left: 3px solid var(--accent-blue);
+      background: linear-gradient(90deg, rgba(47,128,237,0.08) 0%, var(--bg-secondary) 14px);
+    }
+    .project-card.status-planned {
+      border-left: 3px solid var(--accent-orange);
+      background: linear-gradient(90deg, rgba(217,115,13,0.08) 0%, var(--bg-secondary) 14px);
+    }
+    .project-card.status-voting {
+      border-left: 3px solid #f59f00;
+      background: linear-gradient(90deg, rgba(245,159,0,0.1) 0%, var(--bg-secondary) 14px);
+    }
+    .project-card.status-concept {
+      border-left: 3px dashed #6940a5;
+      background: linear-gradient(90deg, rgba(105,64,165,0.06) 0%, var(--bg-secondary) 14px);
+    }
+    .project-card.status-completed:hover { background: linear-gradient(90deg, rgba(0,166,126,0.12) 0%, var(--bg-hover) 14px); }
+    .project-card.status-in-progress:hover { background: linear-gradient(90deg, rgba(47,128,237,0.11) 0%, var(--bg-hover) 14px); }
+    .project-card.status-planned:hover { background: linear-gradient(90deg, rgba(217,115,13,0.11) 0%, var(--bg-hover) 14px); }
+    .project-card.status-voting:hover { background: linear-gradient(90deg, rgba(245,159,0,0.14) 0%, var(--bg-hover) 14px); }
+    .project-card.status-concept:hover { background: linear-gradient(90deg, rgba(105,64,165,0.12) 0%, var(--bg-hover) 14px); }
 
     .pc-rank {
       position: absolute; top: 12px; right: 14px;
@@ -262,7 +291,7 @@
       white-space: nowrap;
     }
     #add-project-btn:hover {
-      background: var(--accent-green-bg);
+      background: #e6f7f2;
       border-color: rgba(0,166,126,0.35);
       color: var(--accent-green);
       box-shadow: 0 2px 8px rgba(0,166,126,0.15), var(--shadow-float);
@@ -271,7 +300,7 @@
       border-style: solid;
       border-color: var(--accent-orange);
       color: var(--accent-orange);
-      background: rgba(217,115,13,0.08);
+      background: #fff4eb;
     }
 
     /* ═══ FORM — takes over full sidebar ═══ */
@@ -430,6 +459,14 @@
     .quest-wrap.status-completed .quest-icon { background: #00a67e; }
     .quest-wrap.status-completed .quest-dot { border-top-color: #00a67e; }
     .quest-wrap.status-completed .quest-pole { background: linear-gradient(180deg, #00a67e 0%, transparent 100%); }
+    .quest-wrap.status-concept .quest-icon { background: linear-gradient(135deg, #6940a5, #9b59b6); border: 2px dashed rgba(255,255,255,0.5); border-radius: 50%; }
+    .quest-wrap.status-concept .quest-dot { border-top-color: #6940a5; }
+    .quest-wrap.status-concept .quest-pole { background: linear-gradient(180deg, #6940a5 0%, transparent 100%); }
+    .quest-wrap.status-concept { animation: concept-pulse 2.5s ease-in-out infinite; }
+    @keyframes concept-pulse {
+      0%, 100% { transform: translateY(0); opacity: 0.85; }
+      50% { transform: translateY(-10px); opacity: 1; }
+    }
 
     /* ═══ POPUP — Notion-light style ═══ */
     .maplibregl-popup-content {
@@ -508,70 +545,92 @@
     }
     #project-detail.visible { display: flex; flex-direction: column; }
     .detail-back {
-      padding: 12px 16px; cursor: pointer;
-      font-size: 13px; color: var(--text-secondary); font-weight: 500;
-      border-bottom: 1px solid var(--border);
+      padding: 0;
+      font-size: 12px; color: var(--text-tertiary); font-weight: 600;
       transition: color 0.12s, background 0.12s;
       display: flex; align-items: center; gap: 6px;
+      letter-spacing: 0.2px;
+      position: absolute; top: 0; left: 0; right: 0; z-index: 5;
+      background: linear-gradient(180deg, rgba(12,12,26,0.7) 0%, transparent 100%);
+      color: rgba(255,255,255,0.6);
+      pointer-events: none;
     }
-    .detail-back:hover { color: var(--text-primary); background: var(--bg-hover); }
+    .detail-back-hit {
+      pointer-events: auto;
+      cursor: pointer;
+      padding: 10px 16px;
+    }
+    .detail-back:hover { color: #fff; }
     .detail-model-container {
-      width: 100%; height: 220px; background: #0c0c1a;
-      border-bottom: 1px solid var(--border);
+      width: 100%; height: 240px;
+      background: linear-gradient(135deg, #0c0c1a 0%, #141428 100%);
       position: relative; overflow: hidden;
     }
     .detail-model-container canvas { width: 100% !important; height: 100% !important; }
     .detail-no-model {
-      width: 100%; height: 140px;
-      background: var(--bg-primary);
+      width: 100%; height: 100px;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; color: var(--text-tertiary);
-      border-bottom: 1px solid var(--border);
     }
-    .detail-body { padding: 20px 20px 28px; flex: 1; }
-    .detail-badge-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
+    .detail-body { padding: 0 20px 28px; flex: 1; overflow-y: auto; }
+    .detail-top-section {
+      position: relative; margin: -24px -20px 0; padding: 20px 20px 16px;
+      background: var(--bg-secondary);
+      border-radius: 16px 16px 0 0;
+    }
+    .detail-budget-label { font-size: 11px; color: var(--text-tertiary); font-weight: 500; margin-bottom: 6px; }
+    .detail-badge-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
     .detail-badge {
-      font-size: 10px; padding: 2px 8px; border-radius: 4px;
-      font-weight: 600; letter-spacing: 0.2px; text-transform: uppercase;
+      font-size: 10px; padding: 3px 9px; border-radius: 6px;
+      font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;
     }
     .badge-edition { background: var(--accent-blue-bg); color: var(--accent-blue); }
     .badge-status-green { background: var(--accent-green-bg); color: var(--accent-green); }
     .badge-status-yellow { background: rgba(217,115,13,0.1); color: var(--accent-orange); }
+    .badge-status-blue { background: var(--accent-blue-bg); color: var(--accent-blue); }
+    .badge-status-voting { background: rgba(245,159,0,0.14); color: #c97800; }
+    .badge-status-planned { background: rgba(217,115,13,0.12); color: var(--accent-orange); }
     .badge-status-gray { background: rgba(0,0,0,0.05); color: var(--text-secondary); }
+    .badge-status-concept { background: rgba(105,64,165,0.1); color: #6940a5; }
     .detail-title {
       font-family: 'Source Serif 4', serif;
-      font-size: 24px; font-weight: 700;
-      color: var(--text-primary); line-height: 1.3;
-      margin-bottom: 10px; letter-spacing: -0.2px;
+      font-size: 22px; font-weight: 700;
+      color: var(--text-primary); line-height: 1.28;
+      margin-bottom: 0; letter-spacing: -0.3px;
     }
-    .detail-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px; }
-    .detail-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+    .detail-desc {
+      font-size: 13.5px; color: var(--text-secondary); line-height: 1.65;
+      margin-top: 14px; padding-top: 14px; margin-bottom: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .detail-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px; margin-top: 16px; }
     .detail-stat {
       background: var(--bg-primary);
       border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      padding: 12px;
+      border-radius: 10px;
+      padding: 10px 12px;
     }
     .detail-stat-label {
-      font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px;
-      color: var(--text-tertiary); font-weight: 600; margin-bottom: 4px;
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.8px;
+      color: var(--text-tertiary); font-weight: 600; margin-bottom: 3px;
     }
-    .detail-stat-value { font-size: 16px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--text-primary); }
+    .detail-stat-value { font-size: 15px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--text-primary); }
     .detail-stat-value.votes-color { color: var(--accent-green); }
     .detail-stat-value.cost-color { color: var(--accent-red); }
-    .detail-stat-value.district-color { color: var(--accent-orange); font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 600; }
-    .detail-stat-value.cat-color { color: var(--accent-purple); font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 600; }
+    .detail-stat-value.district-color { color: var(--accent-orange); font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 600; }
+    .detail-stat-value.cat-color { color: var(--accent-purple); font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 600; }
     .detail-vote-btn {
-      width: 100%; padding: 12px; border-radius: var(--radius-btn);
-      border: 1px solid rgba(0,166,126,0.3);
+      width: 100%; padding: 12px; border-radius: 10px;
+      border: 1.5px solid rgba(0,166,126,0.3);
       font-size: 14px; font-weight: 600; cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
+      transition: all 0.18s ease;
       background: var(--accent-green-bg);
       color: var(--accent-green);
       margin-bottom: 10px;
       font-family: 'DM Sans', sans-serif;
     }
-    .detail-vote-btn:hover { background: rgba(0,166,126,0.14); border-color: rgba(0,166,126,0.5); }
+    .detail-vote-btn:hover { background: rgba(0,166,126,0.14); border-color: rgba(0,166,126,0.5); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,166,126,0.15); }
     .detail-vote-btn.voted {
       background: rgba(0,166,126,0.15);
       border-color: rgba(0,166,126,0.5);
@@ -581,10 +640,12 @@
     .detail-source a { color: var(--accent-blue); text-decoration: none; }
     .detail-source a:hover { text-decoration: underline; }
     .model-interact-hint {
-      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
-      font-size: 10px; color: rgba(255,255,255,0.5);
-      background: rgba(0,0,0,0.45); padding: 3px 10px;
-      border-radius: 6px; pointer-events: none;
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      font-size: 10px; color: rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.35); padding: 4px 12px;
+      border-radius: 8px; pointer-events: none;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      letter-spacing: 0.3px;
     }
 
     /* ═══ MODEL CONTROLS ═══ */
@@ -758,8 +819,8 @@
     <option value="completed">Completed</option>
     <option value="Concept">Concept</option>
   </select>
-  <select class="top-filter-btn" id="top-filter-scope">
-    <option value="">Scope</option>
+  <select class="top-filter-btn" id="top-filter-budget">
+    <option value="">Budget</option>
   </select>
   <select class="top-filter-btn" id="top-filter-sort">
     <option value="votes-desc">Sort by</option>
@@ -774,9 +835,9 @@
 
 <div id="map"></div>
 
-<button id="sidebar-toggle" class="shifted">&#9776;</button>
+<button id="sidebar-toggle">&#9654;</button>
 
-<aside id="sidebar">
+<aside id="sidebar" class="hidden">
   <div id="sidebar-header">
     <h2>Community Projects</h2>
     <p id="project-count">0 projects | 0 votes</p>
@@ -849,8 +910,10 @@
 <div id="add-project-btn">+ Propose new project</div>
 
 <div id="project-detail">
-  <div class="detail-back" id="detail-back">&larr; Back to list</div>
-  <div id="detail-model-area"></div>
+  <div style="position:relative">
+    <div class="detail-back" id="detail-back"><span class="detail-back-hit">&larr; Back to list</span></div>
+    <div id="detail-model-area"></div>
+  </div>
   <div class="detail-body" id="detail-body"></div>
 </div>
 
@@ -986,7 +1049,34 @@ const DEMO_PROJECTS = [
   { id: 'cph-006', budgetId: 'byfornyelse', name: 'Havneparken — Islands Brygge', desc: 'Waterfront park with harbour baths, lawns and piers — anchor of Amager’s harbour-facing public life.', category: 'green-spaces', cost: 0, votes: 7230, lng: 12.5782, lat: 55.6688, district: 'Amager', status: 'completed', scale: 'district', investmentLevel: 'city', tags: ['harbour','swimming','park'], hasModel: true, modelUrl: MODEL_URLS.duck, voters: [] },
   { id: 'cph-007', budgetId: 'klimat-tilpasning', name: 'Skt. Kjelds Kvarter Climate Adaptation', desc: 'Cloudburst boulevards, green roofs and retention in Østerbro’s climate-resilient neighbourhood (Klimakvarter).', category: 'climate', cost: 280000000, votes: 4450, lng: 12.5245, lat: 55.7072, district: 'Østerbro', status: 'in-progress', scale: 'district', investmentLevel: 'city', tags: ['cloudburst','stormwater'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
   { id: 'cph-008', budgetId: 'lokalplan-hoering', name: 'Christiansholm (Paper Island)', desc: 'Redevelopment of the former paper warehouse island into food halls, culture and harbour pools in Christianshavn.', category: 'culture', cost: 0, votes: 5890, lng: 12.5938, lat: 55.6782, district: 'Christianshavn', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['harbour','food hall'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
+  // Concept — Spatial Development / Zagospodarowanie Przestrzenne
+  { id: 'concept-001', budgetId: 'lokalplan-hoering', name: 'Nordhavn Pocket Neighbourhoods', desc: 'Concept for a network of 6 car-free "pocket neighbourhoods" within Nordhavn, each centred on a shared courtyard with communal gardens, tool libraries and rain gardens. Ground-floor mixed-use with local workshops and day-care. Target: 800 homes with 70% social housing.', category: 'housing', cost: 0, votes: 312, lng: 12.5955, lat: 55.7120, district: 'Nordhavn', status: 'Concept', scale: 'district', investmentLevel: 'city', tags: ['spatial planning','car-free','social housing','pocket neighbourhood'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
+  { id: 'concept-002', budgetId: 'lokalplan-hoering', name: 'Sydhavn Blue-Green Corridor', desc: 'Linear park and stormwater corridor from Sjællandsbroen to Teglholmen following the former rail yard. 2.4 km greenway with bioswales, urban wetlands, footpaths, and three pedestrian bridges connecting neighbourhoods currently split by infrastructure.', category: 'green-spaces', cost: 0, votes: 478, lng: 12.5310, lat: 55.6545, district: 'Sydhavn', status: 'Concept', scale: 'district', investmentLevel: 'city', tags: ['spatial planning','greenway','blue-green','stormwater','connectivity'], hasModel: true, modelUrl: MODEL_URLS.bridge, voters: [] },
+  { id: 'concept-003', budgetId: 'lokalplan-hoering', name: 'Vesterbro Superblocks — Istedgade Quarter', desc: 'Pilot "superblock" model inspired by Barcelona: close 9 residential streets to through-traffic, creating 3 connected public squares with playgrounds, café terraces and biodiverse planting. Residents keep access; deliveries via time windows.', category: 'infrastructure', cost: 0, votes: 891, lng: 12.5501, lat: 55.6693, district: 'Vesterbro', status: 'Concept', scale: 'local', investmentLevel: 'municipal', tags: ['spatial planning','superblock','traffic calming','public space','pedestrian'], hasModel: true, modelUrl: MODEL_URLS.bench, voters: [] },
+  { id: 'concept-004', budgetId: 'lokalplan-hoering', name: '15-Minute Amager — Missing Links Study', desc: 'Spatial analysis identifying gaps in daily-service accessibility across Amager Øst and Vest. Proposes 14 micro-interventions: corner shops, pop-up health clinics, neighbourhood co-working hubs, and cycle shortcuts to close the last 15-minute-city gaps.', category: 'infrastructure', cost: 0, votes: 645, lng: 12.5995, lat: 55.6520, district: 'Amager', status: 'Concept', scale: 'district', investmentLevel: 'city', tags: ['spatial planning','15-minute city','accessibility','services','cycling'], hasModel: true, modelUrl: MODEL_URLS.truck, voters: [] },
+  { id: 'concept-005', budgetId: 'borgersamling', name: 'Valby Industrial Heritage Quarter', desc: 'Vision for the former Carlsberg logistics area south of Ny Carlsberg Vej: adaptive reuse of 5 brick warehouses into maker spaces, a food hall, community theatre and rooftop urban farm. New public square anchored by a preserved rail turntable.', category: 'culture', cost: 0, votes: 723, lng: 12.5195, lat: 55.6625, district: 'Valby', status: 'Concept', scale: 'district', investmentLevel: 'city', tags: ['spatial planning','adaptive reuse','heritage','maker space','food hall'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
+  { id: 'concept-006', budgetId: 'lokalplan-hoering', name: 'Østerbro Climate-Resilient Schoolyard Network', desc: 'Redesign of 8 schoolyards into multifunctional public spaces open after hours: permeable surfaces, retention basins doubling as play hills, edible gardens, and outdoor classrooms. Combined retention capacity: 12,000 m³.', category: 'climate', cost: 0, votes: 534, lng: 12.5745, lat: 55.7025, district: 'Østerbro', status: 'Concept', scale: 'district', investmentLevel: 'city', tags: ['spatial planning','schoolyards','climate adaptation','dual use','education'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
+  { id: 'concept-007', budgetId: 'borgersamling', name: 'Indre By Car-Free Core 2035', desc: 'Phased plan to pedestrianise the medieval city centre within the Lakes ring by 2035. Three phases: (1) Strøget + side streets fully car-free, (2) Nyhavn–Kongens Nytorv transit-only zone, (3) inner ring boulevard with tramway. 40% more public space.', category: 'transport', cost: 0, votes: 1567, lng: 12.5730, lat: 55.6790, district: 'Indre By', status: 'Concept', scale: 'city-wide', investmentLevel: 'city', tags: ['spatial planning','pedestrianisation','car-free','tramway','public space'], hasModel: true, modelUrl: MODEL_URLS.statue, voters: [] },
+  { id: 'concept-008', budgetId: 'lokalplan-hoering', name: 'Bispebjerg Health & Nature Axis', desc: 'Green corridor from Bispebjerg Cemetery through Utterslev Mose to Grundtvigs Kirke. New walking and cycling paths, therapeutic gardens near the hospital, nature playgrounds, and a community orchard. Connects 3 isolated green areas.', category: 'green-spaces', cost: 0, votes: 389, lng: 12.5350, lat: 55.7155, district: 'Bispebjerg', status: 'Concept', scale: 'district', investmentLevel: 'city', tags: ['spatial planning','green corridor','health','nature','connectivity'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
+  { id: 'concept-009', budgetId: 'borgersamling', name: 'Nørrebro Vertical Village — Lundtoftegade', desc: 'Mixed-use tower cluster (3 buildings, 12-16 floors) with shared sky gardens every 4 floors, ground-level market hall, rooftop greenhouse and public viewing terrace. 350 homes (50% affordable), 4,000 m² community space.', category: 'housing', cost: 0, votes: 1042, lng: 12.5420, lat: 55.6960, district: 'Nørrebro', status: 'Concept', scale: 'local', investmentLevel: 'city', tags: ['spatial planning','vertical village','affordable housing','mixed-use','sky garden'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
+  { id: 'concept-010', budgetId: 'lokalplan-hoering', name: 'Harbour Ring — Continuous Waterfront Promenade', desc: 'Close the missing 4.2 km gaps in Copenhagen\'s harbour promenade to create a 26 km continuous loop. Three new floating bridges, waterfront stairs at 6 locations, and activation of 12 dead-end quays with floating gardens and kayak landings.', category: 'recreation', cost: 0, votes: 2103, lng: 12.5870, lat: 55.6750, district: 'Christianshavn', status: 'Concept', scale: 'city-wide', investmentLevel: 'city', tags: ['spatial planning','harbour','promenade','floating bridge','waterfront'], hasModel: true, modelUrl: MODEL_URLS.duck, voters: [] },
+  { id: 'concept-011', budgetId: 'borgersamling', name: 'Amager Commons — Community Land Trust', desc: 'Pilot community land trust on 8 ha of underused municipal land near Ørestad Syd. Resident-designed co-housing clusters, allotment gardens, wetland nature reserve, and a zero-waste neighbourhood centre. Land stays in public ownership forever.', category: 'housing', cost: 0, votes: 876, lng: 12.5820, lat: 55.6280, district: 'Amager', status: 'Concept', scale: 'district', investmentLevel: 'city', tags: ['spatial planning','community land trust','co-housing','commons','zero-waste'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
+  { id: 'concept-012', budgetId: 'lokalplan-hoering', name: 'Vesterbro Rooftop Masterplan', desc: 'City-wide pilot in Vesterbro: connect 40 flat rooftops via lightweight bridges to create 2.8 ha of elevated public space. Green roofs, solar panels, rooftop allotments, running track, and a sky bar. Framework agreement with building owners.', category: 'green-spaces', cost: 0, votes: 1456, lng: 12.5535, lat: 55.6710, district: 'Vesterbro', status: 'Concept', scale: 'district', investmentLevel: 'city', tags: ['spatial planning','rooftop','green roof','elevated park','solar'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
 ];
+
+/** Attach default demo GLB when localStorage has older rows without hasModel/modelUrl */
+function backfillModelsFromDemoCatalog(list) {
+  const byId = new Map(DEMO_PROJECTS.map((p) => [p.id, p]));
+  let changed = false;
+  const next = list.map((p) => {
+    const demo = byId.get(p.id);
+    if (!demo || !demo.modelUrl) return p;
+    if (p.hasModel && p.modelUrl) return p;
+    changed = true;
+    return { ...p, hasModel: true, modelUrl: demo.modelUrl };
+  });
+  return { next, changed };
+}
 
 const CATEGORIES = {
   recreation: { label: 'RECREATION', catClass: 'cat-recreation' },
@@ -1063,6 +1153,49 @@ function filtersSidebarActive() {
   return filterCategorySet.size > 0 || !!String(filterSearchQuery).trim() || !!sidebarDistrictFilter || !!filterStatusValue || !!filterBudgetValue || !!filterScaleValue || !!filterInvestmentValue;
 }
 
+const STATUS_SIDEBAR_COLORS = {
+  '':            { bg: '#ffffff', border: 'rgba(0,0,0,0.09)',         scrollbar: 'rgba(0,0,0,0.15)',      selectBg: '',        selectBorder: '',                       selectColor: '' },
+  'voting':      { bg: '#fef5e0', border: 'rgba(245,159,0,0.35)',   scrollbar: 'rgba(245,159,0,0.4)',   selectBg: '#fef5e0', selectBorder: 'rgba(245,159,0,0.5)',   selectColor: '#c97800' },
+  'in-progress': { bg: '#e3eefb', border: 'rgba(47,128,237,0.35)',  scrollbar: 'rgba(47,128,237,0.4)',  selectBg: '#e3eefb', selectBorder: 'rgba(47,128,237,0.5)',  selectColor: '#2f80ed' },
+  'completed':   { bg: '#e5f4ee', border: 'rgba(0,166,126,0.35)',   scrollbar: 'rgba(0,166,126,0.4)',   selectBg: '#e5f4ee', selectBorder: 'rgba(0,166,126,0.5)',   selectColor: '#00a67e' },
+  'planned':     { bg: '#fef0e3', border: 'rgba(217,115,13,0.35)',  scrollbar: 'rgba(217,115,13,0.4)',  selectBg: '#fef0e3', selectBorder: 'rgba(217,115,13,0.5)',  selectColor: '#d9730d' },
+  'Concept':     { bg: '#ede5f5', border: 'rgba(105,64,165,0.35)',  scrollbar: 'rgba(105,64,165,0.4)',  selectBg: '#ede5f5', selectBorder: 'rgba(105,64,165,0.5)',  selectColor: '#6940a5' },
+};
+
+function updateSidebarTheme(status) {
+  const t = STATUS_SIDEBAR_COLORS[status] || STATUS_SIDEBAR_COLORS[''];
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar) {
+    sidebar.style.background = t.bg;
+    sidebar.style.borderColor = t.border;
+  }
+  const projectList = document.getElementById('project-list');
+  if (projectList) projectList.style.scrollbarColor = `${t.scrollbar} transparent`;
+
+  const topSel = document.getElementById('top-filter-status');
+  if (topSel) {
+    if (status) {
+      topSel.style.borderColor = t.selectBorder;
+      topSel.style.background = t.selectBg;
+      topSel.style.color = t.selectColor;
+    } else {
+      topSel.style.borderColor = '';
+      topSel.style.background = '';
+      topSel.style.color = '';
+    }
+  }
+  const sidebarSel = document.getElementById('filter-status');
+  if (sidebarSel) {
+    if (status) {
+      sidebarSel.style.borderColor = t.selectBorder;
+      sidebarSel.style.background = t.selectBg;
+    } else {
+      sidebarSel.style.borderColor = '';
+      sidebarSel.style.background = '';
+    }
+  }
+}
+
 function applySidebarFilters() {
   sidebarDistrictFilter = document.getElementById('filter-district')?.value || '';
   filterStatusValue = document.getElementById('filter-status')?.value || '';
@@ -1072,6 +1205,11 @@ function applySidebarFilters() {
   if (sidebarDistrictFilter && activeDistrict) {
     deactivateDistrict();
   }
+  const topStatusSel = document.getElementById('top-filter-status');
+  if (topStatusSel && topStatusSel.value !== filterStatusValue) topStatusSel.value = filterStatusValue;
+  const topBudgetSel = document.getElementById('top-filter-budget');
+  if (topBudgetSel && topBudgetSel.value !== filterBudgetValue) topBudgetSel.value = filterBudgetValue;
+  updateSidebarTheme(filterStatusValue);
   renderProjectList();
   updateStats();
   updateMarkerDistrictFilter();
@@ -1098,6 +1236,10 @@ function clearSidebarFilters() {
   if (b) b.value = '';
   if (sc) sc.value = '';
   if (inv) inv.value = '';
+  const topBudgetReset = document.getElementById('top-filter-budget');
+  if (topBudgetReset) topBudgetReset.value = '';
+  document.querySelectorAll('.top-filter-btn').forEach(sel => sel.classList.remove('active'));
+  updateSidebarTheme('');
   renderCategoryChips();
   renderProjectList();
   updateStats();
@@ -1215,6 +1357,29 @@ const SUBAREA_TO_DISTRICT = {
   'Amager': 'Amager Vest',
 };
 
+const DISTRICT_BUDGETS = {
+  'Indre By':        { annual: 8200000, label: 'Indre By & Christianshavn Lokaludvalg' },
+  'Nørrebro':        { annual: 6800000, label: 'Nørrebro Lokaludvalg' },
+  'Vesterbro':       { annual: 5900000, label: 'Vesterbro Lokaludvalg' },
+  'Østerbro':        { annual: 5500000, label: 'Østerbro Lokaludvalg' },
+  'Amager Vest':     { annual: 4800000, label: 'Amager Vest Lokaludvalg' },
+  'Amager Øst':      { annual: 4200000, label: 'Amager Øst Lokaludvalg' },
+  'Valby':           { annual: 5100000, label: 'Valby Lokaludvalg' },
+  'Vanløse':         { annual: 3900000, label: 'Vanløse Lokaludvalg' },
+  'Brønshøj-Husum':  { annual: 4500000, label: 'Brønshøj-Husum Lokaludvalg' },
+  'Bispebjerg':      { annual: 4100000, label: 'Bispebjerg Lokaludvalg' },
+  'Frederiksberg':   { annual: 7400000, label: 'Frederiksberg Kommune' },
+  'Nordhavn':        { annual: 3200000, label: 'Østerbro Lokaludvalg (Nordhavn)' },
+  'Sydhavn':         { annual: 3600000, label: 'Kgs. Enghave Lokaludvalg' },
+  'City-wide':       { annual: 52000000, label: 'København Kommune (total)' },
+};
+
+function formatDKK(amount) {
+  if (amount >= 1000000) return (amount / 1000000).toFixed(1).replace(/\.0$/, '') + ' mio';
+  if (amount >= 1000) return Math.round(amount / 1000) + 'k';
+  return amount.toLocaleString('da-DK');
+}
+
 const EMPTY_FEATURE_COLLECTION = { type: 'FeatureCollection', features: [] };
 /** World shell + district outer rings as holes (GeoJSON Polygon) for dim-out mask */
 const WORLD_MASK_OUTER = [[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]];
@@ -1324,6 +1489,44 @@ function findDistrictAtPoint(lng, lat) {
   return null;
 }
 
+function expandBboxFromRing(ring, bbox) {
+  for (const pt of ring) {
+    const lng = pt[0];
+    const lat = pt[1];
+    bbox.minLng = Math.min(bbox.minLng, lng);
+    bbox.maxLng = Math.max(bbox.maxLng, lng);
+    bbox.minLat = Math.min(bbox.minLat, lat);
+    bbox.maxLat = Math.max(bbox.maxLat, lat);
+  }
+}
+
+function expandBboxFromPolygon(polyCoords, bbox) {
+  for (const ring of polyCoords) {
+    expandBboxFromRing(ring, bbox);
+  }
+}
+
+/** Northern edge center of district bbox + small north padding — popup anchor sits above the polygon. */
+function getDistrictNorthernLabelAnchor(feature) {
+  if (!feature || !feature.geometry) return null;
+  const bbox = { minLng: Infinity, maxLng: -Infinity, minLat: Infinity, maxLat: -Infinity };
+  const g = feature.geometry;
+  if (g.type === 'Polygon') {
+    expandBboxFromPolygon(g.coordinates, bbox);
+  } else if (g.type === 'MultiPolygon') {
+    for (const poly of g.coordinates) {
+      expandBboxFromPolygon(poly, bbox);
+    }
+  } else {
+    return null;
+  }
+  if (!isFinite(bbox.minLng)) return null;
+  const midLng = (bbox.minLng + bbox.maxLng) / 2;
+  const latSpan = Math.max(bbox.maxLat - bbox.minLat, 0.00008);
+  const padLat = latSpan * 0.02 + 0.001;
+  return { lng: midLng, lat: bbox.maxLat + padLat };
+}
+
 function deactivateDistrict() {
   activeDistrict = null;
   if (map.getSource('district-mask')) map.getSource('district-mask').setData(EMPTY_FEATURE_COLLECTION);
@@ -1381,14 +1584,36 @@ function activateDistrict(name, color, lngLat) {
   if (window._activePopup) window._activePopup.remove();
   if (lngLat) {
     const matchDistrict = (d) => d === name || SUBAREA_TO_DISTRICT[d] === name;
-    const projectCount = projects.filter(p => matchDistrict(p.district)).length;
-    window._activePopup = new maplibregl.Popup({ offset: 0, closeButton: true, maxWidth: '240px' })
+    const districtProjects = projects.filter(p => matchDistrict(p.district));
+    const projectCount = districtProjects.length;
+    const localProjects = districtProjects.filter(p => p.investmentLevel === 'municipal' && p.cost > 0);
+    const allocatedCost = localProjects.reduce((sum, p) => sum + p.cost, 0);
+    const budget = DISTRICT_BUDGETS[name];
+    const pct = budget && budget.annual > 0 ? Math.round(allocatedCost / budget.annual * 100) : 0;
+    const budgetHtml = budget ? `
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.06)">
+          <div style="font-size:11px;color:#9b9a97;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Participatory budget / year</div>
+          <div style="font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text-primary)">${formatDKK(budget.annual)} DKK</div>
+          ${allocatedCost > 0 ? `
+          <div style="margin-top:5px;background:rgba(0,0,0,0.04);border-radius:4px;height:6px;overflow:hidden">
+            <div style="height:100%;width:${Math.min(pct, 100)}%;background:${pct > 100 ? '#e03e3e' : '#00a67e'};border-radius:4px"></div>
+          </div>
+          <div style="font-size:11px;color:${pct > 100 ? '#e03e3e' : '#00a67e'};margin-top:3px">${formatDKK(allocatedCost)} DKK in local projects (${pct}%)</div>` : `
+          <div style="font-size:11px;color:#9b9a97;margin-top:3px">No local proposals yet</div>`}
+        </div>` : '';
+    window._activePopup = new maplibregl.Popup({
+      anchor: 'bottom',
+      offset: [0, -8],
+      closeButton: true,
+      maxWidth: '260px',
+    })
       .setLngLat(lngLat)
       .setHTML(`
         <div style="font-weight:700;font-size:15px;margin-bottom:4px;color:${color}">${name}</div>
         <div style="font-size:12px;color:var(--text-secondary);line-height:1.6">
           ${projectCount} project${projectCount !== 1 ? 's' : ''}
         </div>
+        ${budgetHtml}
         <div style="font-size:11px;color:#9b9a97;margin-top:6px">Click again or outside to show all</div>
       `)
       .addTo(map);
@@ -1420,6 +1645,33 @@ const STATUS_DISPLAY = {
   completed: 'Completed',
   Concept: 'Concept',
 };
+
+function sidebarStatusCardClass(status) {
+  const s = (status || '').toString();
+  if (s === 'completed') return 'status-completed';
+  if (s === 'in-progress') return 'status-in-progress';
+  if (s === 'planned') return 'status-planned';
+  if (s === 'voting') return 'status-voting';
+  if (s === 'Concept') return 'status-concept';
+  return '';
+}
+
+function sidebarStatusBadgeClass(status) {
+  const s = (status || '').toString();
+  if (s === 'completed') return 'badge-status-green';
+  if (s === 'in-progress') return 'badge-status-blue';
+  if (s === 'voting') return 'badge-status-voting';
+  if (s === 'planned') return 'badge-status-planned';
+  if (s === 'Concept') return 'badge-status-concept';
+  return 'badge-status-gray';
+}
+
+/** Map marker quest-wrap class (normalized: Concept → status-concept) */
+function markerStatusClass(status) {
+  const s = (status || 'planned').toString();
+  if (s === 'Concept') return 'status-concept';
+  return 'status-' + s;
+}
 
 // ── Map — load OpenFreeMap dark style then cyberpunk-ify ──
 const map = new maplibregl.Map({
@@ -1683,7 +1935,8 @@ map.on('load', async () => {
       return;
     }
 
-    activateDistrict(clickedName, clickedColor, e.lngLat);
+    const labelAnchor = getDistrictNorthernLabelAnchor(hitFeature) || e.lngLat;
+    activateDistrict(clickedName, clickedColor, labelAnchor);
   };
   map.on('click', window._districtClickHandler);
 
@@ -1701,10 +1954,19 @@ map.on('load', async () => {
     }
   });
 
-  // Load projects (from localStorage or demo data)
+  // Load projects (from localStorage or demo data), auto-merge new demos
   const saved = loadProjects();
-  projects = saved || [...DEMO_PROJECTS];
-  if (!saved) saveProjects();
+  if (saved) {
+    const savedIds = new Set(saved.map(p => p.id));
+    const newDemos = DEMO_PROJECTS.filter(d => !savedIds.has(d.id));
+    projects = [...saved, ...newDemos];
+    if (newDemos.length > 0) saveProjects();
+  } else {
+    projects = [...DEMO_PROJECTS];
+  }
+  const backfill = backfillModelsFromDemoCatalog(projects);
+  projects = backfill.next;
+  if (!saved || backfill.changed) saveProjects();
   projects.forEach(p => addMarker(p));
   renderProjectList();
   updateStats();
@@ -1783,11 +2045,11 @@ function initTopFilters() {
       Object.entries(CATEGORIES).filter(([k]) => k !== 'other').map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('');
     catSel.addEventListener('change', applyTopFilters);
   }
-  const scopeSel = document.getElementById('top-filter-scope');
-  if (scopeSel) {
-    scopeSel.innerHTML = '<option value="">Scope</option>' +
-      Object.entries(SCALE_LABELS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
-    scopeSel.addEventListener('change', applyTopFilters);
+  const budgetTopSel = document.getElementById('top-filter-budget');
+  if (budgetTopSel) {
+    budgetTopSel.innerHTML = '<option value="">Budget</option>' +
+      BUDGETS.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+    budgetTopSel.addEventListener('change', applyTopFilters);
   }
   document.getElementById('top-filter-status')?.addEventListener('change', applyTopFilters);
   const sortSel = document.getElementById('top-filter-sort');
@@ -1796,17 +2058,25 @@ function initTopFilters() {
 
 function applyTopFilters() {
   const catVal = document.getElementById('top-filter-category')?.value || '';
-  const statusVal = document.getElementById('top-filter-status')?.value || '';
-  const scopeVal = document.getElementById('top-filter-scope')?.value || '';
+  let statusVal = document.getElementById('top-filter-status')?.value || '';
+  const budgetTopVal = document.getElementById('top-filter-budget')?.value || '';
 
   filterCategorySet = catVal ? new Set([catVal]) : new Set();
+  filterBudgetValue = budgetTopVal;
+
+  // Do not infer status from budget: Concept and other statuses share budgetIds (e.g. lokalplan-hoering).
   filterStatusValue = statusVal;
-  filterScaleValue = scopeVal;
+
+  const sidebarStatusSel = document.getElementById('filter-status');
+  if (sidebarStatusSel && sidebarStatusSel.value !== statusVal) sidebarStatusSel.value = statusVal;
+  const sidebarBudgetSel = document.getElementById('filter-budget');
+  if (sidebarBudgetSel && sidebarBudgetSel.value !== budgetTopVal) sidebarBudgetSel.value = budgetTopVal;
 
   document.querySelectorAll('.top-filter-btn').forEach(s => {
     s.classList.toggle('active', s.value !== '' && s.selectedIndex > 0);
   });
 
+  updateSidebarTheme(statusVal);
   renderProjectList();
   updateStats();
   updateMarkerDistrictFilter();
@@ -1836,8 +2106,9 @@ map.on('click', (e) => {
 // Fallback: HTML markers with viewport alignment (default)
 function addMarker(project) {
   const el = document.createElement('div');
-  const statusClass = 'status-' + (project.status || 'planned');
-  el.innerHTML = `<div class="quest-wrap ${statusClass}"><div class="quest-icon">!</div><div class="quest-dot"></div><div class="quest-pole"></div></div>`;
+  const statusClass = markerStatusClass(project.status);
+  const icon = project.status === 'Concept' ? '?' : '!';
+  el.innerHTML = `<div class="quest-wrap ${statusClass}"><div class="quest-icon">${icon}</div><div class="quest-dot"></div><div class="quest-pole"></div></div>`;
   const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([project.lng, project.lat]).addTo(map);
   el.addEventListener('click', (e) => { e.stopPropagation(); openProjectDetail(project.id); });
   markers[project.id] = marker;
@@ -1848,7 +2119,9 @@ function addMarker(project) {
 function showPopup(project) {
   if (window._activePopup) window._activePopup.remove();
   const voted = project.voters.includes('me');
+  const conceptBadge = project.status === 'Concept' ? '<div style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:4px;background:rgba(105,64,165,0.12);color:#6940a5;border:1px dashed rgba(105,64,165,0.3);margin-bottom:8px">CONCEPT</div>' : '';
   const html = `
+    ${conceptBadge}
     <div class="popup-title">${project.name}</div>
     <div class="popup-desc">${project.desc}</div>
     ${project.hasModel ? '<div class="pc-model-badge" style="margin-bottom:8px">3D MODEL</div>' : ''}
@@ -1898,9 +2171,10 @@ function renderProjectList() {
     const voted = p.voters.includes('me');
     const st = p.status || '';
     const statusLabel = STATUS_DISPLAY[st] || st;
-    const statusCls = st === 'completed' ? 'badge-status-green' : st === 'in-progress' ? 'badge-status-yellow' : st === 'voting' ? 'badge-edition' : 'badge-status-gray';
+    const statusCls = sidebarStatusBadgeClass(st);
+    const cardStatusCls = sidebarStatusCardClass(st);
     return `
-      <div class="project-card" data-id="${p.id}" onclick="openProjectDetail('${p.id}')">
+      <div class="project-card ${cardStatusCls}" data-id="${p.id}" onclick="openProjectDetail('${p.id}')">
         <span class="pc-rank">#${i+1}</span>
         <div class="pc-top">
           <span class="pc-name">${p.name}</span>
@@ -2146,8 +2420,8 @@ function openProjectDetail(id) {
   document.getElementById('sidebar').classList.add('hidden');
   detail.classList.add('visible');
 
-  // Status badge color
-  const statusClass = p.status === 'completed' ? 'badge-status-green' : p.status === 'in-progress' ? 'badge-status-yellow' : p.status === 'voting' ? 'badge-edition' : p.status === 'Concept' ? 'badge-status-gray' : 'badge-status-gray';
+  // Status badge color (aligned with sidebar + map markers)
+  const statusClass = sidebarStatusBadgeClass(p.status);
   const statusLabel = STATUS_DISPLAY[p.status] || p.status || '';
   const catM = categoryMeta(p.category);
   const catLabel = catM.label;
@@ -2158,16 +2432,18 @@ function openProjectDetail(id) {
   const voted = p.voters.includes('me');
 
   body.innerHTML = `
-    <div class="detail-badge-row">
-      <span class="detail-badge ${catM.catClass}">${catLabel}</span>
-      ${statusLabel ? `<span class="detail-badge ${statusClass}">${statusLabel}</span>` : ''}
-      ${scaleLabel ? `<span class="detail-badge badge-status-gray">${scaleLabel}</span>` : ''}
-      ${invLabel ? `<span class="detail-badge badge-status-gray">${invLabel}</span>` : ''}
+    <div class="detail-top-section">
+      <div class="detail-badge-row">
+        <span class="detail-badge ${catM.catClass}">${catLabel}</span>
+        ${statusLabel ? `<span class="detail-badge ${statusClass}">${statusLabel}</span>` : ''}
+        ${scaleLabel ? `<span class="detail-badge badge-status-gray">${scaleLabel}</span>` : ''}
+        ${invLabel ? `<span class="detail-badge badge-status-gray">${invLabel}</span>` : ''}
+      </div>
+      ${budgetLabel ? `<div class="detail-budget-label">${budgetLabel}</div>` : ''}
+      <div class="detail-title">${p.name}</div>
     </div>
-    ${budgetLabel ? `<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px;font-weight:500">${budgetLabel}</div>` : ''}
-    <div class="detail-title">${p.name}</div>
     <div class="detail-desc">${p.desc}</div>
-    ${p.tags && p.tags.length ? `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px">${p.tags.map(t => `<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(0,0,0,0.04);color:var(--text-tertiary);font-weight:500">${t}</span>`).join('')}</div>` : ''}
+    ${p.tags && p.tags.length ? `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px">${p.tags.map(t => `<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(0,0,0,0.04);color:var(--text-tertiary);font-weight:500">${t}</span>`).join('')}</div>` : ''}
     <div class="detail-stats">
       <div class="detail-stat">
         <div class="detail-stat-label">Votes</div>
@@ -2225,16 +2501,21 @@ function openProjectDetail(id) {
   if (detailAnimId) cancelAnimationFrame(detailAnimId);
   modelArea.innerHTML = '';
 
+  const backEl = document.getElementById('detail-back');
   if (p.hasModel && p.modelUrl) {
     const container = document.createElement('div');
     container.className = 'detail-model-container';
     container.innerHTML = '<span class="model-interact-hint">Drag to rotate model</span>';
     modelArea.appendChild(container);
-
-    // Init Three.js preview after DOM update
     setTimeout(() => initModelPreview(container, p.modelUrl, p.modelType), 50);
+    if (backEl) { backEl.style.removeProperty('background'); backEl.style.removeProperty('color'); }
   } else {
     modelArea.innerHTML = '<div class="detail-no-model">No 3D model</div>';
+    if (backEl) {
+      // Inline styles do not resolve var(); use same hex as :root --bg-secondary / --text-secondary
+      backEl.style.setProperty('background', '#ffffff');
+      backEl.style.setProperty('color', '#6b6b6b');
+    }
   }
 
   // Setup model controls (sync — must be after innerHTML)
@@ -2398,7 +2679,7 @@ document.getElementById('detail-back').addEventListener('click', closeProjectDet
 // ── Sidebar toggle ──
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebar-toggle');
-let sidebarVisible = true;
+let sidebarVisible = false;
 sidebarToggle.addEventListener('click', () => {
   sidebarVisible = !sidebarVisible;
   sidebar.classList.toggle('hidden', !sidebarVisible);
