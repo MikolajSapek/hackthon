@@ -4,9 +4,24 @@
 
 # KL4AD1U5H
 
-Interactive **3D map** of Copenhagen for exploring **civic participation** scenarios: participatory budgets, hearings, and demo projects on the map. Built as a lightweight single-page app (no bundler) with MapLibre GL, Three.js, and static GeoJSON data.
+**Browse participatory budgets and planning stories on a pastel 3D map of Copenhagen** — vote on demo proposals, filter by district and budget type, drop GLB/GLTF/STL (and IFC for “architect” mode) onto the terrain, and explore facilities. One static HTML file, no bundler: MapLibre GL + Three.js + Express.
 
-> **Disclaimer:** Demo projects, costs, and vote figures in the app are **illustrative** for prototyping and hackathons. They are **not** official City of Copenhagen records.
+| | |
+|:---|:---|
+| **Stack** | MapLibre GL JS, Three.js, Express, OpenFreeMap tiles |
+| **Data** | GeoJSON districts, in-memory + `localStorage` projects |
+| **Origin** | BloxHub hackathon prototype (adapted from an earlier Gliwice concept) |
+
+### Why it exists
+
+Civic budgets and hearings are often buried in PDFs and portals. This prototype **puts projects on the map** so people can relate proposals to real neighbourhoods, try filters, and sketch new ideas with 3D placeholders — useful for demos, workshops, and UX experiments around **participatory urban governance**.
+
+> **Disclaimer:** All demo projects, costs, and vote figures are **fictional / illustrative**. They are **not** official City of Copenhagen data.
+
+**GitHub repository settings**
+
+- **Description:** `3D MapLibre + Three.js map of Copenhagen for participatory budget & planning demos — no build step, MIT`
+- **Topics:** `maplibre` `threejs` `copenhagen` `denmark` `civic-tech` `participatory-budgeting` `urban-planning` `openstreetmap` `express` `hackathon`
 
 ## Features
 

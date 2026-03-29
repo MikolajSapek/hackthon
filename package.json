@@ -1,7 +1,7 @@
 {
   "name": "kl4ad1u5h",
   "version": "1.0.0",
-  "description": "KL4AD1U5H — interactive 3D Copenhagen map for civic budget exploration (hackathon prototype)",
+  "description": "3D Copenhagen map for participatory budget & civic planning demos — MapLibre, Three.js, single-file SPA, MIT",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
