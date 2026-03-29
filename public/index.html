@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Copenhagen 3D — Civic Budget</title>
+  <title>KL4AD1U5H</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
@@ -47,15 +49,42 @@
 
     #map { position: fixed; inset: 0; }
 
-    /* ═══ HEADER — centered filter bar ═══ */
+    /* ═══ HEADER — filters + sidebar toggle in two columns (no overlap) ═══ */
     #header {
-      position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 100;
-      display: flex; align-items: center; gap: 10px;
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      z-index: 100;
+      transform: none;
       padding: 0;
+      box-sizing: border-box;
       background: transparent;
       border: none;
-      border-radius: 0;
-      box-shadow: none;
+      pointer-events: none;
+    }
+    @media (min-width: 769px) {
+      body:has(#sidebar:not(.hidden)) #header {
+        right: calc(380px + 12px);
+      }
+    }
+    .header-inner {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      pointer-events: auto;
+    }
+    .header-filters {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-start;
     }
     .logo { display: none; }
     .header-divider { display: none; }
@@ -264,6 +293,47 @@
       color: var(--text-primary);
       font-family: 'JetBrains Mono', monospace;
     }
+
+    .vote-progress-wrap { margin: 6px 0 10px; }
+    .detail-vote-progress .vote-progress-wrap { margin: 0 0 14px; }
+    .vote-progress-label {
+      display: flex; justify-content: space-between; align-items: baseline;
+      font-size: 10px; color: var(--text-secondary); margin-bottom: 5px; gap: 8px;
+    }
+    .vote-progress-label strong {
+      font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--text-primary);
+      font-size: 11px;
+    }
+    .vote-progress-track {
+      height: 8px; border-radius: 999px;
+      background: rgba(0,0,0,0.06);
+      overflow: hidden;
+      border: 1px solid rgba(245,159,0,0.28);
+    }
+    .vote-progress-fill {
+      height: 100%; border-radius: inherit;
+      background: linear-gradient(90deg, #e08f00 0%, #f5c84a 100%);
+      transition: width 0.28s ease;
+      min-width: 0;
+    }
+    .vote-progress-compact { margin: 8px 0 0; }
+    .vote-progress-compact .vote-progress-label { font-size: 9px; margin-bottom: 4px; }
+    .vote-progress-compact .vote-progress-label strong { font-size: 10px; }
+    .vote-progress-compact .vote-progress-track { height: 6px; }
+
+    .vote-turnout-meta {
+      display: flex; gap: 14px; margin-bottom: 8px; flex-wrap: wrap;
+    }
+    .vote-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .vote-stat-label {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .vote-stat strong {
+      font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700;
+      color: var(--text-primary);
+    }
+
     .pc-cost { font-size: 11px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
     .pc-model-badge {
       font-size: 9px; padding: 2px 6px;
@@ -407,10 +477,41 @@
     .model-upload-area p { font-size: 12px; color: var(--text-tertiary); }
     .model-upload-area .filename { color: var(--accent-purple); font-weight: 600; }
 
-    /* ═══ SIDEBAR TOGGLE ═══ */
+    .role-group { margin-bottom: 16px; }
+    .role-group > .role-group-label {
+      display: block; font-size: 11px; font-weight: 600;
+      color: var(--text-secondary); margin-bottom: 8px;
+      text-transform: uppercase; letter-spacing: 0.6px;
+    }
+    .role-segments {
+      display: flex; gap: 8px; padding: 4px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-btn);
+    }
+    .role-seg {
+      flex: 1; margin: 0; cursor: pointer; text-align: center;
+      font-size: 13px; font-weight: 600; color: var(--text-secondary);
+      padding: 10px 12px; border-radius: calc(var(--radius-btn) - 2px);
+      transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+      border: 1px solid transparent;
+    }
+    .role-seg:hover { color: var(--text-primary); background: var(--bg-hover); }
+    .role-seg input { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+    .role-seg.is-selected {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    /* ═══ SIDEBAR TOGGLE (own column — never stacks into filter chips) ═══ */
     #sidebar-toggle {
-      position: fixed; top: 16px; right: 12px; z-index: 95;
-      width: 36px; height: 36px; border-radius: var(--radius-btn);
+      flex-shrink: 0;
+      align-self: flex-start;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-btn);
       border: 1px solid var(--border);
       background: var(--bg-secondary);
       box-shadow: var(--shadow-float);
@@ -418,7 +519,10 @@
       display: flex; align-items: center; justify-content: center;
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    #sidebar-toggle.shifted { right: 388px; }
+    #sidebar-toggle.shifted {
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+    }
     #sidebar-toggle:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--border-strong); }
 
     /* ═══ MARKERS — game quest exclamation marks ═══ */
@@ -434,6 +538,9 @@
       font-size: 22px; font-weight: 900; font-family: 'DM Sans', sans-serif;
       color: #fff; line-height: 1;
       box-shadow: 0 3px 12px rgba(0,0,0,0.4);
+    }
+    .quest-wrap .quest-icon > svg {
+      width: 18px; height: 18px; flex-shrink: 0; display: block;
     }
     .quest-wrap .quest-dot {
       width: 0; height: 0;
@@ -468,6 +575,24 @@
       50% { transform: translateY(-10px); opacity: 1; }
     }
 
+    /* District title — DOM marker is above the WebGL canvas, so it is not hidden by 3D buildings */
+    .district-name-marker-root {
+      z-index: 40 !important;
+    }
+    .district-name-marker {
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1c1917;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.06);
+      border-left: 4px solid var(--district-accent, #f59f00);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
     /* ═══ POPUP — Notion-light style ═══ */
     .maplibregl-popup-content {
       background: var(--bg-secondary) !important;
@@ -493,7 +618,7 @@
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      top: 58px;
+      top: 100px;
       right: 12px;
       width: 34px;
       filter: drop-shadow(0 1px 3px rgba(0,0,0,0.05)) drop-shadow(0 4px 14px rgba(0,0,0,0.07));
@@ -573,11 +698,11 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; color: var(--text-tertiary);
     }
-    .detail-body { padding: 0 20px 28px; flex: 1; overflow-y: auto; }
+    .detail-body { padding: 0 20px 28px; flex: 1; overflow-y: auto; min-height: 0; }
     .detail-top-section {
-      position: relative; margin: -24px -20px 0; padding: 20px 20px 16px;
+      position: relative; margin: 0 -20px 0; padding: 20px 20px 16px;
       background: var(--bg-secondary);
-      border-radius: 16px 16px 0 0;
+      border-radius: 0;
     }
     .detail-budget-label { font-size: 11px; color: var(--text-tertiary); font-weight: 500; margin-bottom: 6px; }
     .detail-badge-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -780,13 +905,25 @@
     @media (max-width: 768px) {
       #sidebar { width: 100%; right: 0; top: auto; bottom: 0; height: 50vh; border-left: none; border-top: 1px solid var(--border); border-radius: 16px 16px 0 0; }
       #sidebar.hidden { transform: translateY(100%); }
-      #sidebar-toggle { top: auto; bottom: 16px; right: 16px; }
-      #sidebar-toggle.shifted { right: 16px; bottom: calc(50vh + 8px); }
+      #header { left: 8px; right: 8px; top: 8px; }
+      .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .header-filters {
+        justify-content: center;
+      }
+      #sidebar-toggle {
+        align-self: flex-end;
+        width: 44px;
+        height: 44px;
+      }
       #project-detail { width: 100%; top: auto; bottom: 0; height: 70vh; border-left: none; border-top: 1px solid var(--border); border-radius: 16px 16px 0 0; }
       #map-controls { bottom: 68px; left: 8px; min-width: 180px; padding: 10px; }
       #add-project-btn { bottom: 12px; padding: 10px 20px; font-size: 13px; }
-      #header { gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 95vw; }
       .top-filter-btn { padding: 7px 14px; font-size: 12px; padding-right: 28px; }
+      #map .maplibregl-ctrl-top-right { top: 120px; }
     }
     @media (max-width: 480px) {
       #map-controls { display: none !important; }
@@ -809,33 +946,36 @@
   <span class="header-title">Civic Budget</span>
   <div id="mode-indicator" class="browse">BROWSE</div>
 
-  <select class="top-filter-btn" id="top-filter-category">
-    <option value="">Category</option>
-  </select>
-  <select class="top-filter-btn" id="top-filter-status">
-    <option value="">Status</option>
-    <option value="voting">Open for voting</option>
-    <option value="in-progress">In progress</option>
-    <option value="completed">Completed</option>
-    <option value="Concept">Concept</option>
-  </select>
-  <select class="top-filter-btn" id="top-filter-budget">
-    <option value="">Budget</option>
-  </select>
-  <select class="top-filter-btn" id="top-filter-sort">
-    <option value="votes-desc">Sort by</option>
-    <option value="votes-desc">Most votes</option>
-    <option value="votes-asc">Least votes</option>
-    <option value="cost-desc">Most expensive</option>
-    <option value="cost-asc">Cheapest</option>
-    <option value="name-asc">A → Z</option>
-    <option value="name-desc">Z → A</option>
-  </select>
+  <div class="header-inner">
+    <div class="header-filters" aria-label="Map filters">
+      <select class="top-filter-btn" id="top-filter-category">
+        <option value="">Category</option>
+      </select>
+      <select class="top-filter-btn" id="top-filter-status">
+        <option value="">Status</option>
+        <option value="voting">Open for voting</option>
+        <option value="in-progress">In progress</option>
+        <option value="completed">Completed</option>
+        <option value="Concept">Concept</option>
+      </select>
+      <select class="top-filter-btn" id="top-filter-budget">
+        <option value="">Budget</option>
+      </select>
+      <select class="top-filter-btn" id="top-filter-sort">
+        <option value="votes-desc">Sort by</option>
+        <option value="votes-desc">Most votes</option>
+        <option value="votes-asc">Least votes</option>
+        <option value="cost-desc">Most expensive</option>
+        <option value="cost-asc">Cheapest</option>
+        <option value="name-asc">A → Z</option>
+        <option value="name-desc">Z → A</option>
+      </select>
+    </div>
+    <button type="button" id="sidebar-toggle" aria-label="Toggle project list">&#9654;</button>
+  </div>
 </header>
 
 <div id="map"></div>
-
-<button id="sidebar-toggle">&#9654;</button>
 
 <aside id="sidebar" class="hidden">
   <div id="sidebar-header">
@@ -870,6 +1010,13 @@
       <button class="form-header-close" id="btn-cancel" title="Cancel">&times;</button>
     </div>
     <div class="form-body">
+      <div class="form-group role-group" role="radiogroup" aria-label="Proposer role">
+        <span class="role-group-label">You are proposing as</span>
+        <div class="role-segments">
+          <label class="role-seg"><input type="radio" name="f-role" id="f-role-citizen" value="citizen" checked />Citizen</label>
+          <label class="role-seg"><input type="radio" name="f-role" id="f-role-architect" value="architect" />Architect</label>
+        </div>
+      </div>
       <div class="form-hint">
         <span class="form-hint-icon">&#128205;</span>
         <span id="f-location-text">Click on the map to place your project</span>
@@ -926,7 +1073,8 @@
   <div class="mc-row"><span class="mc-label">Opacity</span><input type="range" id="mc-opacity" min="0.1" max="1" step="0.05" value="0.8" /><span class="mc-val" id="mc-opacity-val">80%</span></div>
   <div class="mc-row"><span class="mc-label">Scale</span><input type="range" id="mc-height" min="0.5" max="4" step="0.1" value="1.2" /><span class="mc-val" id="mc-height-val">1.2x</span></div>
   <div class="mc-divider"></div>
-  <div class="mc-checkbox-row"><input type="checkbox" id="mc-labels" checked /><label for="mc-labels">Map labels</label></div>
+  <div class="mc-checkbox-row"><input type="checkbox" id="mc-labels" checked /><label for="mc-labels">Street &amp; place labels</label></div>
+  <div class="mc-checkbox-row"><input type="checkbox" id="mc-district-labels" checked /><label for="mc-district-labels">District names</label></div>
   <div class="mc-checkbox-row"><input type="checkbox" id="mc-above" checked /><label for="mc-above">Above buildings</label></div>
 </aside>
 
@@ -942,9 +1090,55 @@
 const COPENHAGEN = { lng: 12.5683, lat: 55.6761 };
 let projects = [];
 let markers = {};
+let districtNameMarker = null;
 let placingMode = false;
 let pendingLocation = null;
 let pendingModelFile = null;
+
+const MODEL_EXT_CITIZEN = ['.glb', '.gltf', '.stl'];
+const MODEL_EXT_ARCHITECT = ['.glb', '.gltf', '.stl', '.ifc'];
+function getProposerRole() {
+  const r = document.querySelector('input[name="f-role"]:checked');
+  return r && r.value === 'architect' ? 'architect' : 'citizen';
+}
+function modelExtsForRole(role) {
+  return role === 'architect' ? MODEL_EXT_ARCHITECT : MODEL_EXT_CITIZEN;
+}
+function isAllowedModelFilename(name, role) {
+  const lower = name.toLowerCase();
+  return modelExtsForRole(role).some(ext => lower.endsWith(ext));
+}
+function inferModelTypeFromFile(file) {
+  if (!file) return null;
+  const n = file.name.toLowerCase();
+  if (n.endsWith('.stl')) return 'stl';
+  if (n.endsWith('.ifc')) return 'ifc';
+  return 'gltf';
+}
+function syncModelUploadUI() {
+  const role = getProposerRole();
+  const textEl = document.getElementById('model-upload-text');
+  const input = document.getElementById('f-model');
+  const architectHint = 'Drag .glb / .gltf / .stl / .ifc or click';
+  const citizenHint = 'Drag .glb / .gltf / .stl or click';
+  if (role === 'architect') {
+    input.setAttribute('accept', '.glb,.gltf,.stl,.ifc');
+    if (!pendingModelFile) textEl.textContent = architectHint;
+  } else {
+    input.setAttribute('accept', '.glb,.gltf,.stl');
+    if (!pendingModelFile) textEl.textContent = citizenHint;
+  }
+  if (pendingModelFile && !isAllowedModelFilename(pendingModelFile.name, role)) {
+    pendingModelFile = null;
+    input.value = '';
+    document.getElementById('model-upload').classList.remove('has-file');
+    textEl.textContent = role === 'architect' ? architectHint : citizenHint;
+  }
+  document.querySelectorAll('.role-seg').forEach((lab) => {
+    const inp = lab.querySelector('input[type="radio"]');
+    lab.classList.toggle('is-selected', !!(inp && inp.checked));
+  });
+}
 
 /** Map legacy demo categories to CATEGORIES keys */
 function normalizeCategory(cat) {
@@ -961,6 +1155,8 @@ function normalizeCategory(cat) {
 
 // ── Persistence ──
 const STORAGE_KEY = 'cph3d_projects_v2';
+/** Demo rows removed from catalog — still filter out if present in localStorage */
+const REMOVED_PROJECT_IDS = new Set(['nrb-vote-005']);
 function saveProjects() {
   try {
     const data = projects.map(p => ({
@@ -973,6 +1169,8 @@ function saveProjects() {
       voters: p.voters, modelScale: p.modelScale,
       modelOffsetLng: p.modelOffsetLng, modelOffsetLat: p.modelOffsetLat,
       modelRotation: p.modelRotation,
+      eligibleVoters: p.eligibleVoters,
+      proposerRole: p.proposerRole,
     }));
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch(e) { console.warn('Failed to save projects:', e); }
@@ -981,7 +1179,12 @@ function loadProjects() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw).map(p => ({ ...p, category: normalizeCategory(p.category) }));
+    const mapped = JSON.parse(raw).map(p => ({ ...p, category: normalizeCategory(p.category) }));
+    const filtered = mapped.filter(p => !REMOVED_PROJECT_IDS.has(p.id));
+    if (filtered.length < mapped.length) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered)); } catch (e) { /* ignore */ }
+    }
+    return filtered;
   } catch(e) { return null; }
 }
 
@@ -1003,8 +1206,8 @@ const MODEL_URLS = {
   fox: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Fox/glTF-Binary/Fox.glb',
   // Truck — transport/infra
   truck: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb',
-  // Duck — water/harbour
-  duck: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Duck/glTF-Binary/Duck.glb',
+  // Duck — water/harbour (local copy in public/models/)
+  duck: '/models/Duck.glb',
   // Lantern — street furniture
   lantern: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Lantern/glTF-Binary/Lantern.glb',
   // Garden
@@ -1015,31 +1218,31 @@ const MODEL_URLS = {
 
 const DEMO_PROJECTS = [
   // Deltagerbudgettering
-  { id: 'proj-001', budgetId: 'deltagerbudgettering', name: 'Skatepark at Blågårds Plads', desc: 'New concrete skatepark with LED lighting in the heart of Nørrebro.', category: 'recreation', cost: 1200000, votes: 1842, lng: 12.5499, lat: 55.6897, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['youth','sport','public space'], hasModel: true, modelUrl: MODEL_URLS.bench, voters: [] },
+  { id: 'proj-001', budgetId: 'deltagerbudgettering', name: 'Skatepark at Blågårds Plads', desc: 'New concrete skatepark with LED lighting in the heart of Nørrebro.', category: 'recreation', cost: 1200000, votes: 1842, eligibleVoters: 12480, lng: 12.5499, lat: 55.6897, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['youth','sport','public space'], hasModel: true, modelUrl: MODEL_URLS.bench, voters: [] },
   { id: 'proj-002', budgetId: 'deltagerbudgettering', name: 'Sensory Playground at Mimersparken', desc: 'Inclusive sensory garden and playground for children with disabilities at Mimersparken.', category: 'recreation', cost: 980000, votes: 2341, lng: 12.5478, lat: 55.6921, district: 'Nørrebro', status: 'planned', scale: 'local', investmentLevel: 'municipal', tags: ['children','inclusion','accessibility'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
   { id: 'proj-003', budgetId: 'deltagerbudgettering', name: 'Smart Street Lighting — Griffenfeldsgade', desc: 'Replacement of 120 sodium lamps with smart LED fixtures. 62% energy reduction.', category: 'infrastructure', cost: 750000, votes: 1123, lng: 12.5512, lat: 55.6883, district: 'Nørrebro', status: 'in-progress', scale: 'local', investmentLevel: 'municipal', tags: ['lighting','energy','safety','smart city'], hasModel: true, modelUrl: MODEL_URLS.lantern, voters: [] },
   { id: 'proj-004', budgetId: 'deltagerbudgettering', name: 'Cycle Parking & Repair Stations — Kødbyen', desc: '12 secure cycle stands with pumps and repair tools at key entrances to Kødbyen.', category: 'transport', cost: 410000, votes: 987, lng: 12.5502, lat: 55.6691, district: 'Vesterbro', status: 'completed', scale: 'local', investmentLevel: 'municipal', tags: ['cycling','infrastructure','mobility'], hasModel: true, modelUrl: MODEL_URLS.truck, voters: [] },
-  { id: 'proj-005', budgetId: 'deltagerbudgettering', name: 'Community Kitchen — Istedgade', desc: 'Shared pay-what-you-can canteen and cooking workshop space on Istedgade.', category: 'culture', cost: 620000, votes: 3102, lng: 12.5524, lat: 55.6703, district: 'Vesterbro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['food','community','seniors','cooperative'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
+  { id: 'proj-005', budgetId: 'deltagerbudgettering', name: 'Community Kitchen — Istedgade', desc: 'Shared pay-what-you-can canteen and cooking workshop space on Istedgade.', category: 'culture', cost: 620000, votes: 3102, eligibleVoters: 15600, lng: 12.5524, lat: 55.6703, district: 'Vesterbro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['food','community','seniors','cooperative'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
   // Lokalplan (Høring)
-  { id: 'proj-006', budgetId: 'lokalplan-hoering', name: 'Lokalplan 567 — New Residential Quarter, Sydhavn', desc: 'Land-use plan for 1,800 new homes and a waterfront park on former industrial land.', category: 'housing', cost: 0, votes: 5621, lng: 12.5368, lat: 55.6595, district: 'Sydhavn', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['development','park','waterfront'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
+  { id: 'proj-006', budgetId: 'lokalplan-hoering', name: 'Lokalplan 567 — New Residential Quarter, Sydhavn', desc: 'Land-use plan for 1,800 new homes and a waterfront park on former industrial land.', category: 'housing', cost: 0, votes: 5621, eligibleVoters: 72400, lng: 12.5368, lat: 55.6595, district: 'Sydhavn', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['development','park','waterfront'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
   { id: 'proj-007', budgetId: 'lokalplan-hoering', name: 'Objection Hearing — Tower at Kalvebod Brygge 45', desc: 'Formal høring on a planned 22-storey office tower affecting harbour views.', category: 'public-buildings', cost: 0, votes: 4203, lng: 12.5684, lat: 55.6704, district: 'Indre By', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['high-rise','objection','waterfront'], hasModel: true, modelUrl: MODEL_URLS.duck, voters: [] },
   { id: 'proj-008', budgetId: 'lokalplan-hoering', name: 'Amager Sports Complex — Ørestad', desc: 'New 22,000 m² sports complex with Olympic pool, sports halls and climbing centre.', category: 'public-buildings', cost: 480000000, votes: 3814, lng: 12.5742, lat: 55.6325, district: 'Amager', status: 'in-progress', scale: 'city-wide', investmentLevel: 'city', tags: ['sport','swimming pool','PPP'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
   { id: 'proj-009', budgetId: 'lokalplan-hoering', name: 'Carlsberg City District Phase 3', desc: 'Final phase — 1,200 apartments, three public squares and a covered market hall.', category: 'housing', cost: 0, votes: 2901, lng: 12.5245, lat: 55.6659, district: 'Valby', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['mixed-use','redevelopment','market hall'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
   // Klimat-tilpasning
   { id: 'proj-010', budgetId: 'klimat-tilpasning', name: 'Climate Street — Nørre Allé Redesign', desc: 'Model climate street: narrowed carriageway, infiltration ditches, widened cycle lanes, permeable surfaces.', category: 'climate', cost: 42000000, votes: 2987, lng: 12.5618, lat: 55.6949, district: 'Nørrebro', status: 'in-progress', scale: 'district', investmentLevel: 'city', tags: ['flooding','stormwater','cycling'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
   { id: 'proj-011', budgetId: 'klimat-tilpasning', name: 'Green Roof Grant Programme — Østerbro', desc: 'Subsidies covering up to 40% of green roof installation costs. Target: 200 roofs by 2027.', category: 'climate', cost: 18000000, votes: 1654, lng: 12.5729, lat: 55.7057, district: 'Østerbro', status: 'planned', scale: 'district', investmentLevel: 'city', tags: ['green roof','grants','flooding'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
-  { id: 'proj-012', budgetId: 'klimat-tilpasning', name: 'Retention Park — Valby Idrætspark', desc: 'Underground retention system holding up to 80,000 m³ of stormwater. Biofilter pond + nature trail.', category: 'green-spaces', cost: 95000000, votes: 3241, lng: 12.5032, lat: 55.6636, district: 'Valby', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['retention','park','flooding','biofiltration'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
+  { id: 'proj-012', budgetId: 'klimat-tilpasning', name: 'Retention Park — Valby Idrætspark', desc: 'Underground retention system holding up to 80,000 m³ of stormwater. Biofilter pond + nature trail.', category: 'green-spaces', cost: 95000000, votes: 3241, eligibleVoters: 58800, lng: 12.5032, lat: 55.6636, district: 'Valby', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['retention','park','flooding','biofiltration'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
   { id: 'proj-013', budgetId: 'klimat-tilpasning', name: 'Permeable Paving — Sankt Hans Torv', desc: 'Permeable surface absorbing 120 l/s during peak rainfall. Two bioswale channels + 14 new trees.', category: 'infrastructure', cost: 14500000, votes: 1432, lng: 12.5569, lat: 55.6889, district: 'Nørrebro', status: 'completed', scale: 'local', investmentLevel: 'city', tags: ['permeable paving','bioswale','stormwater'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
   // Byfornyelse
   { id: 'proj-014', budgetId: 'byfornyelse', name: 'Courtyard Renewal — Saxogade 12–18', desc: 'Redesign of shared courtyard: permeable paving, garden beds, pergola, playground, LED lighting.', category: 'green-spaces', cost: 1850000, votes: 287, lng: 12.5455, lat: 55.6681, district: 'Vesterbro', status: 'completed', scale: 'local', investmentLevel: 'municipal', tags: ['courtyard','gardens','community'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
   { id: 'proj-015', budgetId: 'byfornyelse', name: 'Façade Restoration — Istedgade 92–102', desc: 'Thermal upgrade and heritage façade restoration of six 1890–1910 tenements.', category: 'housing', cost: 6200000, votes: 341, lng: 12.5487, lat: 55.6698, district: 'Vesterbro', status: 'in-progress', scale: 'local', investmentLevel: 'municipal', tags: ['restoration','thermal upgrade','heritage'], hasModel: true, modelUrl: MODEL_URLS.lantern, voters: [] },
   { id: 'proj-016', budgetId: 'byfornyelse', name: 'Nørrebro Culture Centre — Former Textile Factory', desc: 'Adaptive reuse of a 1924 factory: 12 artist studios, music room, event hall, café, tool library.', category: 'culture', cost: 22000000, votes: 4112, lng: 12.5531, lat: 55.6985, district: 'Nørrebro', status: 'planned', scale: 'district', investmentLevel: 'municipal', tags: ['culture','artists','adaptive reuse','cooperative'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
-  { id: 'proj-017', budgetId: 'byfornyelse', name: 'Accessible Public Space — Blågårds Plads', desc: 'Universal design upgrade: tactile paving, ramps, accessible fountain, safety lighting.', category: 'infrastructure', cost: 3100000, votes: 2543, lng: 12.5499, lat: 55.6897, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['accessibility','seniors','universal design'], hasModel: true, modelUrl: MODEL_URLS.bench, voters: [] },
+  { id: 'proj-017', budgetId: 'byfornyelse', name: 'Accessible Public Space — Blågårds Plads', desc: 'Universal design upgrade: tactile paving, ramps, accessible fountain, safety lighting.', category: 'infrastructure', cost: 3100000, votes: 2543, eligibleVoters: 11200, lng: 12.5499, lat: 55.6897, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['accessibility','seniors','universal design'], hasModel: true, modelUrl: MODEL_URLS.bench, voters: [] },
   // Borgersamling
   { id: 'proj-018', budgetId: 'borgersamling', name: 'Waterfront Vision 2040 — Nordre Toldbod', desc: "Citizens' assembly: 60% public park, 20% cultural space, 20% social housing. Rejected 45% commercial use.", category: 'recreation', cost: 0, votes: 6823, lng: 12.5952, lat: 55.6884, district: 'Indre By', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['waterfront','deliberation','strategy'], hasModel: true, modelUrl: MODEL_URLS.statue, voters: [] },
   { id: 'proj-019', budgetId: 'borgersamling', name: 'Climate Panel — Decarbonising District Heating', desc: '80-citizen panel on accelerating decarbonisation of HOFOR district heating network.', category: 'climate', cost: 0, votes: 4230, lng: 12.5683, lat: 55.6761, district: 'City-wide', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['climate','energy','district heating','renewables'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
   { id: 'proj-020', budgetId: 'borgersamling', name: 'Future of Copenhagen Schools 2035', desc: '100-citizen panel on school strategy: keep neighbourhood schools + specialist programmes.', category: 'education', cost: 0, votes: 3109, lng: 12.5683, lat: 55.6761, district: 'City-wide', status: 'in-progress', scale: 'city-wide', investmentLevel: 'city', tags: ['education','schools','strategy','demographics'], hasModel: true, modelUrl: MODEL_URLS.toycar, voters: [] },
-  { id: 'proj-021', budgetId: 'borgersamling', name: 'Summer Cinema — Fælledparken', desc: '20 free outdoor screenings, 4K projector, 10×6m screen, wireless headphones for hearing-impaired.', category: 'culture', cost: 340000, votes: 2789, lng: 12.5597, lat: 55.7038, district: 'Østerbro', status: 'voting', scale: 'district', investmentLevel: 'municipal', tags: ['cinema','park','summer','accessibility'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
+  { id: 'proj-021', budgetId: 'borgersamling', name: 'Summer Cinema — Fælledparken', desc: '20 free outdoor screenings, 4K projector, 10×6m screen, wireless headphones for hearing-impaired.', category: 'culture', cost: 340000, votes: 2789, eligibleVoters: 24800, lng: 12.5597, lat: 55.7038, district: 'Østerbro', status: 'voting', scale: 'district', investmentLevel: 'municipal', tags: ['cinema','park','summer','accessibility'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
   // Copenhagen landmarks (hackathon demo)
   { id: 'cph-001', budgetId: 'byfornyelse', name: 'Cykelslangen (Cycle Snake)', desc: '235m elevated bicycle ramp in vivid orange connecting Dybbølsbro to Fisketorvet. Iconic cycling infrastructure by Dissing+Weitling.', category: 'transport', cost: 32000000, votes: 9120, lng: 12.5612, lat: 55.6622, district: 'Vesterbro', status: 'completed', scale: 'local', investmentLevel: 'city', tags: ['cycling','icon'], hasModel: true, modelUrl: MODEL_URLS.bridge, voters: [] },
   { id: 'cph-002', budgetId: 'klimat-tilpasning', name: 'Amager Bakke / CopenHill', desc: 'Ski slope, hiking trail and climbing wall on a clean waste-to-energy plant — BIG. 85m “urban mountain” with city views.', category: 'recreation', cost: 0, votes: 8850, lng: 12.5812, lat: 55.6354, district: 'Amager', status: 'completed', scale: 'city-wide', investmentLevel: 'city', tags: ['ski','climate','waste-to-energy'], hasModel: true, modelUrl: MODEL_URLS.statue, voters: [] },
@@ -1049,6 +1252,18 @@ const DEMO_PROJECTS = [
   { id: 'cph-006', budgetId: 'byfornyelse', name: 'Havneparken — Islands Brygge', desc: 'Waterfront park with harbour baths, lawns and piers — anchor of Amager’s harbour-facing public life.', category: 'green-spaces', cost: 0, votes: 7230, lng: 12.5782, lat: 55.6688, district: 'Amager', status: 'completed', scale: 'district', investmentLevel: 'city', tags: ['harbour','swimming','park'], hasModel: true, modelUrl: MODEL_URLS.duck, voters: [] },
   { id: 'cph-007', budgetId: 'klimat-tilpasning', name: 'Skt. Kjelds Kvarter Climate Adaptation', desc: 'Cloudburst boulevards, green roofs and retention in Østerbro’s climate-resilient neighbourhood (Klimakvarter).', category: 'climate', cost: 280000000, votes: 4450, lng: 12.5245, lat: 55.7072, district: 'Østerbro', status: 'in-progress', scale: 'district', investmentLevel: 'city', tags: ['cloudburst','stormwater'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
   { id: 'cph-008', budgetId: 'lokalplan-hoering', name: 'Christiansholm (Paper Island)', desc: 'Redevelopment of the former paper warehouse island into food halls, culture and harbour pools in Christianshavn.', category: 'culture', cost: 0, votes: 5890, lng: 12.5938, lat: 55.6782, district: 'Christianshavn', status: 'planned', scale: 'city-wide', investmentLevel: 'city', tags: ['harbour','food hall'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
+  // Nørrebro — extra voting markers (mixed budgets, demo)
+  { id: 'nrb-vote-001', budgetId: 'deltagerbudgettering', name: 'Play Street & Pump Track — Nørrebrohallen', desc: 'Temporary play street with modular pump track, seating and lighting for evening use — participatory budget line.', category: 'recreation', cost: 890000, votes: 1420, eligibleVoters: 11800, lng: 12.5621, lat: 55.7004, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['youth','cycling','play street'], hasModel: true, modelUrl: MODEL_URLS.bench, voters: [] },
+  { id: 'nrb-vote-002', budgetId: 'lokalplan-hoering', name: 'Lokalplan Hearing — Bispeeng / Emdrupvej Edge', desc: 'Public hearing on mixed-use edge along the green wedge: height step-downs, new pocket parks and cycle priority.', category: 'housing', cost: 0, votes: 3180, eligibleVoters: 68000, lng: 12.5408, lat: 55.6942, district: 'Nørrebro', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['hearing','mixed-use','green wedge'], hasModel: true, modelUrl: MODEL_URLS.amphitheater, voters: [] },
+  { id: 'nrb-vote-003', budgetId: 'klimat-tilpasning', name: 'Cloudburst Basins — Tagensvej Corridor', desc: 'Chain of surface retention basins and tree trenches to handle 10-year storms without flooding basements.', category: 'climate', cost: 18500000, votes: 2120, eligibleVoters: 24000, lng: 12.5576, lat: 55.6978, district: 'Nørrebro', status: 'voting', scale: 'district', investmentLevel: 'city', tags: ['cloudburst','stormwater','trees'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
+  { id: 'nrb-vote-004', budgetId: 'byfornyelse', name: 'Courtyard Lighting Pilot — Ravnsborggade', desc: 'Heritage-friendly LED bollards and wayfinding for three shared courtyards in the inner block.', category: 'infrastructure', cost: 2400000, votes: 876, eligibleVoters: 10500, lng: 12.5589, lat: 55.6901, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['courtyard','lighting','heritage'], hasModel: true, modelUrl: MODEL_URLS.lantern, voters: [] },
+  { id: 'nrb-vote-006', budgetId: 'deltagerbudgettering', name: 'Edible Hedge & Neighbourhood Compost — Hørsholmsgade', desc: 'Linear food forest hedge along the cycle path plus three communal compost hubs for local blocks.', category: 'green-spaces', cost: 420000, votes: 1980, eligibleVoters: 12100, lng: 12.5439, lat: 55.6918, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['food forest','compost','cycling'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
+  { id: 'nrb-vote-007', budgetId: 'lokalplan-hoering', name: 'Lokalplan — Åboulevard / Ågade Crossing Upgrade', desc: 'Høring on a grade-separated cycle and walking bridge across the inner ring road, tying Nørrebro to Bispebjerg.', category: 'transport', cost: 0, votes: 4890, eligibleVoters: 68000, lng: 12.5524, lat: 55.6961, district: 'Nørrebro', status: 'voting', scale: 'city-wide', investmentLevel: 'city', tags: ['bridge','cycling','ring road'], hasModel: true, modelUrl: MODEL_URLS.bridge, voters: [] },
+  { id: 'nrb-vote-008', budgetId: 'klimat-tilpasning', name: 'Tree Trenches & Swales — Stefansgade', desc: 'Continuous tree trenches and shallow swales to detain runoff and cool the street canyon in summer heat.', category: 'climate', cost: 9200000, votes: 1765, eligibleVoters: 24000, lng: 12.5604, lat: 55.6949, district: 'Nørrebro', status: 'voting', scale: 'district', investmentLevel: 'city', tags: ['urban heat','stormwater','trees'], hasModel: true, modelUrl: MODEL_URLS.tree, voters: [] },
+  { id: 'nrb-vote-009', budgetId: 'byfornyelse', name: 'Sheltered Meeting Point — Nørrebro Bus Hub', desc: 'Wind- and rain-shelter canopy with seating, real-time displays and better lighting for the busiest stops.', category: 'infrastructure', cost: 3800000, votes: 1124, eligibleVoters: 10800, lng: 12.5558, lat: 55.6887, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['transit','shelter','accessibility'], hasModel: true, modelUrl: MODEL_URLS.shelter, voters: [] },
+  { id: 'nrb-vote-010', budgetId: 'borgersamling', name: 'Public Art Shortlist — Nørrebro Runddel', desc: 'Citizens\' assembly chooses one of three permanent sculptures for the roundabout, with maintenance budget locked in.', category: 'culture', cost: 0, votes: 2410, eligibleVoters: 22600, lng: 12.5487, lat: 55.6864, district: 'Nørrebro', status: 'voting', scale: 'district', investmentLevel: 'municipal', tags: ['public art','deliberation','placemaking'], hasModel: true, modelUrl: MODEL_URLS.statue, voters: [] },
+  { id: 'nrb-vote-011', budgetId: 'deltagerbudgettering', name: 'Cargo Bike & Parcel Lockers — Nørreport Edge', desc: 'Secure cargo-bike parking and chilled parcel lockers to cut van trips on the last mile into dense blocks.', category: 'transport', cost: 1100000, votes: 2234, eligibleVoters: 11950, lng: 12.5638, lat: 55.6914, district: 'Nørrebro', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: ['logistics','cycling','last mile'], hasModel: true, modelUrl: MODEL_URLS.truck, voters: [] },
+  { id: 'nrb-vote-012', budgetId: 'klimat-tilpasning', name: 'Pollinator Corridor — Mimersgade Rail Verge', desc: 'Wildflower strips, dead wood and rain gardens along the S-train verge to link two neighbourhood pocket parks.', category: 'green-spaces', cost: 5800000, votes: 1540, eligibleVoters: 24000, lng: 12.5538, lat: 55.6994, district: 'Nørrebro', status: 'voting', scale: 'district', investmentLevel: 'city', tags: ['biodiversity','pollinators','green corridor'], hasModel: true, modelUrl: MODEL_URLS.fox, voters: [] },
   // Concept — Spatial Development / Zagospodarowanie Przestrzenne
   { id: 'concept-001', budgetId: 'lokalplan-hoering', name: 'Nordhavn Pocket Neighbourhoods', desc: 'Concept for a network of 6 car-free "pocket neighbourhoods" within Nordhavn, each centred on a shared courtyard with communal gardens, tool libraries and rain gardens. Ground-floor mixed-use with local workshops and day-care. Target: 800 homes with 70% social housing.', category: 'housing', cost: 0, votes: 312, lng: 12.5955, lat: 55.7120, district: 'Nordhavn', status: 'Concept', scale: 'district', investmentLevel: 'city', tags: ['spatial planning','car-free','social housing','pocket neighbourhood'], hasModel: true, modelUrl: MODEL_URLS.garden, voters: [] },
   { id: 'concept-002', budgetId: 'lokalplan-hoering', name: 'Sydhavn Blue-Green Corridor', desc: 'Linear park and stormwater corridor from Sjællandsbroen to Teglholmen following the former rail yard. 2.4 km greenway with bioswales, urban wetlands, footpaths, and three pedestrian bridges connecting neighbourhoods currently split by infrastructure.', category: 'green-spaces', cost: 0, votes: 478, lng: 12.5310, lat: 55.6545, district: 'Sydhavn', status: 'Concept', scale: 'district', investmentLevel: 'city', tags: ['spatial planning','greenway','blue-green','stormwater','connectivity'], hasModel: true, modelUrl: MODEL_URLS.bridge, voters: [] },
@@ -1240,6 +1455,7 @@ function clearSidebarFilters() {
   if (topBudgetReset) topBudgetReset.value = '';
   document.querySelectorAll('.top-filter-btn').forEach(sel => sel.classList.remove('active'));
   updateSidebarTheme('');
+  deactivateDistrict();
   renderCategoryChips();
   renderProjectList();
   updateStats();
@@ -1321,7 +1537,10 @@ function initSidebarFilters(districtData) {
     invSel.addEventListener('change', applySidebarFilters);
   }
 
-  document.getElementById('filter-status')?.addEventListener('change', applySidebarFilters);
+  document.getElementById('filter-status')?.addEventListener('change', () => {
+    deactivateDistrict();
+    applySidebarFilters();
+  });
   document.getElementById('project-search')?.addEventListener('input', (e) => {
     filterSearchQuery = e.target.value;
     applySidebarFilters();
@@ -1527,6 +1746,39 @@ function getDistrictNorthernLabelAnchor(feature) {
   return { lng: midLng, lat: bbox.maxLat + padLat };
 }
 
+function lngLatFromLike(ll) {
+  if (!ll) return null;
+  const lng = ll.lng != null ? ll.lng : ll[0];
+  const lat = ll.lat != null ? ll.lat : ll[1];
+  if (typeof lng !== 'number' || typeof lat !== 'number' || !isFinite(lng) || !isFinite(lat)) return null;
+  return { lng, lat };
+}
+
+function removeDistrictNameMarker() {
+  if (districtNameMarker) {
+    districtNameMarker.remove();
+    districtNameMarker = null;
+  }
+}
+
+/** Floating district title above the map (DOM), always visible over 3D extrusions. */
+function updateDistrictNameMarker(lngLatLike, name, accentColor) {
+  removeDistrictNameMarker();
+  const ll = lngLatFromLike(lngLatLike);
+  if (!ll || !map) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'district-name-marker';
+  wrap.textContent = name;
+  if (accentColor) wrap.style.setProperty('--district-accent', accentColor);
+  districtNameMarker = new maplibregl.Marker({
+    element: wrap,
+    anchor: 'bottom',
+    className: 'district-name-marker-root',
+  })
+    .setLngLat([ll.lng, ll.lat])
+    .addTo(map);
+}
+
 function deactivateDistrict() {
   activeDistrict = null;
   if (map.getSource('district-mask')) map.getSource('district-mask').setData(EMPTY_FEATURE_COLLECTION);
@@ -1535,10 +1787,7 @@ function deactivateDistrict() {
     map.setPaintProperty('district-border', 'line-width', 0);
     map.setPaintProperty('district-border', 'line-opacity', 0);
   }
-  if (map.getLayer('district-labels')) {
-    map.setLayoutProperty('district-labels', 'text-size', 0);
-    map.setPaintProperty('district-labels', 'text-opacity', 0);
-  }
+  removeDistrictNameMarker();
   renderProjectList();
   updateMarkerDistrictFilter();
   updateStats();
@@ -1571,10 +1820,11 @@ function activateDistrict(name, color, lngLat) {
   map.setPaintProperty('district-border', 'line-opacity', [
     'case', ['==', ['get', 'name'], name], 0.95, 0
   ]);
-  map.setLayoutProperty('district-labels', 'text-size', [
-    'case', ['==', ['get', 'name'], name], 16, 0
-  ]);
-  map.setPaintProperty('district-labels', 'text-opacity', 1);
+
+  const labelPos = lngLatFromLike(lngLat) || (fullFeature && getDistrictNorthernLabelAnchor(fullFeature));
+  const distLblOn = !document.getElementById('mc-district-labels') || document.getElementById('mc-district-labels').checked;
+  if (distLblOn && labelPos) updateDistrictNameMarker(labelPos, name, color);
+  else removeDistrictNameMarker();
 
   renderProjectList();
   updateMarkerDistrictFilter();
@@ -1589,19 +1839,15 @@ function activateDistrict(name, color, lngLat) {
     const localProjects = districtProjects.filter(p => p.investmentLevel === 'municipal' && p.cost > 0);
     const allocatedCost = localProjects.reduce((sum, p) => sum + p.cost, 0);
     const budget = DISTRICT_BUDGETS[name];
-    const pct = budget && budget.annual > 0 ? Math.round(allocatedCost / budget.annual * 100) : 0;
     const budgetHtml = budget ? `
         <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.06)">
           <div style="font-size:11px;color:#9b9a97;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Participatory budget / year</div>
           <div style="font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text-primary)">${formatDKK(budget.annual)} DKK</div>
           ${allocatedCost > 0 ? `
-          <div style="margin-top:5px;background:rgba(0,0,0,0.04);border-radius:4px;height:6px;overflow:hidden">
-            <div style="height:100%;width:${Math.min(pct, 100)}%;background:${pct > 100 ? '#e03e3e' : '#00a67e'};border-radius:4px"></div>
-          </div>
-          <div style="font-size:11px;color:${pct > 100 ? '#e03e3e' : '#00a67e'};margin-top:3px">${formatDKK(allocatedCost)} DKK in local projects (${pct}%)</div>` : `
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:5px">${formatDKK(allocatedCost)} DKK in local projects</div>` : `
           <div style="font-size:11px;color:#9b9a97;margin-top:3px">No local proposals yet</div>`}
         </div>` : '';
-    window._activePopup = new maplibregl.Popup({
+    const districtInfoPopup = new maplibregl.Popup({
       anchor: 'bottom',
       offset: [0, -8],
       closeButton: true,
@@ -1617,6 +1863,10 @@ function activateDistrict(name, color, lngLat) {
         <div style="font-size:11px;color:#9b9a97;margin-top:6px">Click again or outside to show all</div>
       `)
       .addTo(map);
+    window._activePopup = districtInfoPopup;
+    districtInfoPopup.on('close', () => {
+      if (activeDistrict === name) deactivateDistrict();
+    });
   }
 }
 
@@ -1685,6 +1935,20 @@ const map = new maplibregl.Map({
   maxPitch: 85,
 });
 window.map = map;
+
+function applyDistrictLabelLayerVisibility() {
+  const el = document.getElementById('mc-district-labels');
+  const on = !el || el.checked;
+  if (!on) {
+    removeDistrictNameMarker();
+    return;
+  }
+  if (!activeDistrict) return;
+  const feat = getDistrictFeatureByName(activeDistrict);
+  if (!feat) return;
+  const anchor = lngLatFromLike(getDistrictNorthernLabelAnchor(feat));
+  if (anchor) updateDistrictNameMarker(anchor, activeDistrict, feat.properties.color);
+}
 
 map.on('load', async () => {
   setTimeout(() => { document.getElementById('loading').classList.add('hidden'); }, 600);
@@ -1885,22 +2149,6 @@ map.on('load', async () => {
     }
   });
 
-  // District label
-  map.addLayer({
-    id: 'district-labels', type: 'symbol', source: 'districts',
-    layout: {
-      'text-field': ['get', 'name'],
-      'text-font': ['Open Sans Bold'],
-      'text-size': 0,
-    },
-    paint: {
-      'text-color': '#ffffff',
-      'text-halo-color': 'rgba(0,0,0,0.5)',
-      'text-halo-width': 2,
-      'text-opacity': 0,
-    }
-  });
-
   map.addSource('district-mask', { type: 'geojson', data: EMPTY_FEATURE_COLLECTION });
   map.addLayer({
     id: 'district-mask-fill',
@@ -1976,6 +2224,9 @@ map.on('load', async () => {
   initSidebarFilters(districtData);
   initTopFilters();
   updateMarkerDistrictFilter();
+
+  _symbolLayerIds = map.getStyle().layers.filter(l => l.type === 'symbol').map(l => l.id);
+  applyDistrictLabelLayerVisibility();
 });
 
 setTimeout(() => { document.getElementById('loading').classList.add('hidden'); }, 8000);
@@ -2022,15 +2273,17 @@ map.on('rotateend', () => { mcBearing.value = Math.round(map.getBearing()); mcBe
 
 // ── Map label / above-building checkboxes ──
 const mcLabels = document.getElementById('mc-labels');
+const mcDistrictLabels = document.getElementById('mc-district-labels');
 const mcAbove = document.getElementById('mc-above');
 let _symbolLayerIds = [];
-map.on('load', () => {
-  _symbolLayerIds = map.getStyle().layers.filter(l => l.type === 'symbol').map(l => l.id);
-});
-if (mcLabels) mcLabels.addEventListener('change', () => {
-  const vis = mcLabels.checked ? 'visible' : 'none';
-  _symbolLayerIds.forEach(id => { try { map.setLayoutProperty(id, 'visibility', vis); } catch(e){} });
-});
+function applyBasemapSymbolVisibility() {
+  const vis = mcLabels && mcLabels.checked ? 'visible' : 'none';
+  _symbolLayerIds.forEach((id) => {
+    try { map.setLayoutProperty(id, 'visibility', vis); } catch (e) { /* layer removed */ }
+  });
+}
+if (mcLabels) mcLabels.addEventListener('change', applyBasemapSymbolVisibility);
+if (mcDistrictLabels) mcDistrictLabels.addEventListener('change', applyDistrictLabelLayerVisibility);
 if (mcAbove) mcAbove.addEventListener('change', () => {
   // placeholder: controls marker z-index above/below buildings
 });
@@ -2043,15 +2296,15 @@ function initTopFilters() {
   if (catSel) {
     catSel.innerHTML = '<option value="">Category</option>' +
       Object.entries(CATEGORIES).filter(([k]) => k !== 'other').map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('');
-    catSel.addEventListener('change', applyTopFilters);
+    catSel.addEventListener('change', applyTopFiltersWithDistrictReset);
   }
   const budgetTopSel = document.getElementById('top-filter-budget');
   if (budgetTopSel) {
     budgetTopSel.innerHTML = '<option value="">Budget</option>' +
       BUDGETS.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
-    budgetTopSel.addEventListener('change', applyTopFilters);
+    budgetTopSel.addEventListener('change', applyTopFiltersWithDistrictReset);
   }
-  document.getElementById('top-filter-status')?.addEventListener('change', applyTopFilters);
+  document.getElementById('top-filter-status')?.addEventListener('change', applyTopFiltersWithDistrictReset);
   const sortSel = document.getElementById('top-filter-sort');
   if (sortSel) sortSel.addEventListener('change', () => { topSortMode = sortSel.value; applyTopFilters(); });
 }
@@ -2083,6 +2336,12 @@ function applyTopFilters() {
   updateFilterCount();
 }
 
+/** Top-bar category / budget / status — reset map district selection + floating label */
+function applyTopFiltersWithDistrictReset() {
+  deactivateDistrict();
+  applyTopFilters();
+}
+
 // Patch initSidebarFilters to also init top filters
 const _origInitSidebarFilters = typeof initSidebarFilters === 'function' ? initSidebarFilters : null;
 
@@ -2102,15 +2361,34 @@ map.on('click', (e) => {
   window._tempMarker = new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map);
 });
 
+// ── Map marker icons (SVG, status-based) ──
+function markerIconHTML(status) {
+  const s = (status || 'planned').toString();
+  if (s === 'Concept') return '?';
+  if (s === 'voting') {
+    return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="9" width="14" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M7 9V7h10v2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M10 4.5h4"/></svg>`;
+  }
+  if (s === 'completed') {
+    return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M8.5 12.5l2.2 2.2 5.3-6.2"/></svg>`;
+  }
+  if (s === 'in-progress') {
+    return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M8 3h8v3.5L12 12l4 5.5V21H8v-3.5L12 12 8 6.5V3z"/></svg>`;
+  }
+  if (s === 'planned') {
+    return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M8 3v4M16 3v4M4 11h16"/></svg>`;
+  }
+  return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 8v4l3 2"/></svg>`;
+}
+
 // ── Markers — use GeoJSON source + symbol layer for stable positioning ──
 // Fallback: HTML markers with viewport alignment (default)
 function addMarker(project) {
   const el = document.createElement('div');
   const statusClass = markerStatusClass(project.status);
-  const icon = project.status === 'Concept' ? '?' : '!';
-  el.innerHTML = `<div class="quest-wrap ${statusClass}"><div class="quest-icon">${icon}</div><div class="quest-dot"></div><div class="quest-pole"></div></div>`;
+  const icon = markerIconHTML(project.status);
+  el.innerHTML = `<div class="quest-wrap ${statusClass}" role="img" aria-label="Project marker, status ${(project.status || '').toString()}"><div class="quest-icon">${icon}</div><div class="quest-dot"></div><div class="quest-pole"></div></div>`;
   const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([project.lng, project.lat]).addTo(map);
-  el.addEventListener('click', (e) => { e.stopPropagation(); openProjectDetail(project.id); });
+  el.addEventListener('click', (e) => { e.stopPropagation(); flyToProject(project.id); });
   markers[project.id] = marker;
   if (!projectPassesFilters(project)) el.style.display = 'none';
   if (project.modelUrl) load3DModel(project);
@@ -2129,10 +2407,55 @@ function showPopup(project) {
       <button class="vote-btn ${voted?'voted':''}" onclick="voteForProject('${project.id}')">${voted?'\u2705 Voted':'\u{1F44D} Vote'}</button>
       <span class="popup-vote-count">${project.votes}</span>
     </div>
+    ${voteProgressHTML(project, true)}
     <div style="font-size:11px;color:#9b9a97;margin-top:6px;font-family:'JetBrains Mono',monospace">${project.cost?project.cost.toLocaleString('da')+' DKK':''}</div>
   `;
-  window._activePopup = new maplibregl.Popup({ offset: 25, closeButton: true, maxWidth: '280px' })
+  window._activePopup = new maplibregl.Popup({
+    anchor: 'bottom',
+    // Negative Y moves the popup upward on screen so it clears 3D markers / extrusions
+    offset: [0, -88],
+    closeButton: true,
+    maxWidth: '280px',
+  })
     .setLngLat([project.lng, project.lat]).setHTML(html).addTo(map);
+}
+
+// ── Voting progress (status "voting" only): voted vs eligible pool (mock defaults by scale) ──
+const ELIGIBLE_VOTERS_BY_SCALE = { local: 10800, district: 24000, 'city-wide': 68000 };
+function getEligibleVoters(p) {
+  if (!p) return 10000;
+  const e = p.eligibleVoters;
+  if (e != null && e > 0) return e;
+  const d = ELIGIBLE_VOTERS_BY_SCALE[p.scale];
+  return (d != null && d > 0) ? d : 16000;
+}
+function voteProgressPercent(p) {
+  const eligible = getEligibleVoters(p);
+  if (eligible <= 0) return 0;
+  return Math.min(100, Math.round(((p.votes || 0) / eligible) * 100));
+}
+function voteProgressHTML(p, compact) {
+  if (p.status !== 'voting') return '';
+  const eligible = getEligibleVoters(p);
+  const v = p.votes || 0;
+  const pct = voteProgressPercent(p);
+  const extra = compact ? ' vote-progress-compact' : '';
+  const meta = compact ? '' : `
+      <div class="vote-turnout-meta">
+        <span class="vote-stat"><span class="vote-stat-label">Voted</span><strong>${v.toLocaleString('da')}</strong></span>
+        <span class="vote-stat"><span class="vote-stat-label">Eligible</span><strong>${eligible.toLocaleString('da')}</strong></span>
+      </div>`;
+  const labelRow = compact
+    ? `<div class="vote-progress-label"><span>Voted / eligible</span><strong>${v.toLocaleString('da')}<span style="font-weight:500;color:var(--text-tertiary)"> / ${eligible.toLocaleString('da')}</span></strong></div>`
+    : `<div class="vote-progress-label"><span>Turnout</span><strong>${pct}%</strong></div>`;
+  return `
+    <div class="vote-progress-wrap${extra}" aria-label="Voting turnout">
+      ${meta}
+      ${labelRow}
+      <div class="vote-progress-track" role="progressbar" aria-valuenow="${v}" aria-valuemin="0" aria-valuemax="${eligible}" aria-valuetext="${v} voted of ${eligible} eligible">
+        <div class="vote-progress-fill" style="width:${pct}%"></div>
+      </div>
+    </div>`;
 }
 
 // ── Voting ──
@@ -2186,6 +2509,7 @@ function renderProjectList() {
           ${p.budgetId ? `<span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(0,0,0,0.04);color:var(--text-tertiary);font-weight:500">${budgetName(p.budgetId)}</span>` : ''}
           ${p.scale ? `<span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(0,0,0,0.04);color:var(--text-tertiary);font-weight:500">${SCALE_LABELS[p.scale] || p.scale}</span>` : ''}
         </div>
+        ${voteProgressHTML(p, false)}
         <div class="pc-footer">
           <div style="display:flex;align-items:center;gap:8px">
             <button class="vote-btn ${voted?'voted':''}" onclick="event.stopPropagation();voteForProject('${p.id}')">${voted?'\u2705':'\u{1F44D}'} ${voted?'Voted':'Vote'}</button>
@@ -2203,6 +2527,14 @@ function renderProjectList() {
 function flyToProject(id) {
   const p = projects.find(x => x.id === id);
   if (!p) return;
+  if (typeof sidebarVisible !== 'undefined' && !sidebarVisible && typeof sidebar !== 'undefined' && sidebar) {
+    sidebarVisible = true;
+    sidebar.classList.remove('hidden');
+    if (typeof sidebarToggle !== 'undefined' && sidebarToggle) {
+      sidebarToggle.classList.add('shifted');
+      sidebarToggle.innerHTML = '&#9776;';
+    }
+  }
   map.flyTo({ center: [p.lng, p.lat], zoom: 17, pitch: 65, duration: 1200, essential: true });
   document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
   const card = document.querySelector(`.project-card[data-id="${id}"]`);
@@ -2238,6 +2570,9 @@ const modeInd = document.getElementById('mode-indicator');
 addBtn.addEventListener('click', () => {
   if (placingMode) { exitPlacingMode(); return; }
   placingMode = true;
+  const citizenRadio = document.getElementById('f-role-citizen');
+  if (citizenRadio) citizenRadio.checked = true;
+  syncModelUploadUI();
   addBtn.classList.add('active'); addBtn.textContent = 'Cancel placement';
   addForm.classList.add('visible');
   document.getElementById('map').classList.add('placing');
@@ -2261,8 +2596,11 @@ function exitPlacingMode() {
   ['f-name','f-desc','f-cost'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('f-location-text').textContent = 'Click on the map to place your project';
   document.getElementById('f-location-text').style.color = '';
-  document.getElementById('model-upload-text').textContent = 'Drag .glb / .gltf / .stl or click';
   document.getElementById('model-upload').classList.remove('has-file');
+  document.getElementById('f-model').value = '';
+  const citizenRadio = document.getElementById('f-role-citizen');
+  if (citizenRadio) citizenRadio.checked = true;
+  syncModelUploadUI();
   document.getElementById('btn-submit').disabled = true;
   if (window._tempMarker) { window._tempMarker.remove(); window._tempMarker = null; }
 }
@@ -2278,8 +2616,9 @@ document.getElementById('btn-submit').addEventListener('click', () => {
   const category = document.getElementById('f-category').value;
   const cost = parseInt(document.getElementById('f-cost').value) || 0;
   if (!name || !pendingLocation) return;
-  const modelType = pendingModelFile ? (pendingModelFile.name.toLowerCase().endsWith('.stl') ? 'stl' : 'gltf') : null;
-  const project = { id: 'p' + Date.now(), budgetId: 'deltagerbudgettering', name, desc: desc || 'No description', category, cost, votes: 1, voters: ['me'], lng: pendingLocation.lng, lat: pendingLocation.lat, hasModel: !!pendingModelFile, modelUrl: pendingModelFile ? URL.createObjectURL(pendingModelFile) : null, modelType, district: '', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: [] };
+  const modelType = inferModelTypeFromFile(pendingModelFile);
+  const proposerRole = getProposerRole();
+  const project = { id: 'p' + Date.now(), budgetId: 'deltagerbudgettering', name, desc: desc || 'No description', category, cost, votes: 1, eligibleVoters: 9200, voters: ['me'], lng: pendingLocation.lng, lat: pendingLocation.lat, hasModel: !!pendingModelFile, modelUrl: pendingModelFile ? URL.createObjectURL(pendingModelFile) : null, modelType, proposerRole, district: '', status: 'voting', scale: 'local', investmentLevel: 'municipal', tags: [] };
   projects.push(project); addMarker(project); saveProjects(); renderProjectList(); updateStats(); updateMarkerDistrictFilter(); updateFilterCount(); exitPlacingMode();
   setTimeout(() => flyToProject(project.id), 300);
 });
@@ -2289,23 +2628,69 @@ const modelUpload = document.getElementById('model-upload');
 const modelInput = document.getElementById('f-model');
 modelUpload.addEventListener('click', () => modelInput.click());
 modelUpload.addEventListener('dragover', (e) => { e.preventDefault(); });
-modelUpload.addEventListener('drop', (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f && (f.name.endsWith('.glb') || f.name.endsWith('.gltf') || f.name.endsWith('.stl'))) handleModelFile(f); });
+modelUpload.addEventListener('drop', (e) => {
+  e.preventDefault();
+  const f = e.dataTransfer.files[0];
+  if (f && isAllowedModelFilename(f.name, getProposerRole())) handleModelFile(f);
+});
 modelInput.addEventListener('change', () => {
   const f = modelInput.files[0];
   if (f) {
-    const ext = f.name.toLowerCase();
-    if (ext.endsWith('.glb') || ext.endsWith('.gltf') || ext.endsWith('.stl')) {
+    if (isAllowedModelFilename(f.name, getProposerRole())) {
       handleModelFile(f);
     } else {
-      alert('Unsupported format. Use .glb, .gltf or .stl');
+      const role = getProposerRole();
+      alert(role === 'architect'
+        ? 'Unsupported format. Use .glb, .gltf, .stl or .ifc'
+        : 'Unsupported format. Use .glb, .gltf or .stl (select Architect to upload .ifc)');
       modelInput.value = '';
     }
   }
 });
+document.querySelectorAll('input[name="f-role"]').forEach((el) => {
+  el.addEventListener('change', syncModelUploadUI);
+});
+syncModelUploadUI();
 function handleModelFile(file) {
   pendingModelFile = file;
   document.getElementById('model-upload-text').innerHTML = `<span class="filename">${file.name}</span> (${(file.size/1024).toFixed(0)} KB)`;
   modelUpload.classList.add('has-file');
+}
+
+/** IFC via web-ifc-three (CDN); falls back to a simple box if import/WASM/load fails. */
+function loadIFCModelUrl(url, onMesh) {
+  const fallback = () => {
+    const g = new THREE.BoxGeometry(1, 1, 1);
+    const m = new THREE.MeshPhongMaterial({ color: 0x5a7d8a, shininess: 70, specular: 0x334455 });
+    onMesh(new THREE.Mesh(g, m));
+  };
+  import('https://esm.sh/web-ifc-three@0.0.126?deps=three@0.160.0').then((mod) => {
+    const IFCLoader = mod.IFCLoader;
+    if (!IFCLoader) throw new Error('IFCLoader unavailable');
+    const loader = new IFCLoader();
+    return loader.ifcManager.setWasmPath('https://cdn.jsdelivr.net/npm/web-ifc@0.0.53/', true).then(() => {
+      loader.load(
+        url,
+        (ifcModel) => {
+          try {
+            const root = ifcModel.mesh || ifcModel;
+            onMesh(root);
+          } catch (e) {
+            console.warn('[3D] IFC mesh attach failed:', e);
+            fallback();
+          }
+        },
+        undefined,
+        (err) => {
+          console.warn('[3D] IFC loader error:', err);
+          fallback();
+        }
+      );
+    });
+  }).catch((e) => {
+    console.warn('[3D] IFC pipeline failed:', e);
+    fallback();
+  });
 }
 
 // ── 3D Model loading ──
@@ -2313,6 +2698,7 @@ function load3DModel(project) {
   if (!project.modelUrl) return;
   console.log('[3D] Loading model for', project.id, 'url:', project.modelUrl.substring(0, 80), 'type:', project.modelType);
   const isSTL = project.modelType === 'stl' || project.modelUrl.toLowerCase().endsWith('.stl');
+  const isIFC = project.modelType === 'ifc' || project.modelUrl.toLowerCase().endsWith('.ifc');
 
   function addModelToMap(obj) {
     // Auto-center and scale to building-proportional size (~15m default)
@@ -2398,6 +2784,8 @@ function load3DModel(project) {
       const material = new THREE.MeshPhongMaterial({ color: 0x4488ff, shininess: 80, specular: 0x222244 });
       addModelToMap(new THREE.Mesh(geometry, material));
     }, undefined, (err) => { console.warn('[3D] STL load failed for', project.id, err); });
+  } else if (isIFC) {
+    loadIFCModelUrl(project.modelUrl, addModelToMap);
   } else {
     const gltfLoader = new (window.GLTFLoader || THREE.GLTFLoader)();
     gltfLoader.load(project.modelUrl, (gltf) => { addModelToMap(gltf.scene); }, undefined, (err) => { console.warn('[3D] GLTF load failed for', project.id, err); });
@@ -2416,8 +2804,13 @@ function openProjectDetail(id) {
   const modelArea = document.getElementById('detail-model-area');
   const body = document.getElementById('detail-body');
 
-  // Hide sidebar, show detail
+  // Hide sidebar, show detail (keep sidebarVisible in sync so toggle still works)
   document.getElementById('sidebar').classList.add('hidden');
+  sidebarVisible = false;
+  if (sidebarToggle) {
+    sidebarToggle.classList.remove('shifted');
+    sidebarToggle.innerHTML = '&#9654;';
+  }
   detail.classList.add('visible');
 
   // Status badge color (aligned with sidebar + map markers)
@@ -2462,6 +2855,7 @@ function openProjectDetail(id) {
         <div class="detail-stat-value cat-color">${catLabel}</div>
       </div>
     </div>
+    ${p.status === 'voting' ? `<div class="detail-vote-progress">${voteProgressHTML(p, false)}</div>` : ''}
     <button class="detail-vote-btn ${voted ? 'voted' : ''}" onclick="voteFromDetail('${p.id}')">
       ${voted ? '\u2705 Voted' : '\u{1F44D} Vote for this project'}
     </button>
@@ -2555,8 +2949,9 @@ function initModelPreview(container, url, modelType) {
   rimLight.position.set(-3, 2, -2);
   scene.add(rimLight);
 
-  // Load model (GLTF/GLB or STL)
+  // Load model (GLTF/GLB, STL, or IFC)
   const isSTL = modelType === 'stl' || url.toLowerCase().endsWith('.stl');
+  const isIFC = modelType === 'ifc' || url.toLowerCase().endsWith('.ifc');
 
   function onModelLoaded(model) {
 
@@ -2603,6 +2998,8 @@ function initModelPreview(container, url, modelType) {
       const material = new THREE.MeshStandardMaterial({ color: 0x4488ff, metalness: 0.3, roughness: 0.5 });
       onModelLoaded(new THREE.Mesh(geometry, material));
     }, undefined, (err) => { console.warn('[3D Preview] STL load failed:', err); container.innerHTML = '<div class="detail-no-model">Failed to load model</div>'; });
+  } else if (isIFC) {
+    loadIFCModelUrl(url, onModelLoaded);
   } else {
     const gltfLoader = new (window.GLTFLoader || THREE.GLTFLoader)();
     gltfLoader.load(url, (gltf) => { onModelLoaded(gltf.scene); }, undefined, (err) => { console.warn('[3D Preview] GLTF load failed:', err); container.innerHTML = '<div class="detail-no-model">Failed to load model</div>'; });
@@ -2621,6 +3018,12 @@ function closeProjectDetail() {
   if (detailRenderer) { detailRenderer.dispose(); detailRenderer = null; }
   document.getElementById('project-detail').classList.remove('visible');
   document.getElementById('sidebar').classList.remove('hidden');
+  sidebarVisible = true;
+  if (sidebarToggle) {
+    sidebarToggle.classList.add('shifted');
+    sidebarToggle.innerHTML = '&#9776;';
+  }
+  deactivateDistrict();
 }
 
 window.openProjectDetail = openProjectDetail;

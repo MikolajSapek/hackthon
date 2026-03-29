@@ -1,7 +1,7 @@
 {
-  "name": "copenhagen-3d",
+  "name": "kl4ad1u5h",
   "version": "1.0.0",
-  "description": "Interactive 3D map of Copenhagen for civic participatory budgeting",
+  "description": "KL4AD1U5H — interactive 3D Copenhagen map for civic budget exploration (hackathon prototype)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

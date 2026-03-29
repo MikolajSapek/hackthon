@@ -1,3 +1,6 @@
 node_modules/
 .env
 .DS_Store
+
+# Removed experimental Vite/React app — main app is public/index.html
+frontend/
